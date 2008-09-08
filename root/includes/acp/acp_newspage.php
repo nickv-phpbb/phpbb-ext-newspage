@@ -4,7 +4,7 @@
 *
 * @package - NV newspage
 * @version $Id: acp_newspage.php 63 2007-12-18 14:19:49Z nickvergessen $
-* @copyright (c) nickvergessen ( http://mods.flying-bits.org/ )
+* @copyright (c) nickvergessen ( http://www.flying-bits.org/ )
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */

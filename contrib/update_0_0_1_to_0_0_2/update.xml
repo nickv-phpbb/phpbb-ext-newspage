@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
-<?xml-stylesheet type="text/xsl" href="../modx.prosilver.en.xsl"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
 <!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
-<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.0.xsd">
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.0.xsd">
   <header>
     <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
     <title lang="en-gb">NV newspage</title>
@@ -16,35 +16,23 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
     <author-notes lang="de">Ich hoffe ihr kommt mit dem MOD klar. Wenn nicht, könnt ihr auf phpbb.de oder phpbb.com eure Fragen stellen.</author-notes>
     <author-group>
       <author>
-        <realname>(N/A)</realname>
+        <realname>Joas Schilling</realname>
         <email>nickvergessen@gmx.de</email>
         <username>nickvergessen</username>
-        <homepage>http://mods.flying-bits.org/</homepage>
+        <homepage>http://www.flying-bits.org</homepage>
         <contributions />
       </author>
     </author-group>
-    <mod-version>
-      <major>0</major>
-      <minor>0</minor>
-      <revision>2</revision>
-    </mod-version>
+    <mod-version>0.0.2</mod-version>
     <installation>
       <level>easy</level>
       <time>300</time>
-      <target-version>
-        <target-primary>3.0.RC7</target-primary>
-        <target-major allow="exact">3</target-major>
-        <target-minor allow="exact">0</target-minor>
-      </target-version>
+      <target-version>3.0.RC7</target-version>
     </installation>
     <history>
       <entry>
         <date>2007-10-16</date>
-        <rev-version>
-          <major>0</major>
-          <minor>0</minor>
-          <revision>2</revision>
-        </rev-version>
+        <rev-version>0.0.2</rev-version>
         <changelog lang="en-GB">
           <change>cut down news-message</change>
           <change>hide profile info</change>
@@ -60,11 +48,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
       </entry>
       <entry>
         <date>2007-09-09</date>
-        <rev-version>
-          <major>0</major>
-          <minor>0</minor>
-          <revision>1</revision>
-        </rev-version>
+        <rev-version>0.0.1</rev-version>
         <changelog lang="en-GB">
           <change>first version</change>
         </changelog>

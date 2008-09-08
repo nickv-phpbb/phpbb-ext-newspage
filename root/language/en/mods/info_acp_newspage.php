@@ -18,6 +18,7 @@ $lang = array_merge($lang, array(
 	'NEWS_CONFIG'				=> 'Configuration',
 
 	'NEWS'						=> 'News',
+	'NEWS_ARCHIVE'				=> 'Archive',
 	'NEWS_NONE'					=> 'no News',
 	'NEWS_GO_TO_TOPIC'			=> 'Link to topic',
 	'NEWS_READ_FULL'			=> 'Read full news',

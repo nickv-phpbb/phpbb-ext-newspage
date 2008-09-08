@@ -1,0 +1,27 @@
+.icon-news						{ background-image: url("{T_THEME_PATH}/images/icon_news.gif"); }
+
+a.news-archive		{ background-image: url("{T_THEME_PATH}/images/arrow_right.gif") }
+a.news-archive:hover		{ background-position: 6px 60% }
+div.archive {
+	background: #EBEBEB;
+}
+div.archive_block {
+	border-bottom: 1px solid #CCCCCC;
+	font-weight: bold;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+div.archive_row {
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #FFFFFF;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+div.archive_row-last {
+	border-top: 1px solid #FFFFFF;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}

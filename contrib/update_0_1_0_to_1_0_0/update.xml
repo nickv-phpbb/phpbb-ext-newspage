@@ -6,14 +6,14 @@
     <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
     <title lang="en-gb">NV newspage</title>
     <title lang="de">NV newspage</title>
-    <description lang="en-gb">Adds a extra-page to the board where a switchable number of news are displayed.
-The text can be shorten to a certain number of chars.
-Also the Icons can be switched of (post icons, user icons)</description>
     <description lang="de">Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
 Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
 Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.</description>
-    <author-notes lang="en-gb">i hope you get it installed, otherwise you can ask for help on phpbb.de and phpbb.com</author-notes>
+    <description lang="en-gb">Adds a extra-page to the board where a switchable number of news are displayed.
+The text can be shorten to a certain number of chars.
+Also the Icons can be switched of (post icons, user icons)</description>
     <author-notes lang="de">Ich hoffe ihr kommt mit dem MOD klar. Wenn nicht, könnt ihr auf phpbb.de oder phpbb.com eure Fragen stellen.</author-notes>
+    <author-notes lang="en-gb">i hope you get it installed, otherwise you can ask for help on phpbb.de and phpbb.com</author-notes>
     <author-group>
       <author>
         <realname>Joas Schilling</realname>
@@ -34,47 +34,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
       <link type="language" lang="en-gb" href="contrib/de.xml">Manual for German Language-set</link>
       <link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
       <link type="template" lang="en-gb" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-      <link type="parent" lang="de" href="contrib/update_0_1_0_to_1_0_0/update.xml">Anleitung für das Update von 0.1.0 zu 1.0.0</link>
-      <link type="parent" lang="en-gb" href="contrib/update_0_1_0_to_1_0_0/update.xml">Manual for the update 0.1.0 to 1.0.0</link>
     </link-group>
-    <history>
-      <entry>
-        <date>2007-12-18</date>
-        <rev-version>0.1.0</rev-version>
-        <changelog lang="en-GB">
-          <change>validated to phpBB 3.0.0</change>
-        </changelog>
-        <changelog lang="de">
-          <change>phpBB 3.0.0</change>
-        </changelog>
-      </entry>
-      <entry>
-        <date>2007-10-16</date>
-        <rev-version>0.0.2</rev-version>
-        <changelog lang="en-GB">
-          <change>cut down news-message</change>
-          <change>hide profile info</change>
-          <change>hide post buttons</change>
-          <change>subsilver2 included</change>
-        </changelog>
-        <changelog lang="de">
-          <change>News-Nachricht kürzen</change>
-          <change>Profil-Info verstecken</change>
-          <change>Post-Buttons verstecken</change>
-          <change>subsilver2 hinzugefügt</change>
-        </changelog>
-      </entry>
-      <entry>
-        <date>2007-09-09</date>
-        <rev-version>0.0.1</rev-version>
-        <changelog lang="en-GB">
-          <change>first version</change>
-        </changelog>
-        <changelog lang="de">
-          <change>erste Version</change>
-        </changelog>
-      </entry>
-    </history>
     <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
   </header>
   <action-group>
@@ -91,11 +51,12 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
     </copy>
     <open src="viewonline.php">
       <edit>
-        <find><![CDATA[		case 'report':
-			$location = $user->lang['REPORTING_POST'];
-			$location_url = append_sid("{$phpbb_root_path}index.$phpEx");
+        <find><![CDATA[		case 'newspage':
+			$user->add_lang('mods/lang_news');
+			$location = $user->lang['NEWS'];
+			$location_url = append_sid("{$phpbb_root_path}newspage.$phpEx");
 		break;]]></find>
-        <action type="after-add"><![CDATA[		case ((defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage'):
+        <action type="replace-with"><![CDATA[		case ((defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage'):
 			$user->add_lang('mods/info_acp_newspage');
 			$location = $user->lang['NEWS'];
 			$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
@@ -111,17 +72,10 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
     </open>
     <open src="includes/functions.php">
       <edit>
-        <find><![CDATA[// The following assigns all _common_ variables that may be used at any point in a template.]]></find>
-        <action type="before-add"><![CDATA[$user->add_lang('mods/info_acp_newspage');
-	$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';]]></action>
-        <find><![CDATA['U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),]]></find>
-        <action type="before-add"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
-      </edit>
-    </open>
-    <open src="styles/prosilver/template/overall_header.html">
-      <edit>
-        <find><![CDATA[<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
-        <action type="before-add"><![CDATA[<li class="icon-news"><a href="{U_NEWS}" title="{L_NEWS}">{L_NEWS}</a></li>]]></action>
+        <find><![CDATA[$user->add_lang('mods/info_acp_newspage');]]></find>
+        <action type="after-add"><![CDATA[$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';]]></action>
+        <find><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}newspage.$phpEx"),]]></find>
+        <action type="replace-with"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
       </edit>
     </open>
     <open src="styles/prosilver/theme/bidi.css">
@@ -133,28 +87,15 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
         </inline-edit>
         </edit>
     </open>
-    <open src="styles/prosilver/theme/buttons.css">
-      <edit>
-        <find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search {]]></find>
-        <inline-edit>
-            <inline-find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search]]></inline-find>
-            <inline-action type="after-add"><![CDATA[, .icon-news]]></inline-action>
-        </inline-edit>
-        </edit>
-    </open>
     <open src="style/prosilver/theme/stylesheet.css">
       <edit>
         <find><![CDATA[@import url("colours.css");]]></find>
         <action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
       </edit>
     </open>
-    <diy-instructions lang="en-gb">If you want me to add your language file to the download, just leave me a pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
-
-Browse to install_news/install.php and run the installer</diy-instructions>
-    <diy-instructions lang="de">Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
-
-install_news/install.php aufrufen und ausführen</diy-instructions>
+    <diy-instructions lang="de">Bitte v0.0.1 deinstallieren und die neue Version installieren.
+Einzig beim SQL dürft ihr sparen, führt einfach den SQL Code von oben aus.</diy-instructions>
+    <diy-instructions lang="en-gb">Please uninstall v0.0.1 and install the new version.
+Your only advantage is on the SQL, just do the SQL from above.</diy-instructions>
   </action-group>
 </mod>
