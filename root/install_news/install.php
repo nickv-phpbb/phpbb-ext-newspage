@@ -20,7 +20,7 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup();
 $user->add_lang('mods/info_acp_newspage');
-$new_mod_version = '0.1.0';
+$new_mod_version = '1.0.0';
 $page_title = 'NV newspage v' . $new_mod_version;
 
 $mode = request_var('mode', 'else', true);
