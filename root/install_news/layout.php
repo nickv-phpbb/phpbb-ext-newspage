@@ -3,7 +3,7 @@
 /**
 *
 * @package - NV newspage
-* @version $Id: layout.php 63 2007-12-18 14:19:49Z nickvergessen $
+* @version $Id$
 * @copyright (c) nickvergessen ( http://mods.flying-bits.org/ )
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *

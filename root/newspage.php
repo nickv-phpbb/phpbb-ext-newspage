@@ -2,7 +2,7 @@
 /** 
 *
 * @package - NV newspage
-* @version $Id: newspage.php 67 2007-12-19 18:16:32Z nickvergessen $
+* @version $Id$
 * @copyright (c) nickvergessen ( http://www.flying-bits.org/ )
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *

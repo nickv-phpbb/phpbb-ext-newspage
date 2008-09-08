@@ -74,6 +74,8 @@ Also the Icons can be switched of (post icons, user icons)</description>
       <edit>
         <find><![CDATA[$user->add_lang('mods/info_acp_newspage');]]></find>
         <action type="after-add"><![CDATA[$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';]]></action>
+      </edit>
+      <edit>
         <find><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}newspage.$phpEx"),]]></find>
         <action type="replace-with"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
       </edit>

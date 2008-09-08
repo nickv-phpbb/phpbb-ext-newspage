@@ -32,10 +32,6 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
     <link-group>
       <link type="parent" lang="de" href="../update_0_1_0_to_1_0_0/update.xml">Update von 0.1.0 auf 1.0.0</link>
       <link type="parent" lang="en-gb" href="../update_0_1_0_to_1_0_0/update.xml">Update from 0.1.0 to 1.0.0</link>
-      <link type="language" lang="de" href="xml/de.xml">Anleitung für das deutsche Sprachpaket</link>
-      <link type="language" lang="en-gb" href="xml/de.xml">Manual for German Language-set</link>
-      <link type="template" lang="de" href="xml/subsilver2.xml">Anleitung für das Style subsilver2</link>
-      <link type="template" lang="en-gb" href="xml/subsilver2.xml">Manual for subsilver2 Style</link>
     </link-group>
     <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
   </header>
@@ -68,6 +64,8 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
       <edit>
         <find><![CDATA[$user->add_lang('mods/lang_news');]]></find>
         <action type="replace-with"><![CDATA[$user->add_lang('mods/info_acp_newspage');]]></action>
+      </edit>
+      <edit>
         <find><![CDATA[		'L_NEWS'				=> $user->lang['NEWS'],]]></find>
         <action type="replace-with"><![CDATA[]]></action>
       </edit>

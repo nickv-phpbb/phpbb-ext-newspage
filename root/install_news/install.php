@@ -3,7 +3,7 @@
 /**
 *
 * @package - NV newspage
-* @version $Id: install.php 63 2007-12-18 14:19:49Z nickvergessen $
+* @version $Id$
 * @copyright (c) nickvergessen ( http://mods.flying-bits.org/ )
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
@@ -20,7 +20,7 @@ $user->session_begin();
 $auth->acl($user->data);
 $user->setup();
 $user->add_lang('mods/info_acp_newspage');
-$new_mod_version = '1.0.0';
+$new_mod_version = '0.1.0';
 $page_title = 'NV newspage v' . $new_mod_version;
 
 $mode = request_var('mode', 'else', true);
@@ -92,7 +92,7 @@ switch ($mode)
 	case 'update002':
 	case 'update010':
 		$update = request_var('update', 0);
-		$version = request_var('v', '0', true);
+		$version = request_var('v', '0.0.0', true);
 		$updated = false;
 		if ($update == 1)
 		{
