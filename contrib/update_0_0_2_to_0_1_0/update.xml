@@ -42,8 +42,8 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
       <file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
       <file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
       <file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
-      <file from="root/style/prosilver/template/newspage_body.html" to="style/prosilver/template/newspage_body.html" />
-      <file from="root/style/prosilver/theme/images/icon_news.gif" to="style/prosilver/theme/images/icon_news.gif" />
+      <file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
+      <file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
       <file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
     </copy>
     <open src="viewonline.php">

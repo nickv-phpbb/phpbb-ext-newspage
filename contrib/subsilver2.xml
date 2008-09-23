@@ -30,7 +30,7 @@
   </header>
   <action-group>
     <copy>
-      <file from="root/style/subsilver2/template/newspage_body.html" to="style/subsilver2/template/newspage_body.html" />
+      <file from="root/styles/subsilver2/template/newspage_body.html" to="styles/subsilver2/template/newspage_body.html" />
     </copy>
     <open src="styles/subsilver2/template/overall_header.html">
       <edit>
