@@ -248,7 +248,7 @@ while ($row = $db->sql_fetchrow($result))
 			{
 				$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
 			}
-			$l_edited_by = sprintf($l_edit_time_total, $display_username, $user->format_date($row['post_edit_time']), $row['post_edit_count']);
+			$l_edited_by = sprintf($l_edit_time_total, $display_username, $user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
 		}
 		else
 		{
