@@ -1,162 +1,175 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
 <!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
-<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.0.xsd">
-  <header>
-    <license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
-    <title lang="en-gb">NV newspage</title>
-    <title lang="de">NV newspage</title>
-    <description lang="en-gb">Adds a extra-page to the board where a switchable number of news are displayed.
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.2.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+
+		<title lang="en">NV newspage</title>
+		<title lang="de">NV newspage</title>
+
+		<description lang="en">Adds a extra-page to the board where a switchable number of news are displayed.
 The text can be shorten to a certain number of chars.
 Also the Icons can be switched of (post icons, user icons)</description>
-    <description lang="de">Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
+		<description lang="de">Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
 Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
 Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.</description>
-    <author-notes lang="en-gb">i hope you get it installed, otherwise you can ask for help on phpbb.de and phpbb.com</author-notes>
-    <author-notes lang="de">Ich hoffe ihr kommt mit dem MOD klar. Wenn nicht, könnt ihr auf phpbb.de oder phpbb.com eure Fragen stellen.</author-notes>
-    <author-group>
-      <author>
-        <realname>Joas Schilling</realname>
-        <email>nickvergessen@gmx.de</email>
-        <username>nickvergessen</username>
-        <homepage>http://www.flying-bits.org</homepage>
-        <contributions />
-      </author>
-    </author-group>
-    <mod-version>1.0.0</mod-version>
-    <installation>
-      <level>easy</level>
-      <time>300</time>
-      <target-version>3.0.2</target-version>
-    </installation>
-    <link-group>
-      <link type="language" lang="de" href="contrib/de.xml">Anleitung für das deutsche Sprachpaket</link>
-      <link type="language" lang="en-gb" href="contrib/de.xml">Manual for German Language-set</link>
-      <link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
-      <link type="template" lang="en-gb" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-      <link type="parent" lang="de" href="contrib/update_0_1_0_to_1_0_0/update.xml">Anleitung für das Update von 0.1.0 zu 1.0.0</link>
-      <link type="parent" lang="en-gb" href="contrib/update_0_1_0_to_1_0_0/update.xml">Manual for the update 0.1.0 to 1.0.0</link>
-    </link-group>
-    <history>
-      <entry>
-        <date>2007-12-18</date>
-        <rev-version>0.1.0</rev-version>
-        <changelog lang="en-GB">
-          <change>validated to phpBB 3.0.0</change>
-        </changelog>
-        <changelog lang="de">
-          <change>phpBB 3.0.0</change>
-        </changelog>
-      </entry>
-      <entry>
-        <date>2007-10-16</date>
-        <rev-version>0.0.2</rev-version>
-        <changelog lang="en-GB">
-          <change>cut down news-message</change>
-          <change>hide profile info</change>
-          <change>hide post buttons</change>
-          <change>subsilver2 included</change>
-        </changelog>
-        <changelog lang="de">
-          <change>News-Nachricht kürzen</change>
-          <change>Profil-Info verstecken</change>
-          <change>Post-Buttons verstecken</change>
-          <change>subsilver2 hinzugefügt</change>
-        </changelog>
-      </entry>
-      <entry>
-        <date>2007-09-09</date>
-        <rev-version>0.0.1</rev-version>
-        <changelog lang="en-GB">
-          <change>first version</change>
-        </changelog>
-        <changelog lang="de">
-          <change>erste Version</change>
-        </changelog>
-      </entry>
-    </history>
-    <meta name="generator" content="Phpbb.ModTeam.Tools (c#)" />
-  </header>
-  <action-group>
-    <copy>
-      <file from="root/install_news/*.*" to="install_news/*.*" />
-      <file from="root/newspage.php" to="newspage.php" />
-      <file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
-      <file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
-      <file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
-      <file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
-      <file from="root/styles/prosilver/theme/nv_newspage.css" to="styles/prosilver/theme/nv_newspage.css" />
-      <file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
-      <file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
-    </copy>
-    <open src="viewonline.php">
-      <edit>
-        <find><![CDATA[		case 'report':
+
+		<author-group>
+			<author>
+				<realname>Joas Schilling</realname>
+				<email>nickvergessen@gmx.de</email>
+				<username>nickvergessen</username>
+				<homepage>http://www.flying-bits.org/</homepage>
+			</author>
+		</author-group>
+
+		<mod-version>1.0.1</mod-version>
+
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.5</target-version>
+		</installation>
+
+		<link-group>
+			<link type="language" lang="de" href="contrib/de.xml">Anleitung für das deutsche Sprachpaket</link>
+			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
+			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
+			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
+			<link type="parent" lang="de" href="contrib/update_1_0_0_to_1_0_1/update.xml">Anleitung für das Update von 1.0.0 zu 1.0.1</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_0_to_1_0_1/update.xml">Manual for the update 1.0.0 to 1.0.1</link>
+		</link-group>
+
+		<history>
+			<entry>
+				<date>2009-07-02</date>
+				<rev-version>1.0.1</rev-version>
+				<changelog lang="en">
+					<change>View pagination in archive</change>
+					<change>View number of archive-entries</change>
+					<change>View number of archive-entries</change>
+				</changelog>
+			</entry>
+
+			<entry>
+				<date>2007-12-18</date>
+				<rev-version>0.1.0</rev-version>
+				<changelog lang="en">
+					<change>validated to phpBB 3.0.0</change>
+				</changelog>
+			</entry>
+
+			<entry>
+				<date>2007-10-16</date>
+				<rev-version>0.0.2</rev-version>
+				<changelog lang="en">
+					<change>cut down news-message</change>
+					<change>hide profile info</change>
+					<change>hide post buttons</change>
+					<change>subsilver2 included</change>
+				</changelog>
+			</entry>
+
+			<entry>
+				<date>2007-09-09</date>
+				<rev-version>0.0.1</rev-version>
+				<changelog lang="en">
+					<change>first version</change>
+				</changelog>
+			</entry>
+		</history>
+	</header>
+
+	<action-group>
+		<copy>
+			<file from="root/newspage.php" to="newspage.php" />
+			<file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
+			<file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
+			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
+			<file from="root/install/*.*" to="install/*.*" />
+			<file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
+			<file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
+			<file from="root/styles/prosilver/theme/nv_newspage.css" to="styles/prosilver/theme/nv_newspage.css" />
+			<file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
+			<file from="root/umil/*.*" to="umil/*.*" />
+		</copy>
+
+		<open src="viewonline.php">
+			<edit>
+				<find><![CDATA[		case 'report':
 			$location = $user->lang['REPORTING_POST'];
 			$location_url = append_sid("{$phpbb_root_path}index.$phpEx");
 		break;]]></find>
-        <action type="after-add"><![CDATA[		case ((defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage'):
+				<action type="after-add"><![CDATA[		case ((defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage'):
 			$user->add_lang('mods/info_acp_newspage');
 			$location = $user->lang['NEWS'];
 			$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
 			$location_url = append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx");
 		break;]]></action>
-      </edit>
-    </open>
-    <open src="includes/constants.php">
-      <edit>
-        <find><![CDATA[// Additional constants]]></find>
-        <action type="after-add"><![CDATA[define('NEWSPAGE_FILE', 'newspage');]]></action>
-      </edit>
-    </open>
-    <open src="includes/functions.php">
-      <edit>
-        <find><![CDATA[// The following assigns all _common_ variables that may be used at any point in a template.]]></find>
-        <action type="before-add"><![CDATA[$user->add_lang('mods/info_acp_newspage');
+			</edit>
+		</open>
+
+		<open src="includes/constants.php">
+			<edit>
+				<find><![CDATA[// Additional constants]]></find>
+				<action type="after-add"><![CDATA[define('NEWSPAGE_FILE', 'newspage');]]></action>
+			</edit>
+		</open>
+
+		<open src="includes/functions.php">
+			<edit>
+				<find><![CDATA[// The following assigns all _common_ variables that may be used at any point in a template.]]></find>
+				<action type="before-add"><![CDATA[$user->add_lang('mods/info_acp_newspage');
 	$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';]]></action>
-      </edit>
-      <edit>
-        <find><![CDATA['U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),]]></find>
-        <action type="before-add"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
-      </edit>
-    </open>
-    <open src="styles/prosilver/template/overall_header.html">
-      <edit>
-        <find><![CDATA[<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
-        <action type="before-add"><![CDATA[<li class="icon-news"><a href="{U_NEWS}" title="{L_NEWS}">{L_NEWS}</a></li>]]></action>
-      </edit>
-    </open>
-    <open src="styles/prosilver/theme/bidi.css">
-      <edit>
-        <find><![CDATA[.rtl .icon-bookmark, .rtl .icon-bump, .rtl .icon-subscribe, .rtl .icon-unsubscribe, .rtl .icon-pages, .rtl .icon-search {]]></find>
-        <inline-edit>
-            <inline-find><![CDATA[, .rtl .icon-search]]></inline-find>
-            <inline-action type="after-add"><![CDATA[, .rtl .icon-news]]></inline-action>
-        </inline-edit>
-        </edit>
-    </open>
-    <open src="styles/prosilver/theme/buttons.css">
-      <edit>
-        <find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search {]]></find>
-        <inline-edit>
-            <inline-find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search]]></inline-find>
-            <inline-action type="after-add"><![CDATA[, .icon-news]]></inline-action>
-        </inline-edit>
-        </edit>
-    </open>
-    <open src="style/prosilver/theme/stylesheet.css">
-      <edit>
-        <find><![CDATA[@import url("colours.css");]]></find>
-        <action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
-      </edit>
-    </open>
-    <diy-instructions lang="en-gb">If you want me to add your language file to the download, just leave me a pm:
+			</edit>
+			<edit>
+				<find><![CDATA['U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),]]></find>
+				<action type="before-add"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
+			</edit>
+		</open>
+
+		<open src="styles/prosilver/template/overall_header.html">
+			<edit>
+				<find><![CDATA[<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
+				<action type="before-add"><![CDATA[<li class="icon-news"><a href="{U_NEWS}" title="{L_NEWS}">{L_NEWS}</a></li>]]></action>
+			</edit>
+		</open>
+
+		<open src="styles/prosilver/theme/bidi.css">
+			<edit>
+				<find><![CDATA[.rtl .icon-bookmark, .rtl .icon-bump, .rtl .icon-subscribe, .rtl .icon-unsubscribe, .rtl .icon-pages, .rtl .icon-search {]]></find>
+				<inline-edit>
+						<inline-find><![CDATA[, .rtl .icon-search]]></inline-find>
+						<inline-action type="after-add"><![CDATA[, .rtl .icon-news]]></inline-action>
+				</inline-edit>
+				</edit>
+		</open>
+
+		<open src="styles/prosilver/theme/buttons.css">
+			<edit>
+				<find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search {]]></find>
+				<inline-edit>
+						<inline-find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search]]></inline-find>
+						<inline-action type="after-add"><![CDATA[, .icon-news]]></inline-action>
+				</inline-edit>
+				</edit>
+		</open>
+
+		<open src="style/prosilver/theme/stylesheet.css">
+			<edit>
+				<find><![CDATA[@import url("colours.css");]]></find>
+				<action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
+			</edit>
+		</open>
+
+		<diy-instructions lang="en">If you want me to add your language file to the download, just leave me a pm:
 http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
 
 Browse to install_news/install.php and run the installer</diy-instructions>
-    <diy-instructions lang="de">Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
+		<diy-instructions lang="de">Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
 http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
 
 install_news/install.php aufrufen und ausführen</diy-instructions>
-  </action-group>
+	</action-group>
 </mod>
