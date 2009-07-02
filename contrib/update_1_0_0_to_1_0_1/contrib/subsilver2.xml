@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.2.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+
+		<title lang="en">NV newspage</title>
+
+		<description lang="en">see normal install-/update-file</description>
+
+		<author-group>
+			<author>
+				<realname>Joas Schilling</realname>
+				<email>nickvergessen@gmx.de</email>
+				<username>nickvergessen</username>
+				<homepage>http://www.flying-bits.org</homepage>
+				<contributions />
+			</author>
+		</author-group>
+
+		<mod-version>1.0.1</mod-version>
+
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.5</target-version>
+		</installation>
+
+		<link-group>
+			<link type="parent" lang="de" href="../update.xml">Anleitung für das Update</link>
+			<link type="parent" lang="en" href="../update.xml">Manual for the update</link>
+		</link-group>
+	</header>
+
+	<action-group>
+		<copy>
+			<file from="root/styles/subsilver2/template/newspage_body.html" to="styles/subsilver2/template/newspage_body.html" />
+		</copy>
+
+		<open src="styles/subsilver2/template/overall_header.html">
+			<edit>
+				<find><![CDATA[<a href="{U_FAQ}"><img src="{T_THEME_PATH}/images/icon_mini_faq.gif" width="12" height="13" alt="*" /> {L_FAQ}</a>]]></find>
+				<action type="after-add"><![CDATA[<a href="{U_NEWS}">&nbsp; &nbsp;<img src="{T_THEME_PATH}/images/icon_mini_faq.gif" width="12" height="13" alt="*" /> {L_NEWS}</a>]]></action>
+			</edit>
+		</open>
+	</action-group>
+</mod>
