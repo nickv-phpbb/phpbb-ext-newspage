@@ -42,6 +42,14 @@ $lang = array_merge($lang, array(
 	'NEWS_SAVED'				=> 'Einstellung gespeichert.',
 	'NEWS_USER_INFO'			=> 'Benutzerinformation anzeigen',
 	'NEWS_USER_INFO_EXPLAIN'	=> '(Beiträge, Wohnort, ...)',
+
+	'NEWSPAGE'					=> 'NV Newspage',
+	'INSTALL_NEWSPAGE'			=> 'Newspage installieren',
+	'INSTALL_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage installieren möchtest?',
+	'UPDATE_NEWSPAGE'			=> 'Newspage aktualisieren',
+	'UPDATE_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage aktualisieren möchtest?',
+	'UNINSTALL_NEWSPAGE'		=> 'Newspage deinstallieren',
+	'UNINSTALL_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage deinstallieren möchtest?',
 ));
 
 ?>

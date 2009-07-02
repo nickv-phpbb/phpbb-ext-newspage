@@ -42,6 +42,14 @@ $lang = array_merge($lang, array(
 	'NEWS_SAVED'				=> 'saved setup',
 	'NEWS_USER_INFO'			=> 'Show user info',
 	'NEWS_USER_INFO_EXPLAIN'	=> '(posts, location, ...)',
+
+	'NEWSPAGE'					=> 'NV Newspage',
+	'INSTALL_NEWSPAGE'			=> 'Install Newspage',
+	'INSTALL_NEWSPAGE_CONFIRM'	=> 'Are you sure you want to install the Newspage?',
+	'UPDATE_NEWSPAGE'			=> 'Update Newspage',
+	'UPDATE_NEWSPAGE_CONFIRM'	=> 'Are you sure you want to update the Newspage?',
+	'UNINSTALL_NEWSPAGE'		=> 'Uninstall Newspage',
+	'UNINSTALL_NEWSPAGE_CONFIRM'	=> 'Are you sure you want to uninstall the Newspage?',
 ));
 
 ?>
