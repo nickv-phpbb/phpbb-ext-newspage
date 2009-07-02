@@ -17,20 +17,41 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-$user->add_lang('viewtopic');
-$user->add_lang('mods/info_acp_newspage');
 
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
-$user->setup();
+$user->setup(array('viewtopic', 'mods/info_acp_newspage'));
 $newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
 
 // Get some variables
 $forums = ($config['news_forums']) ? $config['news_forums'] : 0;
+$news_forums = explode(',', $forums);
 $only_news = request_var('news', 0);
-$archiv_start = request_var('start', 0);
-$archiv_end = request_var('end', 0);
+$archive_var = request_var('archive', '');
+$start = request_var('start', 0);
+
+$archive_start = $archive_end = 0;
+$sql_single_news = $sql_archive_news = $archive_name = '';
+$attachments = $attach_list = array();
+$has_attachments = false;
+
+if ($archive_var)
+{
+	$archive = explode('_', $archive_var);
+	$archive_start = gmmktime(0, 0, 0, (int) $archive[0], 1, (int) $archive[1]);
+	$archive_start = $archive_start - $user->timezone;
+	$archive_end = gmmktime(0, 0, 0, (int) $archive[0] + 1, 1, (int) $archive[1]);
+	$archive_end = $archive_end - $user->timezone;
+
+	$archive_name = sprintf($user->lang['NEWS_ARCHIVE_OF'], $user->format_date($archive_start, 'F Y'));
+	$sql_archive_news = " AND topic_time >= $archive_start AND topic_time <= $archive_end";
+}
+
+if ($only_news)
+{
+	$sql_single_news = 'AND topic_id = ' . $only_news;
+}
 
 // Do not include those forums the user is not having read access to...
 $news_title = '';
@@ -44,57 +65,122 @@ foreach ($forum_read_ary as $forum_id => $allowed)
 	}
 }
 $forum_ary = array_unique($forum_ary);
+
 // Grab ranks and icons
 $ranks = $cache->obtain_ranks();
 $icons = $cache->obtain_icons();
 
 /**
-* build news-list
+* Select topic_ids for the reqested news
 */
-$sql_array['SELECT'] = 't.*, f.*, p.*, s.*, u.*, z.*';
-$sql_array['FROM'] = array(TOPICS_TABLE => 't');
-$sql_array['LEFT_JOIN'] = array();
-
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(FORUMS_TABLE => 'f'),
-	'ON'	=> 't.forum_id = f.forum_id'
-);
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(POSTS_TABLE => 'p'),
-	'ON'	=> 'p.post_id = t.topic_first_post_id'
-);
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(SESSIONS_TABLE => 's'),
-	'ON'	=> 'p.poster_id = s.session_user_id'
-);
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(USERS_TABLE => 'u'),
-	'ON'	=> 'u.user_id = p.poster_id'
-);
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(ATTACHMENTS_TABLE => 'a'),
-	'ON'	=> 'p.post_id = a.post_msg_id'
-);
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(ZEBRA_TABLE => 'z'),
-	'ON'	=> 'z.user_id = ' . $user->data['user_id'] . ' AND z.zebra_id = p.poster_id'
-);
-
-$sql_array['GROUP_BY'] = 't.topic_id, s.session_user_id';
-$sql_array['ORDER_BY'] = 'p.post_time DESC';
-$sql_array['WHERE'] = $db->sql_in_set('t.forum_id', $forum_ary) . " AND t.forum_id IN ($forums)";
-if ($only_news)
+$sql = 'SELECT forum_id, topic_id, topic_type, topic_poster, topic_first_post_id
+	FROM ' . TOPICS_TABLE . '
+	WHERE ' . $db->sql_in_set('forum_id', $forum_ary) . '
+		AND ' . $db->sql_in_set('forum_id', $news_forums) . "
+		$sql_single_news
+		$sql_archive_news
+	ORDER BY topic_time " . (($archive_start) ? 'ASC' : 'DESC');
+if ($only_news) 
 {
-	$sql_array['WHERE'] .= " AND t.topic_id = $only_news";
+	$result = $db->sql_query($sql);
 }
-if ($archiv_start || $archiv_end)
+else
 {
-	$sql_array['WHERE'] .= " AND p.post_time >= $archiv_start";
-	$sql_array['WHERE'] .= " AND p.post_time <= $archiv_end";
+	$result = $db->sql_query_limit($sql, $config['news_number']);
 }
+
+$forums = $ga_topic_ids = $topic_ids = $post_ids = array();
+while ($row = $db->sql_fetchrow($result))
+{
+	$post_ids[] = $row['topic_first_post_id'];
+	$topic_ids[] = $row['topic_id'];
+	$topic_posters[] = $row['topic_poster'];
+	if ($row['topic_type'] == POST_GLOBAL)
+	{
+		$ga_topic_ids[] = $row['topic_id'];
+	}
+	else
+	{
+		$forums[$row['forum_id']][] = $row['topic_id'];
+	}
+}
+$db->sql_freeresult($result);
+
+// Get topic tracking
+$topic_ids_ary = $topic_ids;
+foreach ($forums as $forum_id => $topic_ids)
+{
+	$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_ids, $ga_topic_ids);
+}
+$topic_ids = $topic_ids_ary;
+
+// Get user online-status
+$user_online_tracking_info = array();
+$sql = 'SELECT session_user_id
+	FROM ' . SESSIONS_TABLE . '
+	WHERE ' . $db->sql_in_set('session_user_id', $topic_posters) . '
+		AND session_user_id <> ' . ANONYMOUS . '
+		AND session_viewonline = 1';
+$result = $db->sql_query($sql);
+
+while ($row = $db->sql_fetchrow($result))
+{
+	$user_online_tracking_info[] = $row['session_user_id'];
+}
+$db->sql_freeresult($result);
+
+// Get attachments
+if (sizeof($post_ids))
+{
+	if ($auth->acl_get('u_download'))
+	{
+		$sql = 'SELECT *
+			FROM ' . ATTACHMENTS_TABLE . '
+			WHERE ' . $db->sql_in_set('post_msg_id', $post_ids) . '
+				AND in_message = 0
+			ORDER BY filetime DESC, post_msg_id ASC';
+		$result = $db->sql_query($sql);
+
+		while ($row = $db->sql_fetchrow($result))
+		{
+			$attachments[$row['post_msg_id']][] = $row;
+		}
+		$db->sql_freeresult($result);
+	}
+	else
+	{
+		$display_notice = true;//@todo
+	}
+}
+
+$sql_array = array(
+	'SELECT'	=> 't.*, i.icons_url, i.icons_width, i.icons_height, p.*, u.*',
+	'FROM'		=> array(TOPICS_TABLE => 't'),
+	'LEFT_JOIN'	=> array(
+		array(
+			'FROM'	=> array(POSTS_TABLE => 'p'),
+			'ON'	=> 'p.post_id = t.topic_first_post_id'
+		),
+		array(
+			'FROM'	=> array(USERS_TABLE => 'u'),
+			'ON'	=> 'u.user_id = p.poster_id'
+		),
+		array(
+			'FROM'	=> array(ICONS_TABLE => 'i'),
+			'ON'	=> 't.icon_id = i.icons_id'
+		),
+		/*array(
+			'FROM'	=> array(ATTACHMENTS_TABLE => 'a'),
+			'ON'	=> 'p.post_id = a.post_msg_id'
+		),*/
+	),
+	'ORDER_BY'	=> 't.topic_time ' . (($archive_start) ? 'ASC' : 'DESC'),
+	'WHERE'		=> $db->sql_in_set('t.topic_id', $topic_ids),
+);
+
 $sql = $db->sql_build_query('SELECT', $sql_array);
+$result = $db->sql_query($sql);
 
-$result = (!$archiv_start) ? $db->sql_query_limit($sql, $config['news_number']) : $db->sql_query($sql);
 while ($row = $db->sql_fetchrow($result))
 {
 	//set some default vars
@@ -102,13 +188,11 @@ while ($row = $db->sql_fetchrow($result))
 	$poster_id = $row['poster_id'];
 	$topic_id = $row['topic_id'];
 	$forum_id = $row['forum_id'];
-	$post_list = $post_edit_list = $attach_list = array();
-	$has_attachments = $display_notice = false;
+	$post_list = $post_edit_list = array();
+	$display_notice = false;
 	$news_title = censor_text($row['post_subject']);
 
-	$hide_post = ($row['foe'] && ($view != 'show' || $post_id != $row['post_id'])) ? true : false;
-	$topic_tracking_info = get_complete_topic_tracking($forum_id, $topic_id);
-	$post_unread = (isset($topic_tracking_info[$row['topic_id']]) && $row['post_time'] > $topic_tracking_info[$row['topic_id']]) ? true : false;
+	$post_unread = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
 
 	//parse message for display
 	$row['post_text'] = ((utf8_strlen($row['post_text']) > $config['news_char_limit'] + 50) && !$only_news) ? (utf8_substr($row['post_text'], 0, $config['news_char_limit']) . '...') : $row['post_text'];
@@ -126,6 +210,12 @@ while ($row = $db->sql_fetchrow($result))
 	}
 	$message = str_replace("\n", '<br />', $message);
 	$message = smiley_text($message);
+
+	if (!empty($attachments[$row['post_id']]))
+	{
+		parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
+	}
+
 	$row['post_text'] = $message;
 
 	// Edit Information
@@ -191,10 +281,10 @@ while ($row = $db->sql_fetchrow($result))
 
 	$template->assign_block_vars('postrow', array(
 		'POST_ID'				=> $post_id,
-		'S_IGNORE_POST'			=> ($hide_post) ? true : false,
-		'L_IGNORE_POST'			=> ($hide_post) ? sprintf($user->lang['POST_BY_FOE'], get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']), '<a href="' . $viewtopic_url . "&amp;p={$row['post_id']}&amp;view=show#p{$row['post_id']}" . '">', '</a>') : '',
-		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : (($row['session_viewonline']) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
-		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : (($row['session_viewonline']) ? true : false),
+		'S_IGNORE_POST'			=> false,
+		'L_IGNORE_POST'			=> '',
+		'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? '' : ((in_array($poster_id, $user_online_tracking_info)) ? $user->img('icon_user_online', 'ONLINE') : $user->img('icon_user_offline', 'OFFLINE')),
+		'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$config['load_onlinetrack']) ? false : ((in_array($poster_id, $user_online_tracking_info)) ? true : false),
 
 		'U_EDIT'				=> (!$user->data['is_registered']) ? '' : ((($user->data['user_id'] == $row['poster_id'] && $auth->acl_get('f_edit', $forum_id) && ($row['post_time'] > time() - ($config['edit_time'] * 60) || !$config['edit_time'])) || $auth->acl_get('m_edit', $forum_id)) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : ''),
 		'U_QUOTE'				=> ($auth->acl_get('f_reply', $forum_id)) ? append_sid("{$phpbb_root_path}posting.$phpEx", "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
@@ -205,9 +295,9 @@ while ($row = $db->sql_fetchrow($result))
 		'U_WARN'				=> ($auth->acl_get('m_warn') && $poster_id != $user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.$phpEx", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $user->session_id) : '',
 		'U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'news=' . $topic_id),
 
-		'POST_ICON_IMG'			=> ($row['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
-		'POST_ICON_IMG_WIDTH'	=> ($row['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
-		'POST_ICON_IMG_HEIGHT'	=> ($row['enable_icons'] && !empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
+		'POST_ICON_IMG'			=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
+		'POST_ICON_IMG_WIDTH'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
+		'POST_ICON_IMG_HEIGHT'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
 		'U_MINI_POST'			=> append_sid("{$phpbb_root_path}viewtopic.$phpEx", 'p=' . $row['post_id']) . (($row['topic_type'] == POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
 		'POST_SUBJECT'			=> censor_text($row['post_subject']),
 		'MINI_POST_IMG'			=> ($post_unread) ? $user->img('icon_post_target_unread', 'NEW_POST') : $user->img('icon_post_target', 'POST'),
@@ -246,48 +336,54 @@ while ($row = $db->sql_fetchrow($result))
 		'U_AIM'					=> $row['user_aim'],
 		'U_JABBER'				=> $row['user_jabber'],
 	));
+
+	// Display not already displayed Attachments for this post, we already parsed them. ;)
+	if (!empty($attachments[$row['post_id']]))
+	{
+		foreach ($attachments[$row['post_id']] as $attachment)
+		{
+			$template->assign_block_vars('postrow.attachment', array(
+				'DISPLAY_ATTACHMENT'	=> $attachment,
+			));
+		}
+	}
 }
 $db->sql_freeresult($result);
 
 /**
-* build archiv-list
+* Build archiv-list
 */
-$sql_array = $archiv_years = $archiv_months = array();
-$sql_array['SELECT'] = 't.*, p.*';
-$sql_array['FROM'] = array(TOPICS_TABLE => 't');
-$sql_array['LEFT_JOIN'] = array();
-
-$sql_array['LEFT_JOIN'][] = array(
-	'FROM'	=> array(POSTS_TABLE => 'p'),
-	'ON'	=> 'p.post_id = t.topic_first_post_id'
-);
-
-$sql_array['ORDER_BY'] = 'p.post_time DESC';
-$sql_array['WHERE'] = $db->sql_in_set('t.forum_id', $forum_ary) . " AND t.forum_id IN ($forums)";
-$sql = $db->sql_build_query('SELECT', $sql_array);
-
+$archiv_years = $archiv_months = $checked_months = array();
+$sql = 'SELECT topic_time
+	FROM ' . TOPICS_TABLE . '
+	WHERE ' . $db->sql_in_set('forum_id', $forum_ary) . '
+		AND ' .  $db->sql_in_set('forum_id', $news_forums) . '
+	ORDER BY topic_time DESC';
 $result = $db->sql_query($sql);
+
 while ($row = $db->sql_fetchrow($result))
 {
-	$archiv_year = $user->format_date($row['post_time'], 'Y');
+	$archiv_month = $user->format_date($row['topic_time'], 'F Y');
+	if (in_array($archiv_month, $checked_months))
+	{
+		$archiv_months[$archiv_year][$archiv_month]['count']++;
+		continue;
+	}
+	$archiv_year = $user->format_date($row['topic_time'], 'Y');
 	if (!in_array($archiv_year, $archiv_years))
 	{
 		$archiv_years[] = $archiv_year;
 	}
-	$archiv_month = $user->format_date($row['post_time'], 'F Y');
-	if (!in_array($archiv_month, $archiv_months))
-	{
-		$archiv_months[] = $archiv_month;
-		$archiv_months[$archiv_year][$archiv_month]['name'] = $archiv_month;
-		$archiv_months[$archiv_year][$archiv_month]['start'] = $row['post_time'];
-		$archiv_months[$archiv_year][$archiv_month]['end'] = $row['post_time'];
-	}
-	else
-	{
-		$archiv_months[$archiv_year][$archiv_month]['start'] = $row['post_time'];
-	}
+	$checked_months[] = $archiv_month;
+	$archiv_months[$archiv_year][$archiv_month] = array(
+		'url'	=> $user->format_date($row['topic_time'], 'm_Y'),
+		'name'	=> $archiv_month,
+		'count'	=> 1,
+	);
 }
 $db->sql_freeresult($result);
+
+$total_news = 0;
 foreach ($archiv_years as $archive_year)
 {
 	$template->assign_block_vars('archive_block', array(
@@ -296,37 +392,74 @@ foreach ($archiv_years as $archive_year)
 	foreach ($archiv_months[$archive_year] as $archive_month)
 	{
 		$template->assign_block_vars('archive_block.archive_row', array(
-			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'start=' . $archive_month['start'] . '&amp;end=' . $archive_month['end']),
+			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'archive=' . $archive_month['url']),
 			'NEWS_MONTH'		=> $archive_month['name'],
+			'NEWS_COUNT'		=> $archive_month['count'],
 		));
+		if (($archive_var == $archive_month['url']) || !$archive_var)
+		{
+			$total_news = $total_news + $archive_month['count'];
+		}
 	}
 }
+
+// Specify some images
+if ($config['news_user_info'])
+{
+	$template->assign_vars(array(
+		'PROFILE_IMG'		=> $user->img('icon_user_profile', 'READ_PROFILE'),
+		'SEARCH_IMG' 		=> $user->img('icon_user_search', 'SEARCH_USER_POSTS'),
+		'PM_IMG' 			=> $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
+		'EMAIL_IMG' 		=> $user->img('icon_contact_email', 'SEND_EMAIL'),
+		'WWW_IMG' 			=> $user->img('icon_contact_www', 'VISIT_WEBSITE'),
+		'ICQ_IMG' 			=> $user->img('icon_contact_icq', 'ICQ'),
+		'AIM_IMG' 			=> $user->img('icon_contact_aim', 'AIM'),
+		'MSN_IMG' 			=> $user->img('icon_contact_msnm', 'MSNM'),
+		'YIM_IMG' 			=> $user->img('icon_contact_yahoo', 'YIM'),
+		'JABBER_IMG'		=> $user->img('icon_contact_jabber', 'JABBER'),
+	));
+}
+if ($config['news_post_buttons'])
+{
+	$template->assign_vars(array(
+		'QUOTE_IMG' 		=> $user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
+		'EDIT_IMG' 			=> $user->img('icon_post_edit', 'EDIT_POST'),
+		'DELETE_IMG' 		=> $user->img('icon_post_delete', 'DELETE_POST'),
+		'INFO_IMG' 			=> $user->img('icon_post_info', 'VIEW_INFO'),
+		'REPORT_IMG'		=> $user->img('icon_post_report', 'REPORT_POST'),
+		'WARN_IMG'			=> $user->img('icon_user_warn', 'WARN_USER'),
+	));
+}
 $template->assign_vars(array(
-	'QUOTE_IMG' 			=> $user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
-	'EDIT_IMG' 				=> $user->img('icon_post_edit', 'EDIT_POST'),
-	'DELETE_IMG' 			=> $user->img('icon_post_delete', 'DELETE_POST'),
-	'INFO_IMG' 				=> $user->img('icon_post_info', 'VIEW_INFO'),
-	'PROFILE_IMG'			=> $user->img('icon_user_profile', 'READ_PROFILE'),
-	'SEARCH_IMG' 			=> $user->img('icon_user_search', 'SEARCH_USER_POSTS'),
-	'PM_IMG' 				=> $user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
-	'EMAIL_IMG' 			=> $user->img('icon_contact_email', 'SEND_EMAIL'),
-	'WWW_IMG' 				=> $user->img('icon_contact_www', 'VISIT_WEBSITE'),
-	'ICQ_IMG' 				=> $user->img('icon_contact_icq', 'ICQ'),
-	'AIM_IMG' 				=> $user->img('icon_contact_aim', 'AIM'),
-	'MSN_IMG' 				=> $user->img('icon_contact_msnm', 'MSNM'),
-	'YIM_IMG' 				=> $user->img('icon_contact_yahoo', 'YIM'),
-	'JABBER_IMG'			=> $user->img('icon_contact_jabber', 'JABBER') ,
-	'REPORT_IMG'			=> $user->img('icon_post_report', 'REPORT_POST'),
 	'REPORTED_IMG'			=> $user->img('icon_topic_reported', 'POST_REPORTED'),
 	'UNAPPROVED_IMG'		=> $user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
-	'WARN_IMG'				=> $user->img('icon_user_warn', 'WARN_USER'),
 	'NEWS_USER_INFO'		=> $config['news_user_info'],
 	'NEWS_POST_BUTTONS'		=> $config['news_post_buttons'],
 	'NEWS_ONLY'				=> $only_news,
 	'NEWS_TITLE'			=> $news_title,
 ));
 
-page_header($user->lang['NEWS']);
+if (!$only_news)
+{
+	if (!$archive_var)
+	{
+		$total_paginated = $config['news_pages'] * $config['news_number'];
+		$total_paginated = min($total_paginated, $total_news);
+	}
+	else
+	{
+		$total_paginated = $total_news;
+	}
+	$pagination = generate_pagination(append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", (($archive_var) ? 'archive=' . $archive_var : '')), $total_paginated, $config['news_number'], $start);
+
+	$template->assign_vars(array(
+		'PAGINATION'		=> $pagination,
+		'PAGE_NUMBER'		=> on_page($total_paginated, $config['news_number'], $start),
+		'TOTAL_NEWS'		=> ($total_news == 1) ? $user->lang['VIEW_TOPIC_POST'] : sprintf($user->lang['VIEW_TOPIC_POSTS'], $total_news),
+	));
+}
+
+page_header($user->lang['NEWS'] . (($archive_name) ? ' - ' . $archive_name : '') . (($only_news && $news_title) ? ' - ' . $news_title : ''));
 
 $template->set_filenames(array(
 	'body' => 'newspage_body.html')

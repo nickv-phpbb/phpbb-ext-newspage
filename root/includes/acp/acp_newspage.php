@@ -33,40 +33,25 @@ class acp_newspage
 			{
 				trigger_error('FORM_INVALID');
 			}
-			$news_char_limit	= request_var('news_char_limit', 500);
-			$news_forums		= request_var('news_forums', '');
-			$news_number		= request_var('news_number', 5);
-			$news_post_buttons	= request_var('news_post_buttons', 0);
-			$news_user_info		= request_var('news_user_info', 0);
-			if($news_char_limit !=$config['news_char_limit'])
-			{
-				set_config('news_char_limit', (($news_char_limit < 1)? 500 : $news_char_limit));
-			}
-			if($news_forums !=$config['news_forums'])
-			{
-				set_config('news_forums', $news_forums);
-			}
-			if($news_number !=$config['news_number'])
-			{
-				set_config('news_number', (($news_number < 1)? 5 : $news_number));
-			}
-			if($news_post_buttons !=$config['news_post_buttons'])
-			{
-				set_config('news_post_buttons', $news_post_buttons);
-			}
-			if($news_user_info !=$config['news_user_info'])
-			{
-				set_config('news_user_info', $news_user_info);
-			}
+
+			set_config('news_char_limit', max(100, request_var('news_char_limit', 0)));
+			set_config('news_forums', implode(',', request_var('news_forums', array(0))));
+			set_config('news_number', max(1, request_var('news_number', 0)));
+			set_config('news_pages', max(1, request_var('news_pages', 0)));
+			set_config('news_post_buttons', request_var('news_post_buttons', 0));
+			set_config('news_user_info', request_var('news_user_info', 0));
+
 			trigger_error($user->lang['NEWS_SAVED'] . adm_back_link($this->u_action));
 		}
+
 		$template->assign_vars(array(
+			'U_ACTION'				=> $this->u_action,
 			'NEWS_CHAR_LIMIT'		=> $config['news_char_limit'],
-			'NEWS_FORUMS'			=> $config['news_forums'],
 			'NEWS_NUMBER'			=> $config['news_number'],
+			'NEWS_PAGES'			=> $config['news_pages'],
 			'NEWS_POST_BUTTONS'		=> $config['news_post_buttons'],
 			'NEWS_USER_INFO'		=> $config['news_user_info'],
-			'U_ACTION'				=> $this->u_action,
+			'S_SELECT_FORUMS'		=> make_forum_select(explode(',', $config['news_forums'])),
 		));
 
 	}

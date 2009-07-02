@@ -1,12 +1,23 @@
 <!-- INCLUDE overall_header.html -->
 <table style="width: 100%;">
 	<tr>
-		<td>
+		<td valign="top">
 <div id="pageheader">
 	<h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 </div>
 <br clear="all" /><br />
 <div id="pagecontent">
+
+	<table width="100%" cellspacing="1">
+	<tr>
+		<!-- IF TOTAL_NEWS -->
+			<td class="nav" valign="middle" nowrap="nowrap">&nbsp;{PAGE_NUMBER}<br /></td>
+			<td class="gensmall" nowrap="nowrap">&nbsp;[ {TOTAL_NEWS} ]&nbsp;</td>
+			<td class="gensmall" width="100%" align="{S_CONTENT_FLOW_END}" nowrap="nowrap"><!-- INCLUDE pagination.html --></td>
+		<!-- ENDIF -->
+	</tr>
+	</table>
+
 <!-- BEGIN postrow -->
 	<table class="tablebg" width="100%" cellspacing="1">
 		<tr>
