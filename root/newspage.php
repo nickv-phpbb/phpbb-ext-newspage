@@ -75,8 +75,8 @@ $icons = $cache->obtain_icons();
 */
 $sql = 'SELECT forum_id, topic_id, topic_type, topic_poster, topic_first_post_id
 	FROM ' . TOPICS_TABLE . '
-	WHERE ' . $db->sql_in_set('forum_id', $forum_ary) . '
-		AND ' . $db->sql_in_set('forum_id', $news_forums) . "
+	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
+		AND ' . $db->sql_in_set('forum_id', $news_forums, false, true) . "
 		$sql_single_news
 		$sql_archive_news
 	ORDER BY topic_time " . (($archive_start) ? 'ASC' : 'DESC');
@@ -86,10 +86,10 @@ if ($only_news)
 }
 else
 {
-	$result = $db->sql_query_limit($sql, $config['news_number']);
+	$result = $db->sql_query_limit($sql, $config['news_number'], $start);
 }
 
-$forums = $ga_topic_ids = $topic_ids = $post_ids = array();
+$forums = $ga_topic_ids = $topic_ids = $post_ids = $topic_posters = array();
 while ($row = $db->sql_fetchrow($result))
 {
 	$post_ids[] = $row['topic_first_post_id'];

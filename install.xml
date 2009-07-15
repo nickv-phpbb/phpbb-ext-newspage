@@ -24,7 +24,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			</author>
 		</author-group>
 
-		<mod-version>1.0.1</mod-version>
+		<mod-version>1.0.2</mod-version>
 
 		<installation>
 			<level>easy</level>
@@ -37,11 +37,19 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
 			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
 			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_0_to_1_0_1/update.xml">Anleitung für das Update von 1.0.0 zu 1.0.1</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_0_to_1_0_1/update.xml">Manual for the update 1.0.0 to 1.0.1</link>
+			<link type="parent" lang="de" href="contrib/update_1_0_1_to_1_0_2/update.xml">Anleitung für das Update von 1.0.1 zu 1.0.2</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_1_to_1_0_2/update.xml">Manual for the update 1.0.1 to 1.0.2</link>
 		</link-group>
 
 		<history>
+			<entry>
+				<date>2009-07-15</date>
+				<rev-version>1.0.2</rev-version>
+				<changelog lang="en">
+					<change>MOD-Validation-Report</change>
+				</changelog>
+			</entry>
+
 			<entry>
 				<date>2009-07-02</date>
 				<rev-version>1.0.1</rev-version>
@@ -157,7 +165,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				</edit>
 		</open>
 
-		<open src="style/prosilver/theme/stylesheet.css">
+		<open src="styles/prosilver/theme/stylesheet.css">
 			<edit>
 				<find><![CDATA[@import url("colours.css");]]></find>
 				<action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
@@ -167,10 +175,10 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 		<diy-instructions lang="en">If you want me to add your language file to the download, just leave me a pm:
 http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
 
-Browse to install_news/install.php and run the installer</diy-instructions>
+Browse to install/ and run the installer</diy-instructions>
 		<diy-instructions lang="de">Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
 http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
 
-install_news/install.php aufrufen und ausführen</diy-instructions>
+install/ aufrufen und ausführen</diy-instructions>
 	</action-group>
 </mod>

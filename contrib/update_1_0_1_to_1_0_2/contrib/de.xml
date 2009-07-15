@@ -28,8 +28,8 @@
 		</installation>
 
 		<link-group>
-			<link type="parent" lang="de" href="../install.xml">Installations-Anleitung</link>
-			<link type="parent" lang="en" href="../install.xml">Installation-Manual</link>
+			<link type="parent" lang="de" href="../update.xml">Anleitung für das Update</link>
+			<link type="parent" lang="en" href="../update.xml">Manual for the update</link>
 		</link-group>
 	</header>
 

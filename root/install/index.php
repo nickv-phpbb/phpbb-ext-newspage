@@ -1,10 +1,10 @@
 <?php
 /**
 *
-* @author Username (Joe Smith) joesmith@example.org
-* @package umil
-* @copyright (c) 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
+* @package - NV newspage
+* @version $Id$
+* @copyright (c) nickvergessen ( http://www.flying-bits.org/ )
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
 *
 */
 
@@ -44,7 +44,7 @@ $versions = array(
 		'module_add' => array(
 			array('acp', 'ACP_CAT_DOT_MODS', 'NEWS'),
 
-			array('acp', 'ACP_CAT_TEST_MOD', array(
+			array('acp', 'NEWS', array(
 					'module_basename'	=> 'newspage',
 					'module_langname'	=> 'NEWS_CONFIG',
 					'module_mode'		=> 'overview',
@@ -60,6 +60,9 @@ $versions = array(
 			array('news_pages', 1),
 		),
 	),
+
+	// Version 1.0.2
+	'1.0.2'	=> array(),
 );
 
 // Include the UMIL Auto file and everything else will be handled automatically.

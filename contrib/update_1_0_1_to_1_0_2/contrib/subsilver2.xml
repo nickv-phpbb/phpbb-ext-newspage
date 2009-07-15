@@ -28,14 +28,14 @@
 		</installation>
 
 		<link-group>
-			<link type="parent" lang="de" href="../install.xml">Installations-Anleitung</link>
-			<link type="parent" lang="en" href="../install.xml">Installation-Manual</link>
+			<link type="parent" lang="de" href="../update.xml">Anleitung für das Update</link>
+			<link type="parent" lang="en" href="../update.xml">Manual for the update</link>
 		</link-group>
 	</header>
 
 	<action-group>
 		<copy>
-			<file from="root/language/de/mods/info_acp_newspage.php" to="language/de/mods/info_acp_newspage.php" />
+			<file from="root/styles/subsilver2/template/newspage_body.html" to="styles/subsilver2/template/newspage_body.html" />
 		</copy>
 	</action-group>
 </mod>

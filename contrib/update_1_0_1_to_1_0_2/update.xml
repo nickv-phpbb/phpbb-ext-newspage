@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<?xml-stylesheet type="text/xsl" href="modx.prosilver.en.xsl"?>
+<!--For security purposes, please check: http://www.phpbb.com/mods/ for the latest version of this MOD. Although MODs are checked before being allowed in the MODs Database there is no guarantee that there are no security problems within the MOD. No support will be given for MODs not found within the MODs Database which can be found at http://www.phpbb.com/mods/-->
+<mod xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.phpbb.com/mods/xml/modx-1.2.2.xsd">
+	<header>
+		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
+
+		<title lang="en">NV newspage</title>
+		<title lang="de">NV newspage</title>
+
+		<description lang="de">Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
+Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
+Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.</description>
+		<description lang="en">Adds a extra-page to the board where a switchable number of news are displayed.
+The text can be shorten to a certain number of chars.
+Also the Icons can be switched of (post icons, user icons)</description>
+
+		<author-group>
+			<author>
+				<realname>Joas Schilling</realname>
+				<email>nickvergessen@gmx.de</email>
+				<username>nickvergessen</username>
+				<homepage>http://www.flying-bits.org</homepage>
+				<contributions />
+			</author>
+		</author-group>
+
+		<mod-version>1.0.2</mod-version>
+
+		<installation>
+			<level>easy</level>
+			<time>300</time>
+			<target-version>3.0.5</target-version>
+		</installation>
+
+		<link-group>
+			<link type="language" lang="de" href="contrib/de.xml">Anleitung für das deutsche Sprachpaket</link>
+			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
+			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
+			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
+		</link-group>
+	</header>
+
+	<action-group>
+		<copy>
+			<file from="root/newspage.php" to="newspage.php" />
+			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
+			<file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
+			<file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
+			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
+			<file from="root/install/*.*" to="install/*.*" />
+			<file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
+			<file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
+			<file from="root/styles/prosilver/theme/nv_newspage.css" to="styles/prosilver/theme/nv_newspage.css" />
+			<file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
+			<file from="root/umil/*.*" to="umil/*.*" />
+		</copy>
+	</action-group>
+</mod>
