@@ -118,7 +118,7 @@ $topic_ids = $topic_ids_ary;
 $user_online_tracking_info = array();
 $sql = 'SELECT session_user_id
 	FROM ' . SESSIONS_TABLE . '
-	WHERE ' . $db->sql_in_set('session_user_id', $topic_posters) . '
+	WHERE ' . $db->sql_in_set('session_user_id', $topic_posters, false, true) . '
 		AND session_user_id <> ' . ANONYMOUS . '
 		AND session_viewonline = 1';
 $result = $db->sql_query($sql);
@@ -175,7 +175,7 @@ $sql_array = array(
 		),*/
 	),
 	'ORDER_BY'	=> 't.topic_time ' . (($archive_start) ? 'ASC' : 'DESC'),
-	'WHERE'		=> $db->sql_in_set('t.topic_id', $topic_ids),
+	'WHERE'		=> $db->sql_in_set('t.topic_id', $topic_ids, false, true),
 );
 
 $sql = $db->sql_build_query('SELECT', $sql_array);

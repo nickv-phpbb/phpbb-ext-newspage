@@ -43,6 +43,14 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 
 		<history>
 			<entry>
+				<date>YYYY-MM-DD</date>
+				<rev-version>1.0.3</rev-version>
+				<changelog lang="en">
+					<change>[Fix] sql_in_set-error when the forum does not contain any news. (Bug #611)</change>
+				</changelog>
+			</entry>
+
+			<entry>
 				<date>2009-07-15</date>
 				<rev-version>1.0.2</rev-version>
 				<changelog lang="en">
