@@ -63,6 +63,13 @@ $versions = array(
 
 	// Version 1.0.2
 	'1.0.2'	=> array(),
+	
+	//Version 1.0.3
+	'1.0.3' => array(
+		'config_add' => array(
+			array('news_attach_show', 1),
+		),
+	),
 );
 
 // Include the UMIL Auto file and everything else will be handled automatically.
