@@ -29,6 +29,11 @@
 			<dd><input type="radio" class="radio" name="news_post_buttons" value="1" <!-- IF NEWS_POST_BUTTONS -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
 				<input type="radio" class="radio" name="news_post_buttons" value="0" <!-- IF not NEWS_POST_BUTTONS -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
 		</dl>
+		<dl>
+			<dt><label for="news_post_buttons">{L_NEWS_ATTACH_SHOW}:</label><br /><span>{L_NEWS_ATTACH_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_attach_show" value="1" <!-- IF NEWS_ATTACH_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="news_attach_show" value="0" <!-- IF not NEWS_ATTACH_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
 		<p class="submit-buttons">
 			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
 			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />

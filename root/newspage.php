@@ -130,7 +130,7 @@ while ($row = $db->sql_fetchrow($result))
 $db->sql_freeresult($result);
 
 // Get attachments
-if (sizeof($post_ids))
+if (sizeof($post_ids) && $config['news_attach_show'])
 {
 	if ($auth->acl_get('u_download'))
 	{
@@ -311,7 +311,7 @@ while ($row = $db->sql_fetchrow($result))
 
 		'MESSAGE'				=> $row['post_text'],
 
-		'S_HAS_ATTACHMENTS'		=> (!empty($attachments[$row['post_id']])) ? true : false,
+		'S_HAS_ATTACHMENTS'		=> (!empty($attachments[$row['post_id']]) && $config['news_attach_show']) ? true : false,
 		'S_DISPLAY_NOTICE'		=> $display_notice && $row['post_attachment'],
 		'EDITED_MESSAGE'		=> $l_edited_by,
 		'EDIT_REASON'			=> $row['post_edit_reason'],
