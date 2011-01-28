@@ -356,7 +356,7 @@ $db->sql_freeresult($result);
 $archiv_years = $archiv_months = $checked_months = array();
 $sql = 'SELECT topic_time
 	FROM ' . TOPICS_TABLE . '
-	WHERE ' . $db->sql_in_set('forum_id', $forum_ary) . '
+	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
 		AND ' .  $db->sql_in_set('forum_id', $news_forums) . '
 	ORDER BY topic_time DESC';
 $result = $db->sql_query($sql);
