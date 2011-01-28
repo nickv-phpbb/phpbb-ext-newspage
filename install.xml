@@ -24,12 +24,12 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			</author>
 		</author-group>
 
-		<mod-version>1.0.2</mod-version>
+		<mod-version>1.0.3</mod-version>
 
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.5</target-version>
+			<target-version>3.0.8</target-version>
 		</installation>
 
 		<link-group>
@@ -37,8 +37,8 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
 			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
 			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_1_to_1_0_2/update.xml">Anleitung für das Update von 1.0.1 zu 1.0.2</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_1_to_1_0_2/update.xml">Manual for the update 1.0.1 to 1.0.2</link>
+			<link type="parent" lang="de" href="contrib/update_1_0_2_to_1_0_3/update.xml">Anleitung für das Update von 1.0.2 zu 1.0.3</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_2_to_1_0_3/update.xml">Manual for the update 1.0.2 to 1.0.3</link>
 		</link-group>
 
 		<history>
