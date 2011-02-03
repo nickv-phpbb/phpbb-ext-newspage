@@ -47,6 +47,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<rev-version>1.0.3</rev-version>
 				<changelog lang="en">
 					<change>[Feature] "Show Attachment"-Option (Bug: #766, Patch by: Un1matr1x)</change>
+					<change>[Fix] Merged css-changes into css-file (Bug #769)</change>
 					<change>[Fix] Intersect News-Forums array and Permissions array before doing the SQL-query to make it less heavy. (Bug #768)</change>
 					<change>[Fix] sql_in_set-error when the forum does not contain any news or the user can not read any forum. (Bug #611, #649)</change>
 				</changelog>
@@ -153,26 +154,6 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<find><![CDATA[<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
 				<action type="before-add"><![CDATA[<li class="icon-news"><a href="{U_NEWS}" title="{L_NEWS}">{L_NEWS}</a></li>]]></action>
 			</edit>
-		</open>
-
-		<open src="styles/prosilver/theme/bidi.css">
-			<edit>
-				<find><![CDATA[.rtl .icon-bookmark, .rtl .icon-bump, .rtl .icon-subscribe, .rtl .icon-unsubscribe, .rtl .icon-pages, .rtl .icon-search {]]></find>
-				<inline-edit>
-						<inline-find><![CDATA[, .rtl .icon-search]]></inline-find>
-						<inline-action type="after-add"><![CDATA[, .rtl .icon-news]]></inline-action>
-				</inline-edit>
-				</edit>
-		</open>
-
-		<open src="styles/prosilver/theme/buttons.css">
-			<edit>
-				<find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search {]]></find>
-				<inline-edit>
-						<inline-find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search]]></inline-find>
-						<inline-action type="after-add"><![CDATA[, .icon-news]]></inline-action>
-				</inline-edit>
-				</edit>
 		</open>
 
 		<open src="styles/prosilver/theme/stylesheet.css">

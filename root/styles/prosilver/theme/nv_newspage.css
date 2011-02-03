@@ -1,4 +1,14 @@
-.icon-news						{ background-image: url("{T_THEME_PATH}/images/icon_news.gif"); }
+.icon-news {
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+	padding: 1px 0 0 17px;	
+	background-image: url("{T_THEME_PATH}/images/icon_news.gif");
+}
+
+.rtl .icon-news {
+	background-position: 100% 50%;
+	padding: 1px 17px 0 0;
+}
 
 a.news-archive		{ background-image: url("{T_THEME_PATH}/images/arrow_right.gif") }
 a.news-archive:hover		{ background-position: 6px 60% }
