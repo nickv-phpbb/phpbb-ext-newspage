@@ -66,6 +66,28 @@ foreach ($forum_read_ary as $forum_id => $allowed)
 }
 $forum_ary = array_unique($forum_ary);
 
+/**
+* Select forumnames
+*/
+$sql = 'SELECT forum_id, forum_name, forum_topics
+	FROM ' . FORUMS_TABLE . '
+	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
+		AND ' . $db->sql_in_set('forum_id', $news_forums, false, true) . '
+		AND forum_topics <> 0 ';
+
+$result = $db->sql_query($sql);
+
+while($cat = $db->sql_fetchrow($result))
+	{
+		$template->assign_block_vars('cat_block', array(
+			'U_NEWS_CAT'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'f=' . $cat['forum_id']),
+			'NEWS_CAT'			=> $cat['forum_name'],
+			'NEWS_COUNT'		=> $cat['forum_topics'],
+		));
+	}
+	
+$db->sql_freeresult($result);
+		
 // Grab ranks and icons
 $ranks = $cache->obtain_ranks();
 $icons = $cache->obtain_icons();

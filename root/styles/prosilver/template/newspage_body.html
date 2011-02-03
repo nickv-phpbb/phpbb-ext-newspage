@@ -9,7 +9,15 @@
 				<!-- END archive_row -->
 		<!-- END archive_block -->
 		<span class="corners-bottom"><span></span></span></div>
+
+		<div class="panel archive"><span class="corners-top"><span></span></span>
+		<div class="archive_block">{L_FORUM_CAT}</div>
+		<!-- BEGIN cat_block -->
+					<div class="<!-- IF cat_block.S_LAST_ROW -->archive_row-last<!-- ELSE -->archive_row<!-- ENDIF -->"><strong><a class="left news-archive" href="{cat_block.U_NEWS_CAT}">{cat_block.NEWS_CAT}</a> ({cat_block.NEWS_COUNT})</strong></div>
+		<!-- END cat_block -->
+		<span class="corners-bottom"><span></span></span></div>
 	</div>
+
 	<div style="float: {S_CONTENT_FLOW_BEGIN}; width: 79%;">
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 
