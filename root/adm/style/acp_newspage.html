@@ -8,6 +8,11 @@
 			<dd><select id="news_forums" name="news_forums[]" multiple="multiple">{S_SELECT_FORUMS}</select></dd>
 		</dl>
 		<dl>
+			<dt><label for="news_cat_show">{L_NEWS_CAT_SHOW}:</label><br /><span>{L_NEWS_CAT_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_cat_show" value="1" <!-- IF NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="news_cat_show" value="0" <!-- IF not NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
 			<dt><label for="news_number">{L_NEWS_NUMBER}:</label></dt>
 			<dd><input type="text" name="news_number" size="6" value="{NEWS_NUMBER}" /></dd>
 		</dl>

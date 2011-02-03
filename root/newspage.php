@@ -26,6 +26,7 @@ $newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
 // Get some variables
 $forums = ($config['news_forums']) ? $config['news_forums'] : 0;
 $news_forums = array_map('intval', explode(',', $forums));
+$only_category = request_var('f', 0);
 $only_news = request_var('news', 0);
 $archive_var = request_var('archive', '');
 $start = request_var('start', 0);
@@ -70,15 +71,15 @@ $sql_forum_ary = array_intersect($news_forums, $forum_ary);
 /**
 * Select forumnames
 */
-$sql = 'SELECT forum_id, forum_name, forum_topics
-	FROM ' . FORUMS_TABLE . '
-	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
-		AND ' . $db->sql_in_set('forum_id', $news_forums, false, true) . '
-		AND forum_topics <> 0 ';
+if ($config['news_cat_show'])
+{
+	$sql = 'SELECT forum_id, forum_name, forum_topics
+		FROM ' . FORUMS_TABLE . '
+		WHERE ' . $db->sql_in_set('forum_id', $sql_forum_ary, false, true) . '
+			AND forum_topics <> 0 ';
+	$result = $db->sql_query($sql);
 
-$result = $db->sql_query($sql);
-
-while($cat = $db->sql_fetchrow($result))
+	while ($cat = $db->sql_fetchrow($result))
 	{
 		$template->assign_block_vars('cat_block', array(
 			'U_NEWS_CAT'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'f=' . $cat['forum_id']),
@@ -86,9 +87,16 @@ while($cat = $db->sql_fetchrow($result))
 			'NEWS_COUNT'		=> $cat['forum_topics'],
 		));
 	}
-	
-$db->sql_freeresult($result);
-		
+
+	$db->sql_freeresult($result);
+
+	// Restrict to news-category
+	if ($only_category)
+	{
+		$sql_forum_ary = array_intersect($sql_forum_ary, array($only_category));
+	}
+}
+
 // Grab ranks and icons
 $ranks = $cache->obtain_ranks();
 $icons = $cache->obtain_icons();
@@ -412,7 +420,7 @@ foreach ($archiv_years as $archive_year)
 	foreach ($archiv_months[$archive_year] as $archive_month)
 	{
 		$template->assign_block_vars('archive_block.archive_row', array(
-			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'archive=' . $archive_month['url']),
+			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'archive=' . $archive_month['url'].(($only_category && $config['news_cat_show']) ? "&amp;f=$only_category" : '')),
 			'NEWS_MONTH'		=> $archive_month['name'],
 			'NEWS_COUNT'		=> $archive_month['count'],
 		));

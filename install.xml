@@ -46,6 +46,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>YYYY-MM-DD</date>
 				<rev-version>1.0.3</rev-version>
 				<changelog lang="en">
+					<change>[Feature] "Categories" added (Bug: #697, Patch by: Un1matr1x)</change>
 					<change>[Feature] "Show Attachment"-Option (Bug: #766, Patch by: Un1matr1x)</change>
 					<change>[Fix] Intersect News-Forums array and Permissions array before doing the SQL-query to make it less heavy. (Bug #768)</change>
 					<change>[Fix] sql_in_set-error when the forum does not contain any news or the user can not read any forum. (Bug #611, #649)</change>
