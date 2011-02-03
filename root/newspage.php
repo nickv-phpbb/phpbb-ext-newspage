@@ -1,10 +1,9 @@
 <?php
-/** 
+/**
 *
 * @package - NV newspage
-* @version $Id$
-* @copyright (c) nickvergessen ( http://www.flying-bits.org/ )
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @copyright (c) nickvergessen http://www.flying-bits.org/
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
@@ -26,7 +25,7 @@ $newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
 
 // Get some variables
 $forums = ($config['news_forums']) ? $config['news_forums'] : 0;
-$news_forums = explode(',', $forums);
+$news_forums = array_map('intval', explode(',', $forums));
 $only_news = request_var('news', 0);
 $archive_var = request_var('archive', '');
 $start = request_var('start', 0);
@@ -65,6 +64,8 @@ foreach ($forum_read_ary as $forum_id => $allowed)
 	}
 }
 $forum_ary = array_unique($forum_ary);
+// There should not be too many news forums, so we just combine them here to a small array
+$sql_forum_ary = array_intersect($news_forums, $forum_ary);
 
 // Grab ranks and icons
 $ranks = $cache->obtain_ranks();
@@ -75,12 +76,11 @@ $icons = $cache->obtain_icons();
 */
 $sql = 'SELECT forum_id, topic_id, topic_type, topic_poster, topic_first_post_id
 	FROM ' . TOPICS_TABLE . '
-	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
-		AND ' . $db->sql_in_set('forum_id', $news_forums, false, true) . "
+	WHERE ' . $db->sql_in_set('forum_id', $sql_forum_ary, false, true) . "
 		$sql_single_news
 		$sql_archive_news
 	ORDER BY topic_time " . (($archive_start) ? 'ASC' : 'DESC');
-if ($only_news) 
+if ($only_news)
 {
 	$result = $db->sql_query($sql);
 }
@@ -180,7 +180,6 @@ $sql_array = array(
 
 $sql = $db->sql_build_query('SELECT', $sql_array);
 $result = $db->sql_query($sql);
-
 while ($row = $db->sql_fetchrow($result))
 {
 	//set some default vars
@@ -356,8 +355,7 @@ $db->sql_freeresult($result);
 $archiv_years = $archiv_months = $checked_months = array();
 $sql = 'SELECT topic_time
 	FROM ' . TOPICS_TABLE . '
-	WHERE ' . $db->sql_in_set('forum_id', $forum_ary, false, true) . '
-		AND ' .  $db->sql_in_set('forum_id', $news_forums) . '
+	WHERE ' . $db->sql_in_set('forum_id', $sql_forum_ary, false, true) . '
 	ORDER BY topic_time DESC';
 $result = $db->sql_query($sql);
 
