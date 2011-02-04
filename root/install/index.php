@@ -69,6 +69,7 @@ $versions = array(
 	'1.0.3' => array(
 		'config_add' => array(
 			array('news_attach_show', 1),
+			array('news_cat_show', 1),
 		),
 	),
 );
