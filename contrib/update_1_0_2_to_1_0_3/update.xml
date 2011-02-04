@@ -55,5 +55,28 @@ Also the Icons can be switched of (post icons, user icons)</description>
 			<file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
 			<file from="root/umil/*.*" to="umil/*.*" />
 		</copy>
+
+		<open src="styles/prosilver/theme/bidi.css">
+			<edit>
+				<find><![CDATA[.rtl .icon-bookmark, .rtl .icon-bump, .rtl .icon-subscribe, .rtl .icon-unsubscribe, .rtl .icon-pages, .rtl .icon-search, .rtl .icon-news {]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[.rtl .icon-search, .rtl .icon-news]]></inline-find>
+					<inline-remove><![CDATA[, .rtl .icon-news]]></inline-remove>
+				</inline-edit>
+			</edit>
+		</open>
+
+		<open src="styles/prosilver/theme/buttons.css">
+			<edit>
+				<find><![CDATA[.icon-bookmark, .icon-bump, .icon-subscribe, .icon-unsubscribe, .icon-pages, .icon-search, .icon-news {]]></find>
+				<inline-edit>
+					<inline-find><![CDATA[.icon-search, .icon-news]]></inline-find>
+					<inline-remove><![CDATA[, .icon-news]]></inline-remove>
+				</inline-edit>
+			</edit>
+		</open>
+
+		<diy-instructions lang="de"><![CDATA[install/ aufrufen und ausführen]]></diy-instructions>
+		<diy-instructions lang="en"><![CDATA[Browse to install/ and run the updater]]></diy-instructions>
 	</action-group>
 </mod>
