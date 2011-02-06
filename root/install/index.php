@@ -70,6 +70,7 @@ $versions = array(
 		'config_add' => array(
 			array('news_attach_show', 1),
 			array('news_cat_show', 1),
+			array('news_arch_cat', 0),
 		),
 	),
 );

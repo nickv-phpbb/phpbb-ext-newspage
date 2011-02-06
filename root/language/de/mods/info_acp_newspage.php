@@ -5,7 +5,7 @@
 * news-page [Deutsch — Du]
 *
 * @package language
-* @version $Id: lang_wwh.php 4 2007-06-02
+* @version $Id$
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -24,6 +24,8 @@ $lang = array_merge($lang, array(
 	'NEWS_CONFIG'				=> 'Konfiguration',
 
 	'NEWS'						=> 'News',
+	'NEWS_ARCH_CAT'				=> 'Archivblocks pro Jahr',
+	'NEWS_ARCH_CAT_EXPLAIN'		=> 'Zeigt pro Jahr je einen seperaten Archivblock',
 	'NEWS_ARCHIVE'				=> 'Archiv',
 	'NEWS_ARCHIVE_OF'			=> 'Archiv vom %s',
 	'NEWS_ATTACH_SHOW'			=> 'Anhänge anzeigen',

@@ -50,6 +50,7 @@ class acp_newspage
 			set_config('news_user_info', request_var('news_user_info', 0));
 			set_config('news_attach_show', request_var('news_attach_show', 0));
 			set_config('news_cat_show', request_var('news_cat_show', 0));
+			set_config('news_arch_cat', request_var('news_arch_cat', 0));
 
 			trigger_error($user->lang['NEWS_SAVED'] . adm_back_link($this->u_action));
 		}
@@ -63,6 +64,7 @@ class acp_newspage
 			'NEWS_USER_INFO'		=> $config['news_user_info'],
 			'NEWS_ATTACH_SHOW'		=> $config['news_attach_show'],
 			'NEWS_CAT_SHOW'			=> $config['news_cat_show'],
+			'NEWS_ARCH_CAT'			=> $config['news_arch_cat'],
 			'S_SELECT_FORUMS'		=> make_forum_select(explode(',', $config['news_forums'])),
 		));
 

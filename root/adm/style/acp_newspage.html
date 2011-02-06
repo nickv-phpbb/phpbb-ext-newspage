@@ -13,6 +13,11 @@
 				<input type="radio" class="radio" name="news_cat_show" value="0" <!-- IF not NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
 		</dl>
 		<dl>
+			<dt><label for="news_arch_cat">{L_NEWS_ARCH_CAT}:</label><br /><span>{L_NEWS_ARCH_CAT_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_arch_cat" value="1" <!-- IF NEWS_ARCH_CAT -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp; 
+				<input type="radio" class="radio" name="news_arch_cat" value="0" <!-- IF not NEWS_ARCH_CAT -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
 			<dt><label for="news_number">{L_NEWS_NUMBER}:</label></dt>
 			<dd><input type="text" name="news_number" size="6" value="{NEWS_NUMBER}" /></dd>
 		</dl>

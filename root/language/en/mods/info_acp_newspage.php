@@ -5,7 +5,7 @@
 * newspage [British English]
 *
 * @package language
-* @version $Id: info_acp_newspage.php 4 2007-06-02
+* @version $Id$
 * @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
@@ -24,6 +24,8 @@ $lang = array_merge($lang, array(
 	'NEWS_CONFIG'				=> 'Configuration',
 
 	'NEWS'						=> 'News',
+	'NEWS_ARCH_CAT'				=> 'Archive-block per year',
+	'NEWS_ARCH_CAT_EXPLAIN'		=> 'Displays a separate block per year',
 	'NEWS_ARCHIVE'				=> 'Archive',
 	'NEWS_ARCHIVE_OF'			=> 'Archive %s',
 	'NEWS_ATTACH_SHOW'			=> 'Show attachments',
