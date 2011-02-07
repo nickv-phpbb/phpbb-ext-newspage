@@ -24,8 +24,8 @@ $lang = array_merge($lang, array(
 	'NEWS_CONFIG'				=> 'Konfiguration',
 
 	'NEWS'						=> 'News',
-	'NEWS_ARCH_CAT'				=> 'Archivblocks pro Jahr',
-	'NEWS_ARCH_CAT_EXPLAIN'		=> 'Zeigt pro Jahr je einen seperaten Archivblock',
+	'NEWS_ARCHIVE_PER_YEAR'				=> 'Archivblocks pro Jahr',
+	'NEWS_ARCHIVE_PER_YEAR_EXPLAIN'		=> 'Zeigt pro Jahr je einen seperaten Archivblock',
 	'NEWS_ARCHIVE'				=> 'Archiv',
 	'NEWS_ARCHIVE_OF'			=> 'Archiv vom %s',
 	'NEWS_ATTACH_SHOW'			=> 'Anhänge anzeigen',

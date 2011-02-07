@@ -1,16 +1,16 @@
 <!-- INCLUDE overall_header.html -->
 	<div style="float: {S_CONTENT_FLOW_END}; width: 20%;">
 	<h2>{L_NEWS_ARCHIVE}</h2>
-		<!-- IF not S_NEWS_ARCH_CAT --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
-			<!-- BEGIN archive_block --><!-- IF not S_NEWS_ARCH_CAT and not archive_block.S_FIRST_ROW --><br /><!-- ENDIF -->
-			<!-- IF S_NEWS_ARCH_CAT --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
+		<!-- IF not S_NEWS_ARCHIVE_PER_YEAR --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
+			<!-- BEGIN archive_block --><!-- IF not S_NEWS_ARCHIVE_PER_YEAR and not archive_block.S_FIRST_ROW --><br /><!-- ENDIF -->
+			<!-- IF S_NEWS_ARCHIVE_PER_YEAR --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
 			<div class="archive_block">{L_NEWS_ARCHIVE} {archive_block.NEWS_YEAR}</div>
 					<!-- BEGIN archive_row -->
 						<div class="<!-- IF archive_block.archive_row.S_LAST_ROW -->archive_row-last<!-- ELSE -->archive_row<!-- ENDIF -->"><strong><a class="left news-archive" href="{archive_block.archive_row.U_NEWS_MONTH}">{archive_block.archive_row.NEWS_MONTH}</a> ({archive_block.archive_row.NEWS_COUNT})</strong></div>
 					<!-- END archive_row -->
-				<!-- IF S_NEWS_ARCH_CAT --><span class="corners-bottom"><span></span></span></div><br /><!-- ENDIF -->
+				<!-- IF S_NEWS_ARCHIVE_PER_YEAR --><span class="corners-bottom"><span></span></span></div><br /><!-- ENDIF -->
 			<!-- END archive_block -->
-		<!-- IF not S_NEWS_ARCH_CAT --><span class="corners-bottom"><span></span></span></div><!-- ENDIF -->
+		<!-- IF not S_NEWS_ARCHIVE_PER_YEAR --><span class="corners-bottom"><span></span></span></div><!-- ENDIF -->
 		<!-- IF .cat_block -->
 			<div class="panel archive"><span class="corners-top"><span></span></span>
 			<div class="archive_block">{L_NEWS_CAT}</div>

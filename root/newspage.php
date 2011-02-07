@@ -465,7 +465,7 @@ $template->assign_vars(array(
 	'NEWS_POST_BUTTONS'		=> $config['news_post_buttons'],
 	'NEWS_ONLY'				=> $only_news,
 	'NEWS_TITLE'			=> $news_title,
-	'S_NEWS_ARCH_CAT'		=> $config['news_arch_cat'],
+	'S_NEWS_ARCHIVE_PER_YEAR'		=> $config['news_archive_per_year'],
 ));
 
 if (!$only_news)
