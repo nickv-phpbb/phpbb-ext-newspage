@@ -148,9 +148,14 @@
 							<!-- IF not NEWS_ONLY --><br /><br />
 							<table class="tablebg" width="100%" cellspacing="1">
 							<!-- IF postrow.S_ROW_COUNT is not even --><tr class="row1"><!-- ELSE --><tr class="row2"><!-- ENDIF -->
-								<td><span class="genmed"><strong>{L_NEWS_READ_FULL}:</strong> <em><a href="{postrow.U_NEWS}">{L_NEWS_READ_HERE}</a></em><br />
-								<strong>{L_NEWS_GO_TO_TOPIC}:</strong> <em><a href="{postrow.U_MINI_POST}">{postrow.POST_SUBJECT}</a></em><br />
-								<strong>{L_NEWS_COMMENTS}:</strong> <em>{postrow.NEWS_COMMENTS}</em></span></td>
+								<td><span class="genmed">
+								<!-- IF postrow.S_HAS_POLL -->
+									{L_NEWS_POLL}: <strong>{postrow.POLL_QUESTION}</strong> &raquo; <a href="{postrow.U_MINI_POST}">{L_NEWS_POLL_GOTO}</a><br /><br />
+								<!-- ENDIF -->
+									<strong>{L_NEWS_READ_FULL}:</strong> <em><a href="{postrow.U_NEWS}">{L_NEWS_READ_HERE}</a></em><br />
+									<strong>{L_NEWS_GO_TO_TOPIC}:</strong> <em><a href="{postrow.U_MINI_POST}">{postrow.POST_SUBJECT}</a></em><br />
+									<strong>{L_NEWS_COMMENTS}:</strong> <em>{postrow.NEWS_COMMENTS}</em>
+								</span></td>
 							</tr>
 							</table><!-- ENDIF -->
 

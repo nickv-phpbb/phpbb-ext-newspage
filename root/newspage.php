@@ -340,6 +340,7 @@ while ($row = $db->sql_fetchrow($result))
 
 		'MESSAGE'				=> $row['post_text'],
 
+		'S_HAS_POLL'			=> (!empty($row['poll_start'])) ? true : false,
 		'S_HAS_ATTACHMENTS'		=> (!empty($attachments[$row['post_id']]) && $config['news_attach_show']) ? true : false,
 		'S_DISPLAY_NOTICE'		=> $display_notice && $row['post_attachment'],
 		'EDITED_MESSAGE'		=> $l_edited_by,
