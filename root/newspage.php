@@ -16,6 +16,7 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
+include($phpbb_root_path . 'includes/functions_newspage.' . $phpEx);
 
 // Start session management
 $user->session_begin();
@@ -216,7 +217,11 @@ while ($row = $db->sql_fetchrow($result))
 	$post_unread = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
 
 	//parse message for display
-	$row['post_text'] = ((utf8_strlen($row['post_text']) > $config['news_char_limit'] + 50) && !$only_news) ? (utf8_substr($row['post_text'], 0, $config['news_char_limit']) . '...') : $row['post_text'];
+	if (!$only_news)
+	{
+		$row['post_text'] = newspage_trim_bbcode_text($row['post_text'], $row['bbcode_uid'], $config['news_char_limit']);
+	}
+
 	$message = $row['post_text'];
 	$bbcode_bitfield = '';
 	$bbcode_bitfield = $bbcode_bitfield | base64_decode($row['bbcode_bitfield']);
