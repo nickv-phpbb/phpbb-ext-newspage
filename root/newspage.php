@@ -177,10 +177,6 @@ if (sizeof($post_ids) && $config['news_attach_show'])
 		}
 		$db->sql_freeresult($result);
 	}
-	else
-	{
-		$display_notice = true;//@todo
-	}
 }
 
 $sql_array = array(
@@ -199,10 +195,6 @@ $sql_array = array(
 			'FROM'	=> array(ICONS_TABLE => 'i'),
 			'ON'	=> 't.icon_id = i.icons_id'
 		),
-		/*array(
-			'FROM'	=> array(ATTACHMENTS_TABLE => 'a'),
-			'ON'	=> 'p.post_id = a.post_msg_id'
-		),*/
 	),
 	'ORDER_BY'	=> 't.topic_time ' . (($archive_start) ? 'ASC' : 'DESC'),
 	'WHERE'		=> $db->sql_in_set('t.topic_id', $topic_ids, false, true),
@@ -240,7 +232,11 @@ while ($row = $db->sql_fetchrow($result))
 	$message = str_replace("\n", '<br />', $message);
 	$message = smiley_text($message);
 
-	if (!empty($attachments[$row['post_id']]))
+	if (!$auth->acl_get('f_download', $forum_id))
+	{
+		$display_notice = true;
+	}
+	else if (!empty($attachments[$row['post_id']]))
 	{
 		parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
 	}
