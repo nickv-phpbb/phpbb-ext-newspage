@@ -8,6 +8,14 @@
 */
 
 /**
+* @ignore
+*/
+if (!defined('IN_PHPBB'))
+{
+	exit;
+}
+
+/**
 * Trims a bbcode text to a given length.
 * If it does not contain any bbcodes we make a little short cut,
 * else we fall back to some Board3-Portal-Code.
