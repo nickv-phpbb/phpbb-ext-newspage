@@ -53,7 +53,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 
 		<history>
 			<entry>
-				<date>YYYY-MM-DD</date>
+				<date>2011-02-18</date>
 				<rev-version>1.0.3</rev-version>
 				<changelog lang="en">
 					<change>[Feature] Display a little notice at the News-Info, when there is a poll in the topic. (Bug: #610)</change>

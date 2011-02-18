@@ -42,13 +42,6 @@ Also the Icons can be switched of (post icons, user icons)</description>
 			<time>300</time>
 			<target-version>3.0.8</target-version>
 		</installation>
-
-		<link-group>
-			<link type="language" lang="de" href="contrib/de.xml">Anleitung für das deutsche Sprachpaket</link>
-			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
-			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
-			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-		</link-group>
 	</header>
 
 	<action-group>
