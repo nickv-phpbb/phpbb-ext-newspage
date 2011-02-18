@@ -17,6 +17,16 @@
 				<homepage>http://www.flying-bits.org</homepage>
 				<contributions />
 			</author>
+
+			<author>
+				<realname>Falk Seidel</realname>
+				<email>admin@un1matr1x.de</email>
+				<username>Unimatrix_0</username>
+				<homepage>http://un1matr1x.de/</homepage>
+				<contributions-group>
+					<contributions status="current" from="2011-01-22" position="Co-Developer" />
+				</contributions-group>
+			</author>
 		</author-group>
 
 		<mod-version>1.0.3</mod-version>
