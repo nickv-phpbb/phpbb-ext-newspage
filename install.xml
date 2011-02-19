@@ -179,14 +179,10 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
 			</edit>
 		</open>
-
+		<php-installer><![CDATA[install/index.php]]></php-installer>
 		<diy-instructions lang="en">If you want me to add your language file to the download, just leave me a pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
-
-Browse to install/ and run the installer</diy-instructions>
+http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319</diy-instructions>
 		<diy-instructions lang="de">Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319
-
-install/ aufrufen und ausführen</diy-instructions>
+http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319</diy-instructions>
 	</action-group>
 </mod>
