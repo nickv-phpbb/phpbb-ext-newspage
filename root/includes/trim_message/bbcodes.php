@@ -133,7 +133,7 @@ class phpbb_trim_message_bbcodes
 				}
 			}
 			/**
-			* Three elements means are closing the opening-quote and the BBCode from inside:
+			* Three elements means we are closing the opening-quote and the BBCode from inside:
 			* String: [quote="[bbcode:uid]foo[/bbcode:uid]bar":uid]quotehere
 			* Keys:                           ^^^^^^^ = 0 ^^^^ = 1 ^^^^^^^^^ = 2
 			*/

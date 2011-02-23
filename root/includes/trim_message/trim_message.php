@@ -65,7 +65,7 @@ class phpbb_trim_message
 	}
 
 	/**
-	* Returns the messaged, trimmed or in full length
+	* Returns the message, trimmed or in full length
 	*/
 	public function message($force_full_length = false)
 	{
