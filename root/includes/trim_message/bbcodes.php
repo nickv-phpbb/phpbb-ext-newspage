@@ -110,12 +110,9 @@ class phpbb_trim_message_bbcodes
 				// We matched it something ;)
 				if ($exploded_parts[0][0] != '/')
 				{
-					$bbcode_tag = $exploded_parts[0];
 					// Open BBCode-tag
-					if (($equals = utf8_strpos($bbcode_tag, '=')) !== false)
-					{
-						$bbcode_tag = utf8_substr($bbcode_tag, 0, $equals);
-					}
+					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
+
 					$this->open_bbcode($bbcode_tag, $text_position);
 					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
 					$this->bbcode_action($bbcode_tag, 'open_end', $text_position);
@@ -124,11 +121,16 @@ class phpbb_trim_message_bbcodes
 				else
 				{
 					// Close BBCode-tag
-					$bbcode_tag = utf8_substr($exploded_parts[0], 1);
+					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
+					$bbcode_tag_extended = $this->filter_bbcode_tag($exploded_parts[0], false);
+					if ($bbcode_tag_extended == $bbcode_tag)
+					{
+						$bbcode_tag_extended = '';
+					}
 
 					$this->bbcode_action($bbcode_tag, 'close_start', $text_position);
 					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
-					$this->bbcode_action($bbcode_tag, 'close_end', $text_position);
+					$this->bbcode_action($bbcode_tag, 'close_end', $text_position, $bbcode_tag_extended);
 					$text_position += utf8_strlen($exploded_parts[1]);
 				}
 			}
@@ -141,7 +143,7 @@ class phpbb_trim_message_bbcodes
 			{
 				if (($exploded_parts[0][0] == '/') && (utf8_substr($exploded_parts[1], -6) == '&quot;') && $allow_close_quote)
 				{
-					$bbcode_tag = utf8_substr($exploded_parts[0], 1);
+					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
 
 					$this->bbcode_action($bbcode_tag, 'close_start', $text_position);
 					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
@@ -186,8 +188,11 @@ class phpbb_trim_message_bbcodes
 	*								ii)  close_open	=> [code]>[</code]
 	*								iii) close_end	=> [code][/code>]<
 	* @param	int		$position	start-position of the bbcode-open-tag
+	* @param	int		$tag_extended	with the list-bbcode we get some
+	*									information about the bbcode at the end
+	*									of it. So we need to readd that.
 	*/
-	private function bbcode_action($tag, $part, $position)
+	private function bbcode_action($tag, $part, $position, $tag_extended = false)
 	{
 		for ($i = 1; $i <= $this->array_size; $i++)
 		{
@@ -196,6 +201,10 @@ class phpbb_trim_message_bbcodes
 				if (!$this->bbcode_list[$this->array_size - $i][$part])
 				{
 					$this->bbcode_list[$this->array_size - $i][$part] = $position;
+					if ($tag_extended)
+					{
+						$this->bbcode_list[$this->array_size - $i]['bbcode_tag'] = $tag_extended;
+					}
 					return;
 				}
 			}
@@ -256,5 +265,39 @@ class phpbb_trim_message_bbcodes
 			}
 		}
 		return $bbcodes;
+	}
+
+	/**
+	* Filter BBCode-Tags:
+	*
+	* Exp:	[/*:m]					<= automatically added end of [*]
+	* Exp:	[/list:x]				<= end of [list] tag with list-style-element
+	* Exp:	[bbcode=param1;param2]	<= start of bbcode-tag with parameters
+	*
+	* @return	string		plain bbcode-tag
+	*/
+	public function filter_bbcode_tag($bbcode_tag, $strip_information = true)
+	{
+		if ($bbcode_tag[0] == '/')
+		{
+			$bbcode_tag = utf8_substr($bbcode_tag, 1);
+		}
+
+		if ($strip_information && ($bbcode_tag == '*:m'))
+		{
+			return '*';
+		}
+
+		if ($strip_information && (utf8_substr($bbcode_tag, 0, 5) == 'list:'))
+		{
+			return 'list';
+		}
+
+		if ($strip_information && (($equals = utf8_strpos($bbcode_tag, '=')) !== false))
+		{
+			$bbcode_tag = utf8_substr($bbcode_tag, 0, $equals);
+		}
+
+		return $bbcode_tag;
 	}
 }

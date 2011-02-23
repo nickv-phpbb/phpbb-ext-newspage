@@ -28,6 +28,10 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'message'		=> '[quote=&quot;[url=http&#58;//www&#46;example&#46;tdl/:2sda49fx][color=#00BF00:2sda49fx]bbcodes in quotes...[/color:2sda49fx][/url:2sda49fx]&quot;:2sda49fx][color=#FF0000:2sda49fx]hard[/color:2sda49fx]core[/quote:2sda49fx]',
 				'bbcode_uid'	=> '2sda49fx',
 			),
+			array(
+				'message'		=> '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2][/list:u:1wmer8b2]',
+				'bbcode_uid'	=> '1wmer8b2',
+			),
 		);
 
 		$cases = array(
@@ -114,6 +118,52 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'message_set' => 2, 'range_start' => 221, 'range_end' => 222, 'trimmed' => false,
 				'expected' => '[quote=&quot;[url=http&#58;//www&#46;example&#46;tdl/:2sda49fx][color=#00BF00:2sda49fx]bbcodes in quotes...[/color:2sda49fx][/url:2sda49fx]&quot;:2sda49fx][color=#FF0000:2sda49fx]hard[/color:2sda49fx]core[/quote:2sda49fx]',
 			),
+
+			/**
+			* Breaking within lists
+			*/
+			array(
+				'message_set' => 3, 'range_start' => 0, 'range_end' => 14, 'trimmed' => true, 'step_size' => 3,
+				'expected' => ' [...]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 15, 'range_end' => 26, 'trimmed' => true, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2] [...][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 27, 'range_end' => 27, 'trimmed' => true,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2] [...][/*:m:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 28, 'range_end' => 42, 'trimmed' => true, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1 [...][/*:m:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 43, 'range_end' => 54, 'trimmed' => true, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2] [...][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 55, 'range_end' => 55, 'trimmed' => true,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2] [...][/*:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 57, 'range_end' => 68, 'trimmed' => true, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2 [...][/*:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 69, 'range_end' => 86, 'trimmed' => true, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2] [...][/list:u:1wmer8b2]',
+			),
+			array(
+				'message_set' => 3, 'range_start' => 87, 'range_end' => 87, 'trimmed' => false,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			/*
+			array(
+				'message_set' => 3, 'range_start' => 0, 'range_end' => 15, 'trimmed' => false, 'step_size' => 3,
+				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2][/list:u:1wmer8b2]',
+			),
+			*/
 		);
 
 		$test_cases = array();
