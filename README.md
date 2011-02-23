@@ -18,6 +18,12 @@ How to run tests
 1. copy files from tests/ to [phpBB.git](https://github.com/phpbb/phpbb3/)/tests/
 2. run phpBB tests
 
+Requirements
+------------
+* This tool requires php5 or above. When you include this tool in your MOD, put a note about the php-version in the author notes.
+* This tool requires phpBB 3.0.8 or above.
+* This tool does not require a specific database.
+
 License
 -------
 Licensed under the terms of the GNU Public License:
