@@ -15,6 +15,9 @@ Also the Icons can be switched of (post icons, user icons)</description>
 Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
 Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.</description>
 
+		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
+		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
+
 		<author-group>
 			<author>
 				<realname>Joas Schilling</realname>
@@ -121,9 +124,10 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			<file from="root/newspage.php" to="newspage.php" />
 			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
 			<file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
-			<file from="root/includes/functions_newspage.php" to="includes/functions_newspage.php" />
 			<file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
 			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
+			<file from="root/includes/trim_message/bbcodes.php" to="includes/trim_message/bbcodes.php" />
+			<file from="root/includes/trim_message/trim_message.php" to="includes/trim_message/trim_message.php" />
 			<file from="root/install/*.*" to="install/*.*" />
 			<file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
 			<file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />

@@ -16,7 +16,8 @@ $phpEx = substr(strrchr(__FILE__, '.'), 1);
 include($phpbb_root_path . 'common.' . $phpEx);
 include($phpbb_root_path . 'includes/bbcode.' . $phpEx);
 include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
-include($phpbb_root_path . 'includes/functions_newspage.' . $phpEx);
+include($phpbb_root_path . 'includes/trim_message/trim_message.' . $phpEx);
+include($phpbb_root_path . 'includes/trim_message/bbcodes.' . $phpEx);
 
 // Start session management
 $user->session_begin();
@@ -219,7 +220,9 @@ while ($row = $db->sql_fetchrow($result))
 	//parse message for display
 	if (!$only_news)
 	{
-		$row['post_text'] = newspage_trim_bbcode_text($row['post_text'], $row['bbcode_uid'], $config['news_char_limit']);
+		$trim = new phpbb_trim_message($row['post_text'], $row['bbcode_uid'], $config['news_char_limit']);
+		$row['post_text'] = $trim->message();
+		unset($trim);
 	}
 
 	$message = $row['post_text'];
