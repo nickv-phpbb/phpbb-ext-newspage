@@ -65,7 +65,6 @@ Also the Icons can be switched of (post icons, user icons)</description>
 			<file name="includes/functions_newspage.php" />
 		</delete>
 
-		<diy-instructions lang="de"><![CDATA[install/ aufrufen und ausführen]]></diy-instructions>
-		<diy-instructions lang="en"><![CDATA[Browse to install/ and run the updater]]></diy-instructions>
+		<php-installer><![CDATA[install/index.php]]></php-installer>
 	</action-group>
 </mod>
