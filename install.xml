@@ -184,14 +184,6 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			</edit>
 		</open>
 		<php-installer><![CDATA[install/index.php]]></php-installer>
-		<diy-instructions lang="en"><![CDATA[Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
-
-Refresh your Styles:
-		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
-		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"
-
-If you want me to add your language file to the download, just leave me a pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319]]></diy-instructions>
 		<diy-instructions lang="de"><![CDATA[Leere den Cache im "Administrations-Bereich" (ACP) > "Allgemein" > "Den Cache leeren"
 
 Aktualisiere deine Styles:
@@ -199,6 +191,14 @@ Aktualisiere deine Styles:
 		"Administrations-Bereich" (ACP) > "Styles" > "Themes" > jedes > "Aktualisieren"
 
 Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
+http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319]]></diy-instructions>
+		<diy-instructions lang="en"><![CDATA[Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
+
+Refresh your Styles:
+		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
+		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"
+
+If you want me to add your language file to the download, just leave me a pm:
 http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319]]></diy-instructions>
 	</action-group>
 </mod>
