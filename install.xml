@@ -5,39 +5,40 @@
 	<header>
 		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
 
-		<title lang="en">NV newspage</title>
-		<title lang="de">NV newspage</title>
+		<title lang="de"><![CDATA[NV newspage]]></title>
+		<title lang="en"><![CDATA[NV newspage]]></title>
 
-		<description lang="en">Adds a extra-page to the board where a switchable number of news are displayed.
-The text can be shorten to a certain number of chars.
-Also the Icons can be switched of (post icons, user icons)</description>
-		<description lang="de">Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
+		<description lang="de"><![CDATA[Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
 Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
-Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.</description>
+Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.]]></description>
+		<description lang="en"><![CDATA[Adds a extra-page to the board where a switchable number of news are displayed.
+The text can be shorten to a certain number of chars.
+Also the Icons can be switched of (post icons, user icons)]]></description>
 
 		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
 		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
 
 		<author-group>
 			<author>
-				<realname>Joas Schilling</realname>
-				<email>nickvergessen@gmx.de</email>
-				<username>nickvergessen</username>
-				<homepage>http://www.flying-bits.org/</homepage>
+				<realname><![CDATA[Joas Schilling]]></realname>
+				<email><![CDATA[nickvergessen@gmx.de]]></email>
+				<username><![CDATA[nickvergessen]]></username>
+				<homepage><![CDATA[http://www.flying-bits.org/]]></homepage>
+				<contributions />
 			</author>
 
 			<author>
-				<realname>Falk Seidel</realname>
-				<email>admin@un1matr1x.de</email>
-				<username>Unimatrix_0</username>
-				<homepage>http://un1matr1x.de/</homepage>
+				<realname><![CDATA[Falk Seidel]]></realname>
+				<email><![CDATA[admin@un1matr1x.de]]></email>
+				<username><![CDATA[Unimatrix_0]]></username>
+				<homepage><![CDATA[http://un1matr1x.de/]]></homepage>
 				<contributions-group>
 					<contributions status="current" from="2011-01-22" position="Co-Developer" />
 				</contributions-group>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.3</mod-version>
+		<mod-version>1.0.4</mod-version>
 
 		<installation>
 			<level>easy</level>
@@ -50,25 +51,34 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
 			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
 			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_2_to_1_0_3/update.xml">Anleitung für das Update von 1.0.2 zu 1.0.3</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_2_to_1_0_3/update.xml">Manual for the update 1.0.2 to 1.0.3</link>
+			<link type="parent" lang="de" href="contrib/update_1_0_3_to_1_0_4/update.xml">Anleitung für das Update von 1.0.3 zu 1.0.4</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_3_to_1_0_4/update.xml">Manual for the update 1.0.3 to 1.0.4</link>
 		</link-group>
 
 		<history>
 			<entry>
+				<date>2011-MM-DD</date>
+				<rev-version>1.0.4</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[[Feature] Use php-installer feature of MODx 1.2.5 and fix some other XML issues. (Bug: #780)]]></change>
+					<change><![CDATA[[Feature] Use Trim-Message-Tool to correctly trim posts in their lenght without breaking BBCodes. (Bug: #779)]]></change>
+				</changelog>
+			</entry>
+
+			<entry>
 				<date>2011-02-18</date>
 				<rev-version>1.0.3</rev-version>
 				<changelog lang="en">
-					<change>[Feature] Display a little notice at the News-Info, when there is a poll in the topic. (Bug: #610)</change>
-					<change>[Feature] Archive-block per year (Bug: #770, Patch by: Un1matr1x)</change>
-					<change>[Feature] "Categories" added (Bug: #697, Patch by: Un1matr1x)</change>
-					<change>[Feature] "Show Attachment"-Option (Bug: #766, Patch by: Un1matr1x)</change>
-					<change>[Fix] Add "IN_INSTALL" to installer to avoid the "delete install/" message. (Bug: #778, Patch by: Un1matr1x)</change>
-					<change>[Fix] Correctly close BBCodes when shorttening the text. (Bug #530)</change>
-					<change>[Fix] Attachments are displayed, although user does not have the required forum-permissions (Bug #777)</change>
-					<change>[Fix] Merged css-changes into css-file (Bug #769)</change>
-					<change>[Fix] Intersect News-Forums array and Permissions array before doing the SQL-query to make it less heavy. (Bug #768)</change>
-					<change>[Fix] sql_in_set-error when the forum does not contain any news or the user can not read any forum. (Bug #611, #649)</change>
+					<change><![CDATA[[Feature] Display a little notice at the News-Info, when there is a poll in the topic. (Bug: #610)]]></change>
+					<change><![CDATA[[Feature] Archive-block per year (Bug: #770, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Feature] "Categories" added (Bug: #697, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Feature] "Show Attachment"-Option (Bug: #766, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Fix] Add "IN_INSTALL" to installer to avoid the "delete install/" message. (Bug: #778, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Fix] Correctly close BBCodes when shorttening the text. (Bug: #530)]]></change>
+					<change><![CDATA[[Fix] Attachments are displayed, although user does not have the required forum-permissions (Bug: #777)]]></change>
+					<change><![CDATA[[Fix] Merged css-changes into css-file (Bug: #769)]]></change>
+					<change><![CDATA[[Fix] Intersect News-Forums array and Permissions array before doing the SQL-query to make it less heavy. (Bug: #768)]]></change>
+					<change><![CDATA[[Fix] sql_in_set-error when the forum does not contain any news or the user can not read any forum. (Bugs: #611, #649)]]></change>
 				</changelog>
 			</entry>
 
@@ -76,7 +86,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>2009-07-15</date>
 				<rev-version>1.0.2</rev-version>
 				<changelog lang="en">
-					<change>MOD-Validation-Report</change>
+					<change><![CDATA[[Fix] MOD-Validation-Report]]></change>
 				</changelog>
 			</entry>
 
@@ -84,9 +94,8 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>2009-07-02</date>
 				<rev-version>1.0.1</rev-version>
 				<changelog lang="en">
-					<change>View pagination in archive</change>
-					<change>View number of archive-entries</change>
-					<change>View number of archive-entries</change>
+					<change><![CDATA[[Feature] View pagination in archive]]></change>
+					<change><![CDATA[[Feature] Display number of archive-entries (Bug: #527)]]></change>
 				</changelog>
 			</entry>
 
@@ -94,7 +103,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>2007-12-18</date>
 				<rev-version>0.1.0</rev-version>
 				<changelog lang="en">
-					<change>validated to phpBB 3.0.0</change>
+					<change><![CDATA[[Fix] Make it work with phpBB 3.0.0]]></change>
 				</changelog>
 			</entry>
 
@@ -102,10 +111,10 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>2007-10-16</date>
 				<rev-version>0.0.2</rev-version>
 				<changelog lang="en">
-					<change>cut down news-message</change>
-					<change>hide profile info</change>
-					<change>hide post buttons</change>
-					<change>subsilver2 included</change>
+					<change><![CDATA[[Feature] Option to hide profile information.]]></change>
+					<change><![CDATA[[Feature] Option to hide post buttons (quote, edit, delete, ...).]]></change>
+					<change><![CDATA[[Feature] Add support for subsilver2]]></change>
+					<change><![CDATA[[Feature] Option to trim the news-message to a given length.]]></change>
 				</changelog>
 			</entry>
 
@@ -113,7 +122,7 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<date>2007-09-09</date>
 				<rev-version>0.0.1</rev-version>
 				<changelog lang="en">
-					<change>first version</change>
+					<change><![CDATA[Alpha version]]></change>
 				</changelog>
 			</entry>
 		</history>
@@ -183,22 +192,22 @@ Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten we
 				<action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
 			</edit>
 		</open>
+
 		<php-installer><![CDATA[install/index.php]]></php-installer>
+
 		<diy-instructions lang="de"><![CDATA[Leere den Cache im "Administrations-Bereich" (ACP) > "Allgemein" > "Den Cache leeren"
 
 Aktualisiere deine Styles:
 		"Administrations-Bereich" (ACP) > "Styles" > "Templates" > jedes > "Aktualisieren"
 		"Administrations-Bereich" (ACP) > "Styles" > "Themes" > jedes > "Aktualisieren"
 
-Wenn ihr den MOD in eine weitere Sprache übersetzt habt, schickt mir doch eine pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319]]></diy-instructions>
+Wenn du die MOD übersetzen möchtest, forke die MOD auf github.com, füge deine Sprachdateien hinzu und sende einen Pull-Request.]]></diy-instructions>
 		<diy-instructions lang="en"><![CDATA[Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
 
 Refresh your Styles:
 		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
 		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"
 
-If you want me to add your language file to the download, just leave me a pm:
-http://www.phpbb.com/community/ucp.php?i=pm&amp;mode=compose&amp;u=315319]]></diy-instructions>
+If you want to translate this MOD, fork it on github.com, add your language to the repository and send a pull-request.]]></diy-instructions>
 	</action-group>
 </mod>

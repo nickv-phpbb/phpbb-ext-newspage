@@ -5,34 +5,40 @@
 	<header>
 		<license>http://opensource.org/licenses/gpl-license.php GNU General Public License v2</license>
 
-		<title lang="en">NV newspage</title>
+		<title lang="de"><![CDATA[NV newspage]]></title>
+		<title lang="en"><![CDATA[NV newspage]]></title>
 
-		<description lang="en">see normal install-/update-file</description>
+		<description lang="de"><![CDATA[Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
+Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
+Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.]]></description>
+		<description lang="en"><![CDATA[Adds a extra-page to the board where a switchable number of news are displayed.
+The text can be shorten to a certain number of chars.
+Also the Icons can be switched of (post icons, user icons)]]></description>
 
 		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
 		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
 
 		<author-group>
 			<author>
-				<realname>Joas Schilling</realname>
-				<email>nickvergessen@gmx.de</email>
-				<username>nickvergessen</username>
-				<homepage>http://www.flying-bits.org</homepage>
+				<realname><![CDATA[Joas Schilling]]></realname>
+				<email><![CDATA[nickvergessen@gmx.de]]></email>
+				<username><![CDATA[nickvergessen]]></username>
+				<homepage><![CDATA[http://www.flying-bits.org/]]></homepage>
 				<contributions />
 			</author>
 
 			<author>
-				<realname>Falk Seidel</realname>
-				<email>admin@un1matr1x.de</email>
-				<username>Unimatrix_0</username>
-				<homepage>http://un1matr1x.de/</homepage>
+				<realname><![CDATA[Falk Seidel]]></realname>
+				<email><![CDATA[admin@un1matr1x.de]]></email>
+				<username><![CDATA[Unimatrix_0]]></username>
+				<homepage><![CDATA[http://un1matr1x.de/]]></homepage>
 				<contributions-group>
 					<contributions status="current" from="2011-01-22" position="Co-Developer" />
 				</contributions-group>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.3</mod-version>
+		<mod-version>1.0.4</mod-version>
 
 		<installation>
 			<level>easy</level>
