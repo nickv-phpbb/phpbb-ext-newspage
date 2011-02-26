@@ -9,6 +9,9 @@
 
 		<description lang="en">see normal install-/update-file</description>
 
+		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
+		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
+
 		<author-group>
 			<author>
 				<realname>Joas Schilling</realname>
