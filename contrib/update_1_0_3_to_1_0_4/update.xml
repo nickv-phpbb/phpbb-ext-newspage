@@ -66,5 +66,15 @@ Also the Icons can be switched of (post icons, user icons)</description>
 		</delete>
 
 		<php-installer><![CDATA[install/index.php]]></php-installer>
+		<diy-instructions lang="en"><![CDATA[Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
+
+Refresh your Styles:
+		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
+		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"]]></diy-instructions>
+		<diy-instructions lang="de"><![CDATA[Leere den Cache im "Administrations-Bereich" (ACP) > "Allgemein" > "Den Cache leeren"
+
+Aktualisiere deine Styles:
+		"Administrations-Bereich" (ACP) > "Styles" > "Templates" > jedes > "Aktualisieren"
+		"Administrations-Bereich" (ACP) > "Styles" > "Themes" > jedes > "Aktualisieren"]]></diy-instructions>
 	</action-group>
 </mod>
