@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<mods>
+	<nv_newspage>
+		<author>nickvergesssen</author>
+		<title lang="en">NV newspage</title>
+		<description lang="en">No description given.</description>
+		<download>http://www.flying-bits.org/download.php?mod_id=3</download>
+		<announcement>http://www.flying-bits.org/viewtopic.php?f=8</announcement>
+		<mod_version>
+			<major>1</major>
+			<minor>0</minor>
+			<revision>3</revision>
+			<release></release>
+		</mod_version>
+		<installation>
+			<level>easy</level>
+			<time>120</time>
+			<target-version>
+				<target-primary>3.0.8</target-primary>
+				<target-major allow="exact">3</target-major>
+				<target-minor allow="exact">0</target-minor>
+			</target-version>
+		</installation>
+		<upgrade>
+			<level>easy</level>
+			<time>120</time>
+			<target-version>
+				<target-primary>3.0.8</target-primary>
+				<target-major allow="exact">3</target-major>
+				<target-minor allow="exact">0</target-minor>
+			</target-version>
+		</upgrade>
+	</nv_newspage>
+</mods>
