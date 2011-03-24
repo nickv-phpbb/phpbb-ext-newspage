@@ -210,6 +210,21 @@
 <div id="pageheader">
 	<h2>{L_NEWS_ARCHIVE}</h2>
 </div><br clear="all" /><br />
+		<!-- IF .cat_block -->
+		<table class="tablebg" width="100%" cellspacing="1">
+			<tr>
+				<th>{L_NEWS_CAT}</th>
+			</tr>
+			<!-- BEGIN cat_block -->
+			<tr>
+				<td class="row1">
+					<a class="left news-archive" href="{cat_block.U_NEWS_CAT}" style="font-weight: bold;">{cat_block.NEWS_CAT}</a>
+				</td>
+			</tr>
+			<!-- END cat_block -->
+		</table>
+		<br />
+		<!-- ENDIF -->
 		<!-- BEGIN archive_block --><!-- IF not archive_block.S_FIRST_ROW --><br /><!-- ENDIF -->
 	<table class="tablebg" width="100%" cellspacing="1">
 		<tr>
@@ -224,22 +239,6 @@
 		<!-- END archive_row -->
 	</table>
 		<!-- END archive_block -->
-		
-	<!-- IF .cat_block -->
-	<br />
-	<table class="tablebg" width="100%" cellspacing="1">
-		<tr>
-			<th>{L_NEWS_CAT}</th>
-		</tr>
-		<!-- BEGIN cat_block -->
-		<tr>
-			<td class="row1">
-				<a class="left news-archive" href="{cat_block.U_NEWS_CAT}" style="font-weight: bold;">{cat_block.NEWS_CAT}</a>
-			</td>
-		</tr>
-		<!-- END cat_block -->
-	</table>
-	<!-- ENDIF -->
 	</td>
 	</tr>
 </table>
