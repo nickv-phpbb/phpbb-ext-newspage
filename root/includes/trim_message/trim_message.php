@@ -69,7 +69,7 @@ class phpbb_trim_message
 	*/
 	public function message($force_full_length = false)
 	{
-		if (is_null($this->is_trimmed))
+		if (is_null($this->is_trimmed) && !$force_full_length)
 		{
 			$this->is_trimmed = $this->trim();
 		}
@@ -96,7 +96,7 @@ class phpbb_trim_message
 		}
 
 		$this->trim_action();
-		return true;
+		return $this->bbcodes->is_trimmed;
 	}
 
 	/**
@@ -108,38 +108,39 @@ class phpbb_trim_message
 		* Prepare the difficult action
 		*/
 		$this->trimmed_message = $this->message;
-		$this->bbcodes = new phpbb_trim_message_bbcodes($this->trimmed_message, $this->bbcode_uid);
+		$this->bbcodes = new phpbb_trim_message_bbcodes($this->trimmed_message, $this->bbcode_uid, $this->length);
 
 		/**
-		* Step 1:	get a list of all BBCodes
+		* Step 1:	Get a list of all BBCodes
 		*/
 		$this->bbcodes->get_bbcodes();
 
 		/**
-		* Step 2:	i)	remove all bbcodes from the list, that are opened after
-		*				the trim-position
-		*			ii)	this also calculated the point where we really trim, as
-		*				it might be somewhere in a bbcode-tag
+		* Step 2:	Remove all bbcodes from the list, that are opened after
+		*			the trim-position
 		*/
-		$this->bbcodes->remove_bbcodes_after($this->length);
+		$this->bbcodes->remove_bbcodes_after();
 
 		/**
-		* Step 3:	trim message
+		* Step 3:	Trim message
 		*/
 		$this->trimmed_message = utf8_substr($this->message, 0, $this->bbcodes->trim_position);
 
 		/**
-		* Step 4:	i)		remove links/emails/smilies that are cut, somewhere
+		* Step 4:	i)		Remove links/emails/smilies that are cut, somewhere
 		*					in the middle
-		*			ii)		renew trim-position if we did something
-		*			iii)	append the message that is provided
+		*			ii)		Renew trim-position if we did something
+		*			iii)	Append the message that is provided
 		*/
 		$this->remove_broken_links();
 		$text_length = utf8_strlen($this->trimmed_message);
-		$this->trimmed_message .= $this->append_str;
+		if ($this->bbcodes->is_trimmed)
+		{
+			$this->trimmed_message .= $this->append_str;
+		}
 
 		/**
-		* Step 5:	close open BBCodes
+		* Step 5:	Close open BBCodes
 		*/
 		$open_bbcodes = $this->bbcodes->get_open_bbcodes_after($text_length);
 		$this->close_bbcodes($open_bbcodes);
@@ -150,31 +151,6 @@ class phpbb_trim_message
 	*/
 	private function remove_broken_links()
 	{
-		$open_link = substr_count($this->trimmed_message, '<!-- ');
-		$close_link = substr_count($this->trimmed_message, ' -->');
-
-		if ($open_link != $close_link)
-		{
-			/**
-			* We did not close all open marks for links, so we cut off the
-			* message before the last open mark ;)
-			* Example: <!-- l{cut} -->
-			*/
-			$this->trimmed_message = utf8_substr($this->trimmed_message, 0, utf8_strrpos($this->trimmed_message, '<!-- '));
-			$open_link--;
-		}
-
-		if (($open_link % 2) == 1)
-		{
-			/**
-			* We did not close all links we opened, so we cut off the message
-			* before the last open tag ;)
-			* Example: <!-- l -->{cut}<!-- l -->
-			*/
-			$this->trimmed_message = utf8_substr($this->trimmed_message, 0, utf8_strrpos($this->trimmed_message, '<!-- '));
-			return;
-		}
-
 		$open_brakets = substr_count($this->trimmed_message, '<');
 		$closing_brakets = substr_count($this->trimmed_message, '>');
 		if ($open_brakets != $closing_brakets)
@@ -184,6 +160,18 @@ class phpbb_trim_message
 			* Example: <{cut}!-- l -->
 			*/
 			$this->trimmed_message = utf8_substr($this->trimmed_message, 0, utf8_strrpos($this->trimmed_message, '<'));
+		}
+
+		$open_link = substr_count($this->trimmed_message, '<!-- ');
+		if (($open_link % 2) == 1)
+		{
+			/**
+			* We did not close all links we opened, so we cut off the message
+			* before the last open tag ;)
+			* Example: <!-- l -->{cut}<!-- l -->
+			*/
+			$this->trimmed_message = utf8_substr($this->trimmed_message, 0, utf8_strrpos($this->trimmed_message, '<!-- '));
+			return;
 		}
 	}
 
