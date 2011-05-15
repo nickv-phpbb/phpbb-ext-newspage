@@ -397,13 +397,16 @@ $result = $db->sql_query($sql);
 
 while ($row = $db->sql_fetchrow($result))
 {
-	$archiv_month = $user->format_date($row['topic_time'], 'F Y');
+	$month_name = $user->format_date($row['topic_time'], 'F');
+	$archiv_year = $user->format_date($row['topic_time'], 'Y');
+	
+	$archiv_month = $month_name . ' ' . $archiv_year;
 	if (in_array($archiv_month, $checked_months))
 	{
 		$archiv_months[$archiv_year][$archiv_month]['count']++;
 		continue;
 	}
-	$archiv_year = $user->format_date($row['topic_time'], 'Y');
+	
 	if (!in_array($archiv_year, $archiv_years))
 	{
 		$archiv_years[] = $archiv_year;
@@ -411,7 +414,7 @@ while ($row = $db->sql_fetchrow($result))
 	$checked_months[] = $archiv_month;
 	$archiv_months[$archiv_year][$archiv_month] = array(
 		'url'	=> $user->format_date($row['topic_time'], 'm_Y'),
-		'name'	=> $archiv_month,
+		'name'	=> $month_name,
 		'count'	=> 1,
 	);
 }
