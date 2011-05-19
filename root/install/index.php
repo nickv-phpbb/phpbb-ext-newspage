@@ -74,6 +74,10 @@ $versions = array(
 			array('news_archive_per_year', 1),
 		),
 	),
+
+	// Version 1.0.4
+	'1.0.4'	=> array(
+	),
 );
 
 // Include the UMIL Auto file and everything else will be handled automatically.

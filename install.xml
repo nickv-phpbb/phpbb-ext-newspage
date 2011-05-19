@@ -57,7 +57,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 
 		<history>
 			<entry>
-				<date>2011-MM-DD</date>
+				<date>2011-05-19</date>
 				<rev-version>1.0.4</rev-version>
 				<changelog lang="en">
 					<change><![CDATA[[Feature] Use php-installer feature of MODx 1.2.5 and fix some other XML issues. (Bug: #780)]]></change>

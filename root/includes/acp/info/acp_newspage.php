@@ -19,7 +19,7 @@ class acp_newspage_info
 		return array(
 			'filename'	=> 'acp_newspage',
 			'title'		=> 'NEWS',
-			'version'	=> '1.0.3',
+			'version'	=> '1.0.4',
 			'modes'		=> array(
 				'adjust_news'	=> array(
 					'title'		=> 'NEWS_CONFIG',
