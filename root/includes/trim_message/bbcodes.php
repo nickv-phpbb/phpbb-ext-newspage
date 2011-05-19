@@ -31,8 +31,11 @@ class phpbb_trim_message_bbcodes
 	private $bbcode_uid			= '';
 	private $bbcode_list		= array();
 	private $array_size			= 0;
-
+	private $max_content_length	= 0;
+	private $cur_content_length	= 0;
+	private $cur_position		= 0;
 	public  $trim_position		= 0;
+	public  $is_trimmed			= false;
 
 	/**
 	* Constructor
@@ -40,11 +43,12 @@ class phpbb_trim_message_bbcodes
 	* @param string	$message		parsed message you want to trim
 	* @param string	$bbcode_uid		bbcode_uid of the post
 	*/
-	public function __construct($message, $bbcode_uid)
+	public function __construct($message, $bbcode_uid, $content_length)
 	{
-		$this->message			= $message;
-		$this->bbcode_uid		= $bbcode_uid;
-		$this->array_size		= 0;
+		$this->message				= $message;
+		$this->bbcode_uid			= $bbcode_uid;
+		$this->max_content_length	= $content_length;
+		$this->array_size			= 0;
 	}
 
 	public function get_bbcodes()
@@ -52,9 +56,21 @@ class phpbb_trim_message_bbcodes
 		$bbcode_end_length = utf8_strlen(':' . $this->bbcode_uid . ']');
 		$quote_end_length = utf8_strlen('&quot;:' . $this->bbcode_uid . ']');
 
-		$text_position = 0;
 		$possible_bbcodes = explode('[', $this->message);
-		$text_position = utf8_strlen($possible_bbcodes[0]);
+		$content_length = $this->get_content_length($possible_bbcodes[0]);
+		if ($content_length >= $this->max_content_length)
+		{
+			$allowed_content_position = $this->get_content_position($possible_bbcodes[0], $this->max_content_length);
+			$this->trim_position = $this->cur_position + $allowed_content_position;
+			// As we did not touch any bbcodes yet, we can just skip all that.
+			if (!$this->max_content_length || ($content_length > $this->max_content_length))
+			{
+				$this->is_trimmed = true;
+			}
+			return;
+		}
+		$this->cur_position += utf8_strlen($possible_bbcodes[0]) + 1;
+		$this->cur_content_length += $content_length;
 
 		// Skip the first one.
 		array_shift($possible_bbcodes);
@@ -70,7 +86,6 @@ class phpbb_trim_message_bbcodes
 			$exploded_parts = explode(':' . $this->bbcode_uid . ']', $part);
 			$num_parts = sizeof($exploded_parts);
 
-
 			/**
 			* One element means we do not match an end before the next opening:
 			* String: [quote="[bbcode:uid]foobar[/bbcode:uid]":uid]
@@ -81,16 +96,16 @@ class phpbb_trim_message_bbcodes
 				// 1 means, we are in [quote="":uid] and found another bbcode here.
 				if (utf8_strpos($exploded_parts[0], 'quote=&quot;') === 0)
 				{
-					$open_end_quote = utf8_strpos($this->message, '&quot;:' . $this->bbcode_uid . ']', $text_position);
+					$open_end_quote = utf8_strpos($this->message, '&quot;:' . $this->bbcode_uid . ']', $this->cur_position);
 					if ($open_end_quote !== false)
 					{
 						$close_quote = utf8_strpos($this->message, '[/quote:' . $this->bbcode_uid . ']', $open_end_quote);
 						if ($close_quote !== false)
 						{
 							$open_end_quote += $quote_end_length;
-							$this->open_bbcode('quote', $text_position);
+							$this->open_bbcode('quote', $this->cur_position);
 							$this->bbcode_action('quote', 'open_end', $open_end_quote);
-							$text_position += utf8_strlen($exploded_parts[0]);
+							$this->cur_position += utf8_strlen($exploded_parts[0]);
 
 							// We allow the 3-keys special-case, when we have found a beginning before...
 							$allow_close_quote = true;
@@ -113,10 +128,24 @@ class phpbb_trim_message_bbcodes
 					// Open BBCode-tag
 					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
 
-					$this->open_bbcode($bbcode_tag, $text_position);
-					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
-					$this->bbcode_action($bbcode_tag, 'open_end', $text_position);
-					$text_position += utf8_strlen($exploded_parts[1]);
+					$this->open_bbcode($bbcode_tag, $this->cur_position);
+					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
+					$this->bbcode_action($bbcode_tag, 'open_end', $this->cur_position);
+
+					if (!$allow_close_quote)
+					{
+						// If we allow a closing quote, we are in the username.
+						// We do not count that as content-length.
+						$content_length = $this->get_content_length($exploded_parts[1]);
+						$max_content_allowed = ($this->max_content_length - $this->cur_content_length);
+						if (($content_length >= $max_content_allowed) && !$this->trim_position)
+						{
+							$allowed_content_position = $this->get_content_position($exploded_parts[1], $max_content_allowed);
+							$this->trim_position = $this->cur_position + $allowed_content_position;
+						}
+						$this->cur_content_length += $content_length;
+					}
+					$this->cur_position += utf8_strlen($exploded_parts[1]);
 				}
 				else
 				{
@@ -128,10 +157,24 @@ class phpbb_trim_message_bbcodes
 						$bbcode_tag_extended = '';
 					}
 
-					$this->bbcode_action($bbcode_tag, 'close_start', $text_position);
-					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
-					$this->bbcode_action($bbcode_tag, 'close_end', $text_position, $bbcode_tag_extended);
-					$text_position += utf8_strlen($exploded_parts[1]);
+					$this->bbcode_action($bbcode_tag, 'close_start', $this->cur_position);
+					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
+					$this->bbcode_action($bbcode_tag, 'close_end', $this->cur_position, $bbcode_tag_extended);
+
+					if (!$allow_close_quote)
+					{
+						// If we allow a closing quote, we are in the username.
+						// We do not count that as content-length.
+						$content_length = $this->get_content_length($exploded_parts[1]);
+						$max_content_allowed = ($this->max_content_length - $this->cur_content_length);
+						if (($content_length >= $max_content_allowed) && !$this->trim_position)
+						{
+							$allowed_content_position = $this->get_content_position($exploded_parts[1], $max_content_allowed);
+							$this->trim_position = $this->cur_position + $allowed_content_position;
+						}
+						$this->cur_content_length += $content_length;
+					}
+					$this->cur_position += utf8_strlen($exploded_parts[1]);
 				}
 			}
 			/**
@@ -145,18 +188,32 @@ class phpbb_trim_message_bbcodes
 				{
 					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
 
-					$this->bbcode_action($bbcode_tag, 'close_start', $text_position);
-					$text_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
-					$this->bbcode_action($bbcode_tag, 'close_end', $text_position);
-					$text_position += utf8_strlen($exploded_parts[1]) + $bbcode_end_length;
-					$text_position += utf8_strlen($exploded_parts[2]);
+					$this->bbcode_action($bbcode_tag, 'close_start', $this->cur_position);
+					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
+					$this->bbcode_action($bbcode_tag, 'close_end', $this->cur_position);
+					$this->cur_position += utf8_strlen($exploded_parts[1]) + $bbcode_end_length;
+
+					$content_length = $this->get_content_length($exploded_parts[2]);
+					$max_content_allowed = ($this->max_content_length - $this->cur_content_length);
+					if (($content_length >= $max_content_allowed) && !$this->trim_position)
+					{
+						$allowed_content_position = $this->get_content_position($exploded_parts[2], $max_content_allowed);
+						$this->trim_position = $this->cur_position + $allowed_content_position;
+					}
+					$this->cur_position += utf8_strlen($exploded_parts[2]);
+					$this->cur_content_length += $content_length;
 
 					$allow_close_quote = false;
 				}
 			}
 
 			// Increase by one for the [ we explode on.
-			$text_position++;
+			$this->cur_position++;
+		}
+
+		if ($this->cur_content_length > $this->max_content_length)
+		{
+			$this->is_trimmed = true;
 		}
 	}
 
@@ -213,37 +270,14 @@ class phpbb_trim_message_bbcodes
 
 	/**
 	* Removes all BBcodes after a given position
-	*
-	* @param	int	$position	position where we trim the message
-	*
-	* @return	int	Returns the new trim-position, so we do not cut inside of
-	*				a bbcode-tag. Exp: [co{cut}de]
-	*						Returns: >x<
 	*/
-	public function remove_bbcodes_after($position)
+	public function remove_bbcodes_after()
 	{
-		$this->trim_position		= $position;
-
 		for ($i = 1; $i <= $this->array_size; $i++)
 		{
-			if ($this->bbcode_list[$this->array_size - $i]['open_start'] >= $position)
+			if ($this->bbcode_list[$this->array_size - $i]['open_start'] >= $this->trim_position)
 			{
 				unset($this->bbcode_list[$this->array_size - $i]);
-			}
-			else
-			{
-				if (($this->bbcode_list[$this->array_size - $i]['open_start'] < $position) &&
-				 ($this->bbcode_list[$this->array_size - $i]['open_end'] >= $position) &&
-				 ($this->trim_position > $this->bbcode_list[$this->array_size - $i]['open_start']))
-				{
-					$this->trim_position		= $this->bbcode_list[$this->array_size - $i]['open_start'];
-				}
-				else if (($this->bbcode_list[$this->array_size - $i]['close_start'] < $position) &&
-				 ($this->bbcode_list[$this->array_size - $i]['close_end'] >= $position) &&
-				 ($this->trim_position > $this->bbcode_list[$this->array_size - $i]['close_start']))
-				{
-					$this->trim_position		= $this->bbcode_list[$this->array_size - $i]['close_start'];
-				}
 			}
 		}
 
@@ -268,6 +302,91 @@ class phpbb_trim_message_bbcodes
 	}
 
 	/**
+	* Get the length of the content (substract code for smilie and url parsing)
+	*
+	* @param	string	$content	Message to get the content length from
+	*								Exp:     <markup>text<markup2>
+	*								Content:         ^^^^
+	*
+	* @return	int		length of content without special markup
+	*/
+	static public function get_content_length($content)
+	{
+		$content_length = utf8_strlen($content);
+		$last_html_opening = $last_html_closing = $last_smiley = false;
+		while (($last_html_opening = utf8_strpos($content, '<', $last_html_closing)) !== false)
+		{
+			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
+			if (($smiley_code = utf8_substr($content, $last_html_opening + 7, ($last_html_closing - $last_html_opening - 11))) != '--')
+			{
+				if ($last_smiley == $smiley_code)
+				{
+					$content_length += utf8_strlen($smiley_code);
+					$last_smiley = false;
+				}
+				else
+				{
+					$last_smiley = $smiley_code;
+				}
+			}
+			$content_length -= ($last_html_closing - $last_html_opening) + 1;
+		}
+		return $content_length;
+	}
+
+	/**
+	* Get the position in the text, where we need to cut the message.
+	*
+	* Exp:     sample<markup>text<markup2>	AL = 8
+	* Content: ^^^^^^^^^^^^^^^^  Text-Position = 16
+	*
+	* @param	string	$content			Message to get the position in
+	* @param	int		$allowed_length		Content length we are allowed to add.
+	*
+	* @return	int		position in the markup-text where we cut the text
+	*/
+	static public function get_content_position($content, $allowed_length)
+	{
+		if (utf8_strpos(utf8_substr($content, 0, $allowed_length), '<') === false)
+		{
+			/**
+			* If we did not find any HTML in our section, we can cut it.
+			* Exp:     sample<markup>text<markup2>	AL = 3
+			* Content: ^^^               Text-Position = 3
+			*/
+			return $allowed_length;
+		}
+
+		$content_length = $allowed_length;
+		$start_position = 0;
+		$last_smiley = false;
+		while (($last_html_opening = utf8_strpos(utf8_substr($content, 0, $content_length), '<', $start_position)) !== false)
+		{
+			// foreach markup we find in the string, we enlarge our text-size.
+			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
+			$content_length += ($last_html_closing - $last_html_opening) + 1;
+
+			$smiley_code = utf8_substr($content, $last_html_opening + 7, ($last_html_closing - $last_html_opening - 11));
+			if (($smiley_code != '--') && (utf8_strpos($smiley_code, 'c="{SMILIES_PATH}/') === false))
+			{
+				if ($last_smiley == $smiley_code)
+				{
+					$content_length -= utf8_strlen($smiley_code);
+					$last_smiley = false;
+				}
+				else
+				{
+					$last_smiley = $smiley_code;
+				}
+			}
+
+			$start_position = $last_html_opening + 1;
+		}
+
+		return $content_length;
+	}
+
+	/**
 	* Filter BBCode-Tags:
 	*
 	* Exp:	[/*:m]					<= automatically added end of [*]
@@ -276,7 +395,7 @@ class phpbb_trim_message_bbcodes
 	*
 	* @return	string		plain bbcode-tag
 	*/
-	public function filter_bbcode_tag($bbcode_tag, $strip_information = true)
+	static public function filter_bbcode_tag($bbcode_tag, $strip_information = true)
 	{
 		if ($bbcode_tag[0] == '/')
 		{
