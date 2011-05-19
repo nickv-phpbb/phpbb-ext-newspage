@@ -60,6 +60,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 				<date>2011-MM-DD</date>
 				<rev-version>1.0.4</rev-version>
 				<changelog lang="en">
+					<change><![CDATA[[Change] Remove the tailing year after the month at the archiveblock. (Bug: #794)]]></change>
 					<change><![CDATA[[Feature] Use php-installer feature of MODx 1.2.5 and fix some other XML issues. (Bug: #780)]]></change>
 					<change><![CDATA[[Feature] Use Trim-Message-Tool to correctly trim posts in their lenght without breaking BBCodes. (Bug: #779)]]></change>
 					<change><![CDATA[[Change] Change order of archive-blocks. (Bug: #786)]]></change>
