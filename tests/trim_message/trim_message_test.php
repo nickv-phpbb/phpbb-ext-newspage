@@ -32,6 +32,14 @@ class phpbb_trim_message_test extends phpbb_test_case
 				'message'		=> '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2][/list:u:1wmer8b2]',
 				'bbcode_uid'	=> '1wmer8b2',
 			),
+			array(
+				'message'		=> 'Thanks to [player]Un1matr1x[/player] for the bug report.',
+				'bbcode_uid'	=> '1wmer8b2',
+			),
+			array(
+				'message'		=> 'foo[quote=&quot;he[llo&quot;:2sda49fx]test[/quote:2sda49fx]bar',
+				'bbcode_uid'	=> '2sda49fx',
+			),
 		);
 
 		$cases = array(
@@ -113,6 +121,38 @@ class phpbb_trim_message_test extends phpbb_test_case
 			array(
 				'message_set' => 3, 'length' => 2, 'trimmed' => false,
 				'expected' => '[list:1wmer8b2][*:1wmer8b2]1[/*:m:1wmer8b2][*:1wmer8b2]2[/*:1wmer8b2][/list:u:1wmer8b2]',
+			),
+
+			/**
+			* Handling non-bbcode []-brackets
+			*/
+			array(
+				'message_set' => 4, 'length' => 6, 'trimmed' => true,
+				'expected' => 'Thanks [...]',
+			),
+			array(
+				'message_set' => 4, 'length' => 15, 'trimmed' => true,
+				'expected' => 'Thanks to [play [...]',
+			),
+			array(
+				'message_set' => 4, 'length' => 21, 'trimmed' => true,
+				'expected' => 'Thanks to [player]Un1 [...]',
+			),
+			array(
+				'message_set' => 4, 'length' => 40, 'trimmed' => true,
+				'expected' => 'Thanks to [player]Un1matr1x[/player] for [...]',
+			),
+			array(
+				'message_set' => 4, 'length' => 57, 'trimmed' => false,
+				'expected' => 'Thanks to [player]Un1matr1x[/player] for the bug report.',
+			),
+
+			/**
+			* [ Brackets in quote-usernames
+			*/
+			array(
+				'message_set' => 5, 'length' => 5, 'trimmed' => true,
+				'expected' => 'foo[quote=&quot;he[llo&quot;:2sda49fx]te [...][/quote:2sda49fx]',
 			),
 		);
 

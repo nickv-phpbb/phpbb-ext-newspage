@@ -112,9 +112,23 @@ class phpbb_trim_message_bbcodes
 						}
 					}
 				}
+				// Or the user just used a normal [ in his post.
+				else
+				{
+					$this->cur_content_length++;
+					$content_length = $this->get_content_length($exploded_parts[0]);
+					$max_content_allowed = ($this->max_content_length - $this->cur_content_length);
+					if (($content_length >= $max_content_allowed) && !$this->trim_position)
+					{
+						$allowed_content_position = $this->get_content_position($exploded_parts[0], $max_content_allowed);
+						$this->trim_position = $this->cur_position + $allowed_content_position;
+					}
+					$this->cur_content_length += $content_length;
+					$this->cur_position += utf8_strlen($exploded_parts[0]);
+				}
 			}
 			/**
-			* Two element is hte normal case:
+			* Two element is the normal case:
 			* String: [bbcode:uid]foobar
 			* Keys:    ^^^^^^ = 0 ^^^^^^ = 1
 			* String: [/bbcode:uid]foobar
@@ -122,8 +136,28 @@ class phpbb_trim_message_bbcodes
 			*/
 			elseif ($num_parts == 2)
 			{
+				/**
+				* We found an opening bracket in the quoted username which is not a bbcode
+				* String: [quote="odd[name":uid]quote-text
+				* Keys:               ^^^^^ = 0 ^^^^^^^^^^ = 1
+				*/
+				if ($allow_close_quote && (utf8_substr($exploded_parts[0], -6) == '&quot;'))
+				{
+					$this->cur_position += utf8_strlen($exploded_parts[0]) + $bbcode_end_length;
+
+					$content_length = $this->get_content_length($exploded_parts[1]);
+					$max_content_allowed = ($this->max_content_length - $this->cur_content_length);
+					if (($content_length >= $max_content_allowed) && !$this->trim_position)
+					{
+						$allowed_content_position = $this->get_content_position($exploded_parts[1], $max_content_allowed);
+						$this->trim_position = $this->cur_position + $allowed_content_position;
+					}
+					$this->cur_content_length += $content_length;
+					$this->cur_position += utf8_strlen($exploded_parts[1]);
+					$allow_close_quote = false;
+				}
 				// We matched it something ;)
-				if ($exploded_parts[0][0] != '/')
+				else if ($exploded_parts[0][0] != '/')
 				{
 					// Open BBCode-tag
 					$bbcode_tag = $this->filter_bbcode_tag($exploded_parts[0]);
