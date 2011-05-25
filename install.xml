@@ -58,8 +58,9 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 		<history>
 			<entry>
 				<date>2011-05-25</date>
-				<rev-version>1.0.4.1</rev-version>
+				<rev-version>1.0.5</rev-version>
 				<changelog lang="en">
+					<change><![CDATA[[Fix] PHP Notice: Undefined variable: user_cache, when post was edited by a different user (Bug: #796)]]></change>
 					<change><![CDATA[[Fix] Issue in Trim-Message-Tool with []-brackets that are no BBCode (Bug: #795)]]></change>
 				</changelog>
 			</entry>
