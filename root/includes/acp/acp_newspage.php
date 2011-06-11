@@ -5,7 +5,7 @@
 * @package - NV newspage
 * @version $Id$
 * @copyright (c) nickvergessen ( http://www.flying-bits.org/ )
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License 
+* @license http://opensource.org/licenses/gpl-license.php GNU Public License
 *
 */
 
