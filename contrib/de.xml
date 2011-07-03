@@ -38,12 +38,12 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.5</mod-version>
+		<mod-version>1.0.5.1</mod-version>
 
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.8</target-version>
+			<target-version>3.0.9</target-version>
 		</installation>
 
 		<link-group>
