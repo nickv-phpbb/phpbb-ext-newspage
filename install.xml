@@ -59,7 +59,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 
 		<history>
 			<entry>
-				<date>20YY-MM-DD</date>
+				<date>2011-07-04</date>
 				<rev-version>1.0.5.1</rev-version>
 				<changelog lang="en">
 					<change><![CDATA[[Change] phpBB target-version raised to 3.0.9 (Bug: #814)]]></change>
