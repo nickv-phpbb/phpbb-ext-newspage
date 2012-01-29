@@ -34,7 +34,6 @@ $lang = array_merge($lang, array(
 	'NEWS_CAT_SHOW'				=> 'Show categories',
 	'NEWS_CAT_SHOW_EXPLAIN'		=> 'The selected forums will appear as categories.',
 	'NEWS_CHAR_LIMIT'			=> 'Number of characters, displayed on the news-page',
-	'NEWS_CHAR_LIMIT_EXPLAIN'	=> 'Please note: this might break BBCodes to view quite ugly and in non-strict HTML.',
 	'NEWS_COMMENTS'				=> 'Comments',
 	'NEWS_FORUMS'				=> 'Select News-Forums',
 	'NEWS_GO_TO_TOPIC'			=> 'Link to topic',

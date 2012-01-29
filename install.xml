@@ -38,12 +38,12 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.5.1</mod-version>
+		<mod-version>1.0.6</mod-version>
 
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.9</target-version>
+			<target-version>3.0.10</target-version>
 		</installation>
 
 		<link-group>
@@ -51,13 +51,21 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
 			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
 			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
+			<link type="parent" lang="de" href="contrib/update_1_0_5_1_to_1_0_6/update.xml">Anleitung für das Update von 1.0.5.1 zu 1.0.6</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_5_1_to_1_0_6/update.xml">Manual for the update 1.0.5.1 to 1.0.6</link>
 			<link type="parent" lang="de" href="contrib/update_1_0_4_to_1_0_5/update.xml">Anleitung für das Update von 1.0.4 zu 1.0.5.1</link>
 			<link type="parent" lang="en" href="contrib/update_1_0_4_to_1_0_5/update.xml">Manual for the update 1.0.4 to 1.0.5.1</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_3_to_1_0_4/update.xml">Anleitung für das Update von 1.0.3 zu 1.0.4</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_3_to_1_0_4/update.xml">Manual for the update 1.0.3 to 1.0.4</link>
 		</link-group>
 
 		<history>
+			<entry>
+				<date>2012-mm-dd</date>
+				<rev-version>1.0.6</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[[Change] language-files clean-out (Bug: #936)]]></change>
+				</changelog>
+			</entry>
+
 			<entry>
 				<date>2011-07-04</date>
 				<rev-version>1.0.5.1</rev-version>
