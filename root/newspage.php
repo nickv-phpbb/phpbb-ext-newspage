@@ -489,7 +489,7 @@ if (!$only_news)
 	{
 		$total_paginated = $total_news;
 	}
-	$pagination = generate_pagination(append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", (($archive_var) ? 'archive=' . $archive_var : '')), $total_paginated, $config['news_number'], $start);
+	$pagination = generate_pagination(append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", (($archive_var) ? 'archive=' . $archive_var : '').(($only_category) ? 'f=' . $only_category : '')), $total_paginated, $config['news_number'], $start);
 
 	$template->assign_vars(array(
 		'PAGINATION'		=> $pagination,
