@@ -43,7 +43,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.9</target-version>
+			<target-version>3.0.10</target-version>
 		</installation>
 
 		<link-group>
@@ -62,7 +62,9 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 				<date>2012-mm-dd</date>
 				<rev-version>1.0.6</rev-version>
 				<changelog lang="en">
+					<change><![CDATA[[Change] phpBB target-version raised to 3.0.10 (Bug: #935)]]></change>
 					<change><![CDATA[[Fix] Add categories to pagination (Bug: #929, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Change] Update TMT to version 1.1]]></change>
 				</changelog>
 			</entry>
 
