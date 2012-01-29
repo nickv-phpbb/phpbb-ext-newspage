@@ -15,7 +15,7 @@
 			<level>easy</level>
 			<time>120</time>
 			<target-version>
-				<target-primary>3.0.9</target-primary>
+				<target-primary>3.0.10</target-primary>
 				<target-major allow="exact">3</target-major>
 				<target-minor allow="exact">0</target-minor>
 			</target-version>
@@ -24,7 +24,7 @@
 			<level>easy</level>
 			<time>120</time>
 			<target-version>
-				<target-primary>3.0.9</target-primary>
+				<target-primary>3.0.10</target-primary>
 				<target-major allow="exact">3</target-major>
 				<target-minor allow="exact">0</target-minor>
 			</target-version>
