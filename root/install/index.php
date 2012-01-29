@@ -86,6 +86,10 @@ $versions = array(
 	// Version 1.0.5.1
 	'1.0.5.1'	=> array(
 	),
+
+	// Version 1.0.6
+	'1.0.6'	=> array(
+	),
 );
 
 // Include the UMIL Auto file and everything else will be handled automatically.
