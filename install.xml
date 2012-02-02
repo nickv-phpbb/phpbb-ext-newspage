@@ -69,6 +69,12 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 					<change><![CDATA[[Fix] Add categories to pagination (Bug: #929, Patch by: Un1matr1x)]]></change>
 				</changelog>
 			</entry>
+			<entry>
+				<date>YYYY-MM-DD</date>
+				<rev-version>1.0.7</rev-version>
+				<changelog lang="en">
+				</changelog>
+			</entry>
 
 			<entry>
 				<date>2011-07-04</date>
