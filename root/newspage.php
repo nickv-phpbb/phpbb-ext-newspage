@@ -306,7 +306,7 @@ while ($row = $db->sql_fetchrow($result))
 	get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
 	$row['user_email'] = ((!empty($row['user_allow_viewemail']) || $auth->acl_get('a_email')) && ($row['user_email'] != '')) ? ($config['board_email_form'] && $config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=email&amp;u=$poster_id") : (($config['board_hide_emails'] && !$auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']) : '';
 	$row['user_msnm'] = ($row['user_msnm'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '';
-	$row['user_icq'] = (!empty($row['user_icq'])) ? 'http://www.icq.com/people/webmsg.php?to=' . $row['user_icq'] : '';
+	$row['user_icq'] = (!empty($row['user_icq'])) ? 'http://www.icq.com/people/' . urlencode($row['user_icq']) . '/' : '';
 	$row['user_icq_status_img'] = (!empty($row['user_icq'])) ? '<img src="http://web.icq.com/whitepages/online?icq=' . $row['user_icq'] . '&amp;img=5" width="18" height="18" alt="" />' : '';
 	$row['user_yim'] = ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg' : '';
 	$row['user_aim'] = ($row['user_aim'] && $auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.$phpEx", "mode=contact&amp;action=aim&amp;u=$poster_id") : '';
@@ -430,7 +430,7 @@ foreach ($archiv_years as $archive_year)
 	foreach ($archiv_months[$archive_year] as $archive_month)
 	{
 		$template->assign_block_vars('archive_block.archive_row', array(
-			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'archive=' . $archive_month['url'].(($only_category && $config['news_cat_show']) ? "&amp;f=$only_category" : '')),
+			'U_NEWS_MONTH'		=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx", 'archive=' . $archive_month['url'] . (($only_category && !empty($config['news_cat_show'])) ? "&amp;f=$only_category" : '')),
 			'NEWS_MONTH'		=> $archive_month['name'],
 			'NEWS_COUNT'		=> $archive_month['count'],
 		));

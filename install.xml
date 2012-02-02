@@ -64,6 +64,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 				<changelog lang="en">
 					<change><![CDATA[[Change] phpBB target-version raised to 3.0.10 (Bug: #935)]]></change>
 					<change><![CDATA[[Change] Update TMT to version 1.1]]></change>
+					<change><![CDATA[[Fix] ICQ profile link leads to a webservice that is no longer active (Bug: #937)]]></change>
 					<change><![CDATA[[Fix] Clean language files (remove some old and wrong strings) (Bug: #936, Patch by: Un1matr1x)]]></change>
 					<change><![CDATA[[Fix] Add categories to pagination (Bug: #929, Patch by: Un1matr1x)]]></change>
 				</changelog>
