@@ -48,6 +48,8 @@ $lang = array_merge($lang, array(
 	'NEWS_READ_FULL'			=> 'Read full news',
 	'NEWS_READ_HERE'			=> 'Here',
 	'NEWS_SAVED'				=> 'saved setup',
+	'NEWS_SHADOW_SHOW'			=> 'Show shadow topics',
+	'NEWS_SHADOW_SHOW_EXPLAIN'	=> 'show news, if a shadow topic is left in place',
 	'NEWS_USER_INFO'			=> 'Show user info',
 	'NEWS_USER_INFO_EXPLAIN'	=> '(posts, location, ...)',
 

@@ -35,6 +35,7 @@ $start = request_var('start', 0);
 
 $archive_start = $archive_end = 0;
 $sql_single_news = $sql_archive_news = $archive_name = '';
+$sql_show_shadow = ($config['news_shadow']) ? '' : 'AND topic_moved_id = 0';
 $attachments = $attach_list = array();
 $has_attachments = false;
 
@@ -111,6 +112,7 @@ $sql = 'SELECT forum_id, topic_id, topic_type, topic_poster, topic_first_post_id
 	WHERE ' . $db->sql_in_set('forum_id', $sql_forum_ary, false, true) . "
 		$sql_single_news
 		$sql_archive_news
+		$sql_show_shadow
 	ORDER BY topic_time " . (($archive_start) ? 'ASC' : 'DESC');
 if ($only_news)
 {

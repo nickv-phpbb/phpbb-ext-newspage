@@ -93,6 +93,9 @@ $versions = array(
 
 	// Version 1.0.7
 	'1.0.7'	=> array(
+		'config_add' => array(
+			array('news_shadow', 0),
+		),
 	),
 );
 

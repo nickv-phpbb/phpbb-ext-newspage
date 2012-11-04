@@ -30,6 +30,11 @@
 			<dd><input type="text" name="news_char_limit" size="10" value="{NEWS_CHAR_LIMIT}" /></dd>
 		</dl>
 		<dl>
+			<dt><label for="news_shadow_show">{L_NEWS_SHADOW_SHOW}:</label><br /><span>{L_NEWS_SHADOW_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_shadow_show" value="1" <!-- IF NEWS_SHADOW_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_shadow_show" value="0" <!-- IF not NEWS_SHADOW_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
 			<dt><label for="news_user_info">{L_NEWS_USER_INFO}:</label><br /><span>{L_NEWS_USER_INFO_EXPLAIN}</span></dt>
 			<dd><input type="radio" class="radio" name="news_user_info" value="1" <!-- IF NEWS_USER_INFO -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
 				<input type="radio" class="radio" name="news_user_info" value="0" <!-- IF not NEWS_USER_INFO -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>

@@ -25,7 +25,7 @@ class nv_newspage_version
 			'author'	=> 'nickvergessen',
 			'title'		=> 'NV Newspage',
 			'tag'		=> 'nv_newspage',
-			'version'	=> '1.0.6',
+			'version'	=> '1.0.7',
 			'file'		=> array('www.flying-bits.org', 'updatecheck', 'nv_newspage.xml'),
 		);
 	}

@@ -48,6 +48,7 @@ class acp_newspage
 			set_config('news_pages', max(1, request_var('news_pages', 0)));
 			set_config('news_post_buttons', request_var('news_post_buttons', 0));
 			set_config('news_user_info', request_var('news_user_info', 0));
+			set_config('news_shadow', request_var('news_shadow_show', 0));
 			set_config('news_attach_show', request_var('news_attach_show', 0));
 			set_config('news_cat_show', request_var('news_cat_show', 0));
 			set_config('news_archive_per_year', request_var('news_archive_per_year', 0));
@@ -62,9 +63,10 @@ class acp_newspage
 			'NEWS_PAGES'			=> $config['news_pages'],
 			'NEWS_POST_BUTTONS'		=> $config['news_post_buttons'],
 			'NEWS_USER_INFO'		=> $config['news_user_info'],
+			'NEWS_SHADOW_SHOW'		=> $config['news_shadow'],
 			'NEWS_ATTACH_SHOW'		=> $config['news_attach_show'],
 			'NEWS_CAT_SHOW'			=> $config['news_cat_show'],
-			'NEWS_ARCHIVE_PER_YEAR'			=> $config['news_archive_per_year'],
+			'NEWS_ARCHIVE_PER_YEAR'	=> $config['news_archive_per_year'],
 			'S_SELECT_FORUMS'		=> make_forum_select(explode(',', $config['news_forums'])),
 		));
 

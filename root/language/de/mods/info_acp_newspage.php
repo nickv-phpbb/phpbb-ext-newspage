@@ -49,6 +49,8 @@ $lang = array_merge($lang, array(
 	'NEWS_READ_HERE'			=> 'Hier',
 	'NEWS_SAVED'				=> 'Einstellung gespeichert.',
 	'NEWS_USER_INFO'			=> 'Benutzerinformation anzeigen',
+	'NEWS_SHADOW_SHOW'			=> 'Schatten-Themen anzeigen',
+	'NEWS_SHADOW_SHOW_EXPLAIN'	=> 'Zeigt die News, wenn ein Link im alten Forum beibehalten wurde',
 	'NEWS_USER_INFO_EXPLAIN'	=> '(Beiträge, Wohnort, ...)',
 
 	'NEWSPAGE'					=> 'NV Newspage',
