@@ -61,6 +61,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			<entry>
 				<date>YYYY-MM-DD</date>
 				<rev-version>1.0.7</rev-version>
+					<change><![CDATA[[Change] Update TMT to version 1.2 (Bug: #978)]]></change>
 					<change><![CDATA[[Fix] Add option to hide shadow topics (Bug: #966, Patch by: Un1matr1x)]]></change>
 				<changelog lang="en">
 				</changelog>

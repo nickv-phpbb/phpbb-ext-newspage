@@ -9,7 +9,7 @@
 * @package    trim_message
 * @copyright  2011
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    1.0
+* @version    1.2
 */
 
 /**

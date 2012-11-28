@@ -8,7 +8,7 @@
 * @package    trim_message
 * @copyright  2011
 * @license    http://opensource.org/licenses/gpl-license.php GNU Public License
-* @version    1.1
+* @version    1.2
 */
 
 /**
@@ -37,6 +37,7 @@ class phpbb_trim_message_bbcodes
 	*/
 	private $message			= '';
 	private $bbcode_uid			= '';
+	private $bracket_replacement= '';
 	private $bbcode_list		= array();
 	private $array_size			= 0;
 	private $max_content_length	= 0;
@@ -63,6 +64,8 @@ class phpbb_trim_message_bbcodes
 	{
 		$bbcode_end_length = utf8_strlen(':' . $this->bbcode_uid . ']');
 		$quote_end_length = utf8_strlen('&quot;:' . $this->bbcode_uid . ']');
+
+		$this->replace_square_brackets_in_smilies();
 
 		$possible_bbcodes = explode('[', $this->message);
 		$content_length = $this->get_content_length($possible_bbcodes[0]);
@@ -359,15 +362,17 @@ class phpbb_trim_message_bbcodes
 	*
 	* @return	int		length of content without special markup
 	*/
-	static public function get_content_length($content)
+	public function get_content_length($content)
 	{
+		$content = $this->restore_square_brackets_in_smilies($content);
+
 		$content_length = utf8_strlen($content);
 		$last_smiley = false;
 		$last_html_opening = $last_html_closing = 0;
 		while (($last_html_opening = utf8_strpos($content, '<', $last_html_closing)) !== false)
 		{
 			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
-			if (($smiley_code = utf8_substr($content, $last_html_opening + 7, ($last_html_closing - $last_html_opening - 11))) != '--')
+			if (($smiley_code = utf8_substr($content, $last_html_opening + 6, ($last_html_closing - $last_html_opening - 9))) != '--')
 			{
 				if ($last_smiley == $smiley_code)
 				{
@@ -395,8 +400,10 @@ class phpbb_trim_message_bbcodes
 	*
 	* @return	int		position in the markup-text where we cut the text
 	*/
-	static public function get_content_position($content, $allowed_length)
+	public function get_content_position($content, $allowed_length)
 	{
+		$content = $this->restore_square_brackets_in_smilies($content);
+
 		if (utf8_strpos(utf8_substr($content, 0, $allowed_length), '<') === false)
 		{
 			/**
@@ -416,9 +423,10 @@ class phpbb_trim_message_bbcodes
 			$last_html_closing = utf8_strpos($content, '>', $last_html_opening);
 			$content_length += ($last_html_closing - $last_html_opening) + 1;
 
-			$smiley_code = utf8_substr($content, $last_html_opening + 7, ($last_html_closing - $last_html_opening - 11));
+			$smiley_code = utf8_substr($content, $last_html_opening + 6, ($last_html_closing - $last_html_opening - 9));
 			if (($smiley_code != '--') && (utf8_strpos($smiley_code, 'c="{SMILIES_PATH}/') === false))
 			{
+
 				if ($last_smiley == $smiley_code)
 				{
 					$content_length -= utf8_strlen($smiley_code);
@@ -445,7 +453,7 @@ class phpbb_trim_message_bbcodes
 	*
 	* @return	string		plain bbcode-tag
 	*/
-	static public function filter_bbcode_tag($bbcode_tag, $strip_information = true, $strip_equal = true)
+	public function filter_bbcode_tag($bbcode_tag, $strip_information = true, $strip_equal = true)
 	{
 		if ($bbcode_tag[0] == '/')
 		{
@@ -468,5 +476,41 @@ class phpbb_trim_message_bbcodes
 		}
 
 		return $bbcode_tag;
+	}
+
+	private function replace_square_brackets_in_smilies()
+	{
+		// Replace all [ that are inside of <> because they belong to smilies
+		if (utf8_strpos($this->message, '<'))
+		{
+			$this->bracket_replacement = '{' . md5($this->message) . '}';
+			while (utf8_strpos($this->message, $this->bracket_replacement) !== false)
+			{
+				$this->bracket_replacement = '{' . $this->bracket_replacement . '}';
+			}
+			$smilie_starts = explode('<', $this->message);
+			$new_message = array();
+			foreach ($smilie_starts as $smilie_test)
+			{
+				$find_end = explode('>', $smilie_test);
+				if (sizeof($find_end) > 1)
+				{
+					$find_end[0] = str_replace('[', $this->bracket_replacement, $find_end[0]);
+					$new_message[] = implode('>', $find_end);
+				}
+				else
+				{
+					$new_message[] = $smilie_test;
+				}
+			}
+			$this->message = implode('<', $new_message);
+			//$this->message = preg_replace('/(\<[^>]*)\[(?=[^<]*\>)/', $this->bracket_replacement, $this->message);
+		}
+	}
+
+	private function restore_square_brackets_in_smilies($content)
+	{
+		// Replace our replacement with the [ again
+		return str_replace($this->bracket_replacement, '[', $content);
 	}
 }
