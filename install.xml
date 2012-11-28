@@ -63,6 +63,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 				<rev-version>1.0.7</rev-version>
 					<change><![CDATA[[Change] Update TMT to version 1.2 (Bug: #978)]]></change>
 					<change><![CDATA[[Fix] Add option to hide shadow topics (Bug: #966, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Change] Update UMIL to version 1.0.5 (Bug: #986)]]></change>
 				<changelog lang="en">
 				</changelog>
 			</entry>
