@@ -17,6 +17,8 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 
 		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
 		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
+		
+		<github><![CDATA[https://github.com/nickvergessen/phpbb3-mod-newspage]]></github>
 
 		<author-group>
 			<author>
