@@ -38,35 +38,22 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.4</mod-version>
+		<mod-version>1.0.8</mod-version>
 
 		<installation>
 			<level>easy</level>
 			<time>300</time>
-			<target-version>3.0.8</target-version>
+			<target-version>3.0.11</target-version>
 		</installation>
 	</header>
 
 	<action-group>
 		<copy>
-			<file from="root/newspage.php" to="newspage.php" />
 			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
-			<file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
-			<file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
 			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
-			<file from="root/includes/trim_message/bbcodes.php" to="includes/trim_message/bbcodes.php" />
-			<file from="root/includes/trim_message/trim_message.php" to="includes/trim_message/trim_message.php" />
 			<file from="root/install/*.*" to="install/*.*" />
-			<file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
-			<file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
-			<file from="root/styles/prosilver/theme/nv_newspage.css" to="styles/prosilver/theme/nv_newspage.css" />
-			<file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
 			<file from="root/umil/*.*" to="umil/*.*" />
 		</copy>
-
-		<delete>
-			<file name="includes/functions_newspage.php" />
-		</delete>
 
 		<php-installer><![CDATA[install/index.php]]></php-installer>
 
