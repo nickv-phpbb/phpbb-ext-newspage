@@ -54,9 +54,9 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
 			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
 			<link type="parent" lang="de" href="contrib/update_1_0_7_to_1_0_8/update.xml">Anleitung für das Update von 1.0.7 zu 1.0.8</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_7_to_1_0_9/update.xml">Manual for the update 1.0.7 to 1.0.8</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_7_to_1_0_8/update.xml">Manual for the update 1.0.7 to 1.0.8</link>
 			<link type="parent" lang="de" href="contrib/update_1_0_6_to_1_0_7/update.xml">Anleitung für das Update von 1.0.6 zu 1.0.7</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_7_to_1_0_7/update.xml">Manual for the update 1.0.6 to 1.0.7</link>
+			<link type="parent" lang="en" href="contrib/update_1_0_6_to_1_0_7/update.xml">Manual for the update 1.0.6 to 1.0.7</link>
 		</link-group>
 
 		<history>
