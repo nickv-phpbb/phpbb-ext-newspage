@@ -35,7 +35,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 				<username><![CDATA[Unimatrix_0]]></username>
 				<homepage><![CDATA[http://un1matr1x.de/]]></homepage>
 				<contributions-group>
-					<contributions status="current" from="2011-01-22" position="Developer" />
+					<contributions status="current" from="2011-01-22" position="Co-Developer" />
 				</contributions-group>
 			</author>
 		</author-group>
@@ -47,16 +47,31 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 			<time>300</time>
 			<target-version>3.0.11</target-version>
 		</installation>
-
-		<link-group>
-			<link type="parent" lang="de" href="../install.xml">Installations-Anleitung</link>
-			<link type="parent" lang="en" href="../install.xml">Installation-Manual</link>
-		</link-group>
 	</header>
 
 	<action-group>
 		<copy>
-			<file from="root/language/de/mods/info_acp_newspage.php" to="language/de/mods/info_acp_newspage.php" />
+			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
+			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
+			<file from="root/install/*.*" to="install/*.*" />
+			<file from="root/umil/*.*" to="umil/*.*" />
 		</copy>
+
+		<php-installer><![CDATA[install/index.php]]></php-installer>
+
+		<diy-instructions lang="de"><![CDATA[Leere den Cache im "Administrations-Bereich" (ACP) > "Allgemein" > "Den Cache leeren"
+
+Aktualisiere deine Styles:
+		"Administrations-Bereich" (ACP) > "Styles" > "Templates" > jedes > "Aktualisieren"
+		"Administrations-Bereich" (ACP) > "Styles" > "Themes" > jedes > "Aktualisieren"
+
+Wenn du die MOD übersetzen möchtest, forke die MOD auf github.com, füge deine Sprachdateien hinzu und sende einen Pull-Request.]]></diy-instructions>
+		<diy-instructions lang="en"><![CDATA[Clear your cache in the "Administration Control Panel" (ACP) > "General" > "Purge the cache"
+
+Refresh your Styles:
+		"Administration Control Panel" (ACP) > "Styles" > "Templates" > each > "refresh"
+		"Administration Control Panel" (ACP) > "Styles" > "Themes" > each > "refresh"
+
+If you want to translate this MOD, fork it on github.com, add your language to the repository and send a pull-request.]]></diy-instructions>
 	</action-group>
 </mod>

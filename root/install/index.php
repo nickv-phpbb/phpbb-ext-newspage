@@ -97,6 +97,10 @@ $versions = array(
 			array('news_shadow', 0),
 		),
 	),
+
+	// Version 1.0.8
+	'1.0.8'	=> array(
+	),
 );
 
 // Include the UMIL Auto file and everything else will be handled automatically.
