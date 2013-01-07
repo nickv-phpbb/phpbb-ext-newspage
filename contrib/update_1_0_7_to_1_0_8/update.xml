@@ -51,6 +51,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 
 	<action-group>
 		<copy>
+			<file from="root/newspage.php" to="newspage.php" />
 			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
 			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
 			<file from="root/install/*.*" to="install/*.*" />
