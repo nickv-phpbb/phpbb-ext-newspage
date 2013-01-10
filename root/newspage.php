@@ -39,7 +39,7 @@ $sql_show_shadow = ($config['news_shadow']) ? '' : 'AND topic_moved_id = 0';
 $attachments = $attach_list = array();
 $has_attachments = false;
 
-if ($archive_var && preg_match("/[0-1][0-9]_[1-2][0-9]{3}/", $archive_var))
+if ($archive_var && preg_match("/(0[1-9]|1[0-2])_(19[7-9][0-9]|20([0-2][0-9]|3[0-7]))/", $archive_var))
 {
 	$archive = explode('_', $archive_var);
 	$archive_start = gmmktime(0, 0, 0, (int) $archive[0], 1, (int) $archive[1]);
