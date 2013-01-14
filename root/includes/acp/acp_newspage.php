@@ -72,5 +72,3 @@ class acp_newspage
 
 	}
 }
-
-?>

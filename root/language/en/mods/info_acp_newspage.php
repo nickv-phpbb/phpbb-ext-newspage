@@ -61,5 +61,3 @@ $lang = array_merge($lang, array(
 	'UNINSTALL_NEWSPAGE'		=> 'Uninstall Newspage',
 	'UNINSTALL_NEWSPAGE_CONFIRM'	=> 'Are you sure you want to uninstall the Newspage?',
 ));
-
-?>

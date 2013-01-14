@@ -30,5 +30,3 @@ class acp_newspage_info
 		);
 	}
 }
-
-?>
