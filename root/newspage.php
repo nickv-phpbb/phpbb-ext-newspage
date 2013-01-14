@@ -19,6 +19,15 @@ include($phpbb_root_path . 'includes/functions_display.' . $phpEx);
 include($phpbb_root_path . 'includes/trim_message/trim_message.' . $phpEx);
 include($phpbb_root_path . 'includes/trim_message/bbcodes.' . $phpEx);
 
+/*
+* Load "ReIMG Image Resizer" by DavidIQ for displaying images and attachments
+* https://www.phpbb.com/customise/db/mod/reimg_image_resizer/
+*/
+if (isset($config['reimg_version']))
+{
+	define('LOAD_REIMG', true);
+}
+
 // Start session management
 $user->session_begin();
 $auth->acl($user->data);
