@@ -83,7 +83,8 @@ if ($config['news_cat_show'])
 	$sql = 'SELECT forum_id, forum_name, forum_topics
 		FROM ' . FORUMS_TABLE . '
 		WHERE ' . $db->sql_in_set('forum_id', $sql_forum_ary, false, true) . '
-			AND forum_topics <> 0 ';
+			AND forum_topics <> 0
+			ORDER BY left_id ASC';
 	$result = $db->sql_query($sql);
 
 	while ($cat = $db->sql_fetchrow($result))
