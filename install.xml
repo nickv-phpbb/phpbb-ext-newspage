@@ -67,6 +67,7 @@ Also the Icons can be switched of (post icons, user icons)]]></description>
 					<change><![CDATA[[Change] Update MODx to version 1.2.6 (Bug: #988)]]></change>
 					<change><![CDATA[[Change] Remove PHP closing tags (Bug: #992)]]></change>
 					<change><![CDATA[[Change] Validation of archive (Bug: #989, Patch by: Un1matr1x)]]></change>
+					<change><![CDATA[[Fix] Sorting of categories (Bug: #991)]]></change>
 				</changelog>
 			</entry>
 			
