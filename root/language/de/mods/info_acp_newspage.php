@@ -61,5 +61,3 @@ $lang = array_merge($lang, array(
 	'UNINSTALL_NEWSPAGE'		=> 'Newspage deinstallieren',
 	'UNINSTALL_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage deinstallieren möchtest?',
 ));
-
-?>

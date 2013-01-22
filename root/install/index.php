@@ -105,5 +105,3 @@ $versions = array(
 
 // Include the UMIL Auto file and everything else will be handled automatically.
 include($phpbb_root_path . 'umil/umil_auto.' . $phpEx);
-
-?>

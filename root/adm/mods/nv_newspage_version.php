@@ -30,5 +30,3 @@ class nv_newspage_version
 		);
 	}
 }
-
-?>
