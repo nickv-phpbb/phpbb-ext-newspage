@@ -11,9 +11,9 @@
 		<description lang="de"><![CDATA[Fügt eine neue Seite zum Board hinzu, auf der eine einstellbare Anzahl von News angezeigt werden.
 Der Text kann auf eine bestimmte Anzahl von Buchstaben gekürzt werden.
 Die Buttons (ändern, zitieren,... und Benutzerbuttons) können ausgeschalten werden.]]></description>
-		<description lang="en"><![CDATA[Adds a extra-page to the board where a switchable number of news are displayed.
-The text can be shorten to a certain number of chars.
-Also the Icons can be switched of (post icons, user icons)]]></description>
+		<description lang="en"><![CDATA[Adds an extra page to the board where a switchable number of news can be displayed.
+The news texts can be shorten to a given number of characters.
+Also the icons can be switched on/off (post icons, user icons).]]></description>
 
 		<author-notes lang="de"><![CDATA[Diese MOD benötigt php5.]]></author-notes>
 		<author-notes lang="en"><![CDATA[This MOD required php5.]]></author-notes>
