@@ -1,0 +1,15 @@
+services:
+    nickvergessen.newspage.controller:
+        class: phpbb_ext_nickvergessen_newspage_controller_main
+        arguments:
+            - @auth
+            - @cache
+            - @config
+            - @dbal.conn
+            - @request
+            - @template
+            - @user
+            - @controller.helper
+            - %core.root_path%
+            - %core.php_ext%
+

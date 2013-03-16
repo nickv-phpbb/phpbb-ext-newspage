@@ -1,0 +1,59 @@
+<!-- INCLUDE overall_header.html -->
+
+<h1>{L_NEWS}</h1>
+<form id="acp_board" method="post" action="{U_ACTION}">
+	<fieldset>
+		<dl>
+			<dt><label for="news_forums">{L_NEWS_FORUMS}:</label></dt>
+			<dd><select id="news_forums" name="news_forums[]" multiple="multiple">{S_SELECT_FORUMS}</select></dd>
+		</dl>
+		<dl>
+			<dt><label for="news_cat_show">{L_NEWS_CAT_SHOW}:</label><br /><span>{L_NEWS_CAT_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_cat_show" value="1" <!-- IF NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_cat_show" value="0" <!-- IF not NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
+			<dt><label for="news_archive_per_year">{L_NEWS_ARCHIVE_PER_YEAR}:</label><br /><span>{L_NEWS_ARCHIVE_PER_YEAR_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_archive_per_year" value="1" <!-- IF NEWS_ARCHIVE_PER_YEAR -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_archive_per_year" value="0" <!-- IF not NEWS_ARCHIVE_PER_YEAR -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
+			<dt><label for="news_number">{L_NEWS_NUMBER}:</label></dt>
+			<dd><input type="text" name="news_number" size="6" value="{NEWS_NUMBER}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="news_pages">{L_NEWS_PAGES}:</label><br /><span>{L_NEWS_PAGES_EXPLAIN}</span></dt>
+			<dd><input type="text" name="news_pages" size="6" value="{NEWS_PAGES}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="news_char_limit">{L_NEWS_CHAR_LIMIT}:</label></dt>
+			<dd><input type="text" name="news_char_limit" size="10" value="{NEWS_CHAR_LIMIT}" /></dd>
+		</dl>
+		<dl>
+			<dt><label for="news_shadow_show">{L_NEWS_SHADOW_SHOW}:</label><br /><span>{L_NEWS_SHADOW_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_shadow_show" value="1" <!-- IF NEWS_SHADOW_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_shadow_show" value="0" <!-- IF not NEWS_SHADOW_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
+			<dt><label for="news_user_info">{L_NEWS_USER_INFO}:</label><br /><span>{L_NEWS_USER_INFO_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_user_info" value="1" <!-- IF NEWS_USER_INFO -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_user_info" value="0" <!-- IF not NEWS_USER_INFO -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
+			<dt><label for="news_post_buttons">{L_NEWS_POST_BUTTONS}:</label><br /><span>{L_NEWS_POST_BUTTONS_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_post_buttons" value="1" <!-- IF NEWS_POST_BUTTONS -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_post_buttons" value="0" <!-- IF not NEWS_POST_BUTTONS -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<dl>
+			<dt><label for="news_post_buttons">{L_NEWS_ATTACH_SHOW}:</label><br /><span>{L_NEWS_ATTACH_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_attach_show" value="1" <!-- IF NEWS_ATTACH_SHOW -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_attach_show" value="0" <!-- IF not NEWS_ATTACH_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+		</dl>
+		<p class="submit-buttons">
+			<input class="button1" type="submit" id="submit" name="submit" value="{L_SUBMIT}" />&nbsp;
+			<input class="button2" type="reset" id="reset" name="reset" value="{L_RESET}" />
+		</p>
+	{S_FORM_TOKEN}
+	</fieldset>
+</form>
+<!-- INCLUDE overall_footer.html -->

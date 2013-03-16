@@ -1,0 +1,6 @@
+newspage_base_controller:
+    pattern: /newspage
+    defaults: { _controller: nickvergessen.newspage.controller:base }
+newspage_base2_controller:
+    pattern: /newspage/
+    defaults: { _controller: nickvergessen.newspage.controller:base }

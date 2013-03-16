@@ -1,0 +1,35 @@
+.icon-newspage {
+	background-position: 0 50%;
+	background-repeat: no-repeat;
+	padding: 1px 0 0 17px;
+	background-image: url("./images/icon_news.gif");
+}
+
+.rtl .icon-newspage {
+	background-position: 100% 50%;
+	padding: 1px 17px 0 0;
+}
+
+div.archive {
+	background: #EBEBEB;
+}
+div.archive_block {
+	border-bottom: 1px solid #CCCCCC;
+	font-weight: bold;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+div.archive_row {
+	border-bottom: 1px solid #CCCCCC;
+	border-top: 1px solid #FFFFFF;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
+div.archive_row-last {
+	border-top: 1px solid #FFFFFF;
+	padding-left: 4px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+}
