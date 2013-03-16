@@ -40,26 +40,23 @@ Also the icons can be switched on/off (post icons, user icons).]]></description>
 			</author>
 		</author-group>
 
-		<mod-version>1.0.8</mod-version>
+		<mod-version>1.1.0-dev</mod-version>
 
 		<installation>
 			<level>easy</level>
-			<time>300</time>
-			<target-version>3.0.11</target-version>
+			<time>60</time>
+			<target-version>3.1-A1</target-version>
 		</installation>
 
-		<link-group>
-			<link type="language" lang="de" href="contrib/de.xml">Anleitung für das deutsche Sprachpaket</link>
-			<link type="language" lang="en" href="contrib/de.xml">Manual for German Language-set</link>
-			<link type="template" lang="de" href="contrib/subsilver2.xml">Anleitung für das Style subsilver2</link>
-			<link type="template" lang="en" href="contrib/subsilver2.xml">Manual for subsilver2 Style</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_7_to_1_0_8/update.xml">Anleitung für das Update von 1.0.7 zu 1.0.8</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_7_to_1_0_8/update.xml">Manual for the update 1.0.7 to 1.0.8</link>
-			<link type="parent" lang="de" href="contrib/update_1_0_6_to_1_0_7/update.xml">Anleitung für das Update von 1.0.6 zu 1.0.7</link>
-			<link type="parent" lang="en" href="contrib/update_1_0_6_to_1_0_7/update.xml">Manual for the update 1.0.6 to 1.0.7</link>
-		</link-group>
-
 		<history>
+			<entry>
+				<date>2013-03-16</date>
+				<rev-version>1.1.0-dev</rev-version>
+				<changelog lang="en">
+					<change><![CDATA[[Change] Updated codebase to phpBB 3.1]]></change>
+				</changelog>
+			</entry>
+
 			<entry>
 				<date>2013-02-11</date>
 				<rev-version>1.0.8</rev-version>
@@ -187,70 +184,8 @@ Also the icons can be switched on/off (post icons, user icons).]]></description>
 
 	<action-group>
 		<copy>
-			<file from="root/newspage.php" to="newspage.php" />
-			<file from="root/adm/mods/nv_newspage_version.php" to="adm/mods/nv_newspage_version.php" />
-			<file from="root/adm/style/acp_newspage.html" to="adm/style/acp_newspage.html" />
-			<file from="root/includes/acp/acp_newspage.php" to="includes/acp/acp_newspage.php" />
-			<file from="root/includes/acp/info/acp_newspage.php" to="includes/acp/info/acp_newspage.php" />
-			<file from="root/includes/trim_message/bbcodes.php" to="includes/trim_message/bbcodes.php" />
-			<file from="root/includes/trim_message/trim_message.php" to="includes/trim_message/trim_message.php" />
-			<file from="root/install/*.*" to="install/*.*" />
-			<file from="root/language/en/mods/info_acp_newspage.php" to="language/en/mods/info_acp_newspage.php" />
-			<file from="root/styles/prosilver/template/newspage_body.html" to="styles/prosilver/template/newspage_body.html" />
-			<file from="root/styles/prosilver/theme/nv_newspage.css" to="styles/prosilver/theme/nv_newspage.css" />
-			<file from="root/styles/prosilver/theme/images/icon_news.gif" to="styles/prosilver/theme/images/icon_news.gif" />
-			<file from="root/umil/*.*" to="umil/*.*" />
+			<file from="root/ext/*.*" to="ext/*.*" />
 		</copy>
-
-		<open src="viewonline.php">
-			<edit>
-				<find><![CDATA[		case 'report':
-			$location = $user->lang['REPORTING_POST'];
-			$location_url = append_sid("{$phpbb_root_path}index.$phpEx");
-		break;]]></find>
-				<action type="after-add"><![CDATA[		case ((defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage'):
-			$user->add_lang('mods/info_acp_newspage');
-			$location = $user->lang['NEWS'];
-			$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';
-			$location_url = append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx");
-		break;]]></action>
-			</edit>
-		</open>
-
-		<open src="includes/constants.php">
-			<edit>
-				<find><![CDATA[// Additional constants]]></find>
-				<action type="after-add"><![CDATA[define('NEWSPAGE_FILE', 'newspage');]]></action>
-			</edit>
-		</open>
-
-		<open src="includes/functions.php">
-			<edit>
-				<find><![CDATA[// The following assigns all _common_ variables that may be used at any point in a template.]]></find>
-				<action type="before-add"><![CDATA[$user->add_lang('mods/info_acp_newspage');
-	$newspage_file = (defined('NEWSPAGE_FILE')) ? NEWSPAGE_FILE : 'newspage';]]></action>
-			</edit>
-			<edit>
-				<find><![CDATA['U_PRIVATEMSGS'			=> append_sid("{$phpbb_root_path}ucp.$phpEx", 'i=pm&amp;folder=inbox'),]]></find>
-				<action type="before-add"><![CDATA['U_NEWS'				=> append_sid("{$phpbb_root_path}{$newspage_file}.$phpEx"),]]></action>
-			</edit>
-		</open>
-
-		<open src="styles/prosilver/template/overall_header.html">
-			<edit>
-				<find><![CDATA[<li class="icon-faq"><a href="{U_FAQ}" title="{L_FAQ_EXPLAIN}">{L_FAQ}</a></li>]]></find>
-				<action type="before-add"><![CDATA[<li class="icon-news"><a href="{U_NEWS}" title="{L_NEWS}">{L_NEWS}</a></li>]]></action>
-			</edit>
-		</open>
-
-		<open src="styles/prosilver/theme/stylesheet.css">
-			<edit>
-				<find><![CDATA[@import url("colours.css");]]></find>
-				<action type="after-add"><![CDATA[@import url("nv_newspage.css");]]></action>
-			</edit>
-		</open>
-
-		<php-installer><![CDATA[install/index.php]]></php-installer>
 
 		<diy-instructions lang="de"><![CDATA[Leere den Cache im "Administrations-Bereich" (ACP) > "Allgemein" > "Den Cache leeren"
 

@@ -8,25 +8,25 @@
 		<announcement>http://www.flying-bits.org/viewtopic.php?f=8</announcement>
 		<mod_version>
 			<major>1</major>
-			<minor>0</minor>
-			<revision>8</revision>
+			<minor>1</minor>
+			<revision>0</revision>
 		</mod_version>
 		<installation>
 			<level>easy</level>
-			<time>120</time>
+			<time>60</time>
 			<target-version>
-				<target-primary>3.0.11</target-primary>
+				<target-primary>3.1-A1</target-primary>
 				<target-major allow="exact">3</target-major>
-				<target-minor allow="exact">0</target-minor>
+				<target-minor allow="exact">1</target-minor>
 			</target-version>
 		</installation>
 		<upgrade>
 			<level>easy</level>
-			<time>120</time>
+			<time>60</time>
 			<target-version>
-				<target-primary>3.0.11</target-primary>
+				<target-primary>3.1-A1</target-primary>
 				<target-major allow="exact">3</target-major>
-				<target-minor allow="exact">0</target-minor>
+				<target-minor allow="exact">1</target-minor>
 			</target-version>
 		</upgrade>
 	</nv_newspage>
