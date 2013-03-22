@@ -21,7 +21,7 @@ class phpbb_ext_nickvergessen_newspage_acp_main_info
 	function module()
 	{
 		return array(
-			'filename'	=> 'main_module',
+			'filename'	=> 'phpbb_ext_nickvergessen_newspage_acp_main_module',
 			'title'		=> 'ACP_NEWSPAGE_TITLE',
 			'version'	=> '1.0.1',
 			'modes'		=> array(
