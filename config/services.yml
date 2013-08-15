@@ -9,6 +9,7 @@ services:
             - @request
             - @template
             - @user
+            - @content.visibility
             - @controller.helper
             - %core.root_path%
             - %core.php_ext%

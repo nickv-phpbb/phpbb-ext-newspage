@@ -44,8 +44,7 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 		global $template, $phpbb_root_path, $phpEx, $phpbb_container;
 
 		$template->assign_vars(array(
-			//@todo: 'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('newspage'),
-			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url(array('newspage')),
+			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('newspage'),
 			'U_NEWSPAGE_CSS'=> append_sid($phpbb_root_path . 'ext/nickvergessen/newspage/styles/prosilver/theme/newspage.css'),
 		));
 	}

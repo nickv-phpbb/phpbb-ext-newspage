@@ -22,11 +22,12 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	* @param phpbb_request	$request	Request object
 	* @param phpbb_template	$template	Template object
 	* @param phpbb_user		$user		User object
-	* @param phpbb_controller_helper		$helper		Controller helper object
+	* @param phpbb_content_visibility		$content_visibility	Content visibility object
+	* @param phpbb_controller_helper		$helper				Controller helper object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(phpbb_auth $auth, phpbb_cache_service $cache, phpbb_config $config, phpbb_db_driver $db, phpbb_request $request, phpbb_template $template, phpbb_user $user, phpbb_controller_helper $helper, $root_path, $php_ext)
+	public function __construct(phpbb_auth $auth, phpbb_cache_service $cache, phpbb_config $config, phpbb_db_driver $db, phpbb_request $request, phpbb_template $template, phpbb_user $user, phpbb_content_visibility $content_visibility, phpbb_controller_helper $helper, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -35,6 +36,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 		$this->request = $request;
 		$this->template = $template;
 		$this->user = $user;
+		$this->content_visibility = $content_visibility;
 		$this->helper = $helper;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
@@ -330,13 +332,13 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 			$row['user_sig'] = generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], $flags);
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
-			$row['user_email'] = ((!empty($row['user_allow_viewemail']) || $this->auth->acl_get('a_email')) && ($row['user_email'] != '')) ? ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$phpbb_root_path}memberlist.{$this->php_ext}", "mode=email&amp;u=$poster_id") : (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']) : '';
-			$row['user_msnm'] = ($row['user_msnm'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '';
+			$row['user_email'] = ((!empty($row['user_allow_viewemail']) || $this->auth->acl_get('a_email')) && ($row['user_email'] != '')) ? ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=email&amp;u=$poster_id") : (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']) : '';
+			$row['user_msnm'] = ($row['user_msnm'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '';
 			$row['user_icq'] = (!empty($row['user_icq'])) ? 'http://www.icq.com/people/' . urlencode($row['user_icq']) . '/' : '';
 			$row['user_icq_status_img'] = (!empty($row['user_icq'])) ? '<img src="http://web.icq.com/whitepages/online?icq=' . $row['user_icq'] . '&amp;img=5" width="18" height="18" alt="" />' : '';
 			$row['user_yim'] = ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg' : '';
-			$row['user_aim'] = ($row['user_aim'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=aim&amp;u=$poster_id") : '';
-			$row['user_jabber'] = ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$phpbb_root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '';
+			$row['user_aim'] = ($row['user_aim'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=aim&amp;u=$poster_id") : '';
+			$row['user_jabber'] = ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '';
 
 			$this->template->assign_block_vars('postrow', array(
 				'POST_ID'				=> $post_id,
@@ -345,29 +347,28 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 				'ONLINE_IMG'			=> ($poster_id == ANONYMOUS || !$this->config['load_onlinetrack']) ? '' : ((in_array($poster_id, $user_online_tracking_info)) ? $this->user->img('icon_user_online', 'ONLINE') : $this->user->img('icon_user_offline', 'OFFLINE')),
 				'S_ONLINE'				=> ($poster_id == ANONYMOUS || !$this->config['load_onlinetrack']) ? false : ((in_array($poster_id, $user_online_tracking_info)) ? true : false),
 
-				'U_EDIT'				=> (!$this->user->data['is_registered']) ? '' : ((($this->user->data['user_id'] == $row['poster_id'] && $this->auth->acl_get('f_edit', $forum_id) && ($row['post_time'] > time() - ($this->config['edit_time'] * 60) || !$this->config['edit_time'])) || $this->auth->acl_get('m_edit', $forum_id)) ? append_sid("{$phpbb_root_path}posting.{$this->php_ext}", "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : ''),
-				'U_QUOTE'				=> ($this->auth->acl_get('f_reply', $forum_id)) ? append_sid("{$phpbb_root_path}posting.{$this->php_ext}", "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
-				'U_INFO'				=> ($this->auth->acl_get('m_info', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.{$this->php_ext}", "i=main&amp;mode=post_details&amp;f=$forum_id&amp;p=" . $row['post_id'], true, $this->user->session_id) : '',
-				'U_DELETE'				=> (!$this->user->data['is_registered']) ? '' : ((($this->user->data['user_id'] == $row['poster_id'] && $this->auth->acl_get('f_delete', $forum_id) && $row['topic_last_post_id'] == $row['post_id'] && ($row['post_time'] > time() - ($this->config['edit_time'] * 60) || !$this->config['edit_time'])) || $this->auth->acl_get('m_delete', $forum_id)) ? append_sid("{$phpbb_root_path}posting.{$this->php_ext}", "mode=delete&amp;f=$forum_id&amp;p={$row['post_id']}") : ''),
-				'U_REPORT'				=> ($this->auth->acl_get('f_report', $forum_id)) ? append_sid("{$phpbb_root_path}report.{$this->php_ext}", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
-				'U_NOTES'				=> ($this->auth->acl_getf_global('m_')) ? append_sid("{$phpbb_root_path}mcp.{$this->php_ext}", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $this->user->session_id) : '',
-				'U_WARN'				=> ($this->auth->acl_get('m_warn') && $poster_id != $this->user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$phpbb_root_path}mcp.{$this->php_ext}", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $this->user->session_id) : '',
-				//@todo: 'U_NEWS'				=> $this->helper->url('newspage', 'news=' . $topic_id),
-				'U_NEWS'				=> $this->helper->url(array('newspage'), 'news=' . $topic_id),
+				'U_EDIT'				=> (!$this->user->data['is_registered']) ? '' : ((($this->user->data['user_id'] == $row['poster_id'] && $this->auth->acl_get('f_edit', $forum_id) && ($row['post_time'] > time() - ($this->config['edit_time'] * 60) || !$this->config['edit_time'])) || $this->auth->acl_get('m_edit', $forum_id)) ? append_sid("{$this->root_path}posting.{$this->php_ext}", "mode=edit&amp;f=$forum_id&amp;p={$row['post_id']}") : ''),
+				'U_QUOTE'				=> ($this->auth->acl_get('f_reply', $forum_id)) ? append_sid("{$this->root_path}posting.{$this->php_ext}", "mode=quote&amp;f=$forum_id&amp;p={$row['post_id']}") : '',
+				'U_INFO'				=> ($this->auth->acl_get('m_info', $forum_id)) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", "i=main&amp;mode=post_details&amp;f=$forum_id&amp;p=" . $row['post_id'], true, $this->user->session_id) : '',
+				'U_DELETE'				=> (!$this->user->data['is_registered']) ? '' : ((($this->user->data['user_id'] == $row['poster_id'] && $this->auth->acl_get('f_delete', $forum_id) && $row['topic_last_post_id'] == $row['post_id'] && ($row['post_time'] > time() - ($this->config['edit_time'] * 60) || !$this->config['edit_time'])) || $this->auth->acl_get('m_delete', $forum_id)) ? append_sid("{$this->root_path}posting.{$this->php_ext}", "mode=delete&amp;f=$forum_id&amp;p={$row['post_id']}") : ''),
+				'U_REPORT'				=> ($this->auth->acl_get('f_report', $forum_id)) ? append_sid("{$this->root_path}report.{$this->php_ext}", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
+				'U_NOTES'				=> ($this->auth->acl_getf_global('m_')) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $this->user->session_id) : '',
+				'U_WARN'				=> ($this->auth->acl_get('m_warn') && $poster_id != $this->user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $this->user->session_id) : '',
+				'U_NEWS'				=> $this->helper->url('newspage', 'news=' . $topic_id),
 
 				'POST_ICON_IMG'			=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 				'POST_ICON_IMG_WIDTH'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
 				'POST_ICON_IMG_HEIGHT'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['height'] : '',
-				'U_MINI_POST'			=> append_sid("{$phpbb_root_path}viewtopic.{$this->php_ext}", 'p=' . $row['post_id']) . (($row['topic_type'] == POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
+				'U_MINI_POST'			=> append_sid("{$this->root_path}viewtopic.{$this->php_ext}", 'p=' . $row['post_id']) . (($row['topic_type'] == POST_GLOBAL) ? '&amp;f=' . $forum_id : '') . '#p' . $row['post_id'],
 				'POST_SUBJECT'			=> censor_text($row['post_subject']),
 				'MINI_POST_IMG'			=> ($post_unread) ? $this->user->img('icon_post_target_unread', 'NEW_POST') : $this->user->img('icon_post_target', 'POST'),
 				'POST_AUTHOR_FULL'		=> get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 				'POST_DATE'				=> $this->user->format_date($row['post_time']),
 
-				'S_POST_UNAPPROVED'		=> ($row['post_approved']) ? false : true,
+				'S_POST_UNAPPROVED'		=> $row['post_visibility'] == ITEM_UNAPPROVED,
 				'S_POST_REPORTED'		=> ($row['post_reported'] && $this->auth->acl_get('m_report', $forum_id)) ? true : false,
-				'U_MCP_REPORT'			=> ($this->auth->acl_get('m_report', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.{$this->php_ext}", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $this->user->session_id) : '',
-				'U_MCP_APPROVE'			=> ($this->auth->acl_get('m_approve', $forum_id)) ? append_sid("{$phpbb_root_path}mcp.{$this->php_ext}", 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $this->user->session_id) : '',
+				'U_MCP_REPORT'			=> ($this->auth->acl_get('m_report', $forum_id)) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=reports&amp;mode=report_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $this->user->session_id) : '',
+				'U_MCP_APPROVE'			=> ($this->auth->acl_get('m_approve', $forum_id)) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=queue&amp;mode=approve_details&amp;f=' . $forum_id . '&amp;p=' . $row['post_id'], true, $this->user->session_id) : '',
 
 				'MESSAGE'				=> $row['post_text'],
 
@@ -378,7 +379,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 				'EDITED_MESSAGE'		=> $l_edited_by,
 				'EDIT_REASON'			=> $row['post_edit_reason'],
 				'SIGNATURE'				=> ($row['enable_sig']) ? $row['user_sig'] : '',
-				'NEWS_COMMENTS'			=> $row['topic_replies'],
+				'NEWS_COMMENTS'			=> $this->content_visibility->get_count('topic_posts', $row, $forum_id),
 
 				'POSTER_AVATAR'			=> ($this->user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
 				'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
@@ -389,7 +390,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 				'POSTER_JOINED'			=> $this->user->format_date($row['user_regdate']),
 				'POSTER_FROM'			=> $row['user_from'],
 
-				'U_PM'					=> ($poster_id != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$phpbb_root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;action=quotepost&amp;p=' . $row['post_id']) : '',
+				'U_PM'					=> ($poster_id != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;action=quotepost&amp;p=' . $row['post_id']) : '',
 				'U_EMAIL'				=> $row['user_email'],
 				'U_WWW'					=> $row['user_website'],
 				'U_MSN'					=> $row['user_msnm'],
@@ -522,20 +523,19 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	*/
 	protected function generate_category_list()
 	{
-		$sql = 'SELECT forum_id, forum_name, forum_topics
+		$sql = 'SELECT forum_id, forum_name, forum_topics_approved
 			FROM ' . FORUMS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums(), false, true) . '
-				AND forum_topics <> 0
+				AND forum_topics_approved <> 0
 			ORDER BY left_id ASC';
 		$result = $this->db->sql_query($sql);
 
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$this->template->assign_block_vars('cat_block', array(
-				//@todo: 'U_NEWS_CAT'		=> $this->helper->url('newspage', 'f=' . $row['forum_id']),
-				'U_NEWS_CAT'		=> $this->helper->url(array('newspage'), 'f=' . $row['forum_id']),
+				'U_NEWS_CAT'		=> $this->helper->url('newspage', 'f=' . $row['forum_id']),
 				'NEWS_CAT'			=> $row['forum_name'],
-				'NEWS_COUNT'		=> $row['forum_topics'],
+				'NEWS_COUNT'		=> $row['forum_topics_approved'],
 			));
 		}
 		$this->db->sql_freeresult($result);
@@ -592,8 +592,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 			foreach ($archiv_months[$archive_year] as $archive_month)
 			{
 				$this->template->assign_block_vars('archive_block.archive_row', array(
-					//@todo: 'U_NEWS_MONTH'		=> $this->helper->url('newspage', 'archive=' . $archive_month['url'] . (($limit_category && !empty($this->config['news_cat_show'])) ? "&amp;f=$limit_category" : '')),
-					'U_NEWS_MONTH'		=> $this->helper->url(array('newspage'), 'archive=' . $archive_month['url'] . (($limit_category && !empty($this->config['news_cat_show'])) ? "&amp;f=$limit_category" : '')),
+					'U_NEWS_MONTH'		=> $this->helper->url('newspage', 'archive=' . $archive_month['url'] . (($limit_category && !empty($this->config['news_cat_show'])) ? "&amp;f=$limit_category" : '')),
 					'NEWS_MONTH'		=> $archive_month['name'],
 					'NEWS_COUNT'		=> $archive_month['count'],
 				));
@@ -637,8 +636,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 			$base_url_params['f'] = $limit_category;
 		}
 
-		//@todo: $base_url = $this->helper->url('newspage', $base_url_params);
-		$base_url = $this->helper->url(array('newspage'), $base_url_params);
+		$base_url = $this->helper->url('newspage', $base_url_params);
 		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', 'start', $pagination_news, $this->config['news_number'], $start);
 
 		$this->template->assign_vars(array(
