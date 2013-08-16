@@ -82,7 +82,8 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 		$sql_array = array(
 			'SELECT'		=> 'forum_id, topic_id, topic_type, topic_poster, topic_first_post_id',
 			'FROM'			=> array(TOPICS_TABLE => 't'),
-			'WHERE'			=> $this->db->sql_in_set('forum_id', $this->get_forums($limit_category), false, true),
+			'WHERE'			=> $this->db->sql_in_set('forum_id', $this->get_forums($limit_category), false, true) . '
+				AND topic_visibility = ' . ITEM_APPROVED,
 			'ORDER_BY'		=> 'topic_time DESC',
 		);
 
@@ -554,6 +555,7 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 		$sql = 'SELECT topic_time
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums($limit_category), false, true) . '
+				AND topic_visibility = ' . ITEM_APPROVED . '
 			ORDER BY topic_time DESC';
 		$result = $this->db->sql_query($sql);
 
