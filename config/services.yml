@@ -11,6 +11,21 @@ services:
             - @user
             - @content.visibility
             - @controller.helper
+            - @nickvergessen.newspage
+            - %core.root_path%
+            - %core.php_ext%
+    nickvergessen.newspage:
+        class: phpbb_ext_nickvergessen_newspage
+        arguments:
+            - @auth
+            - @cache
+            - @config
+            - @dbal.conn
+            - @request
+            - @template
+            - @user
+            - @content.visibility
+            - @controller.helper
             - %core.root_path%
             - %core.php_ext%
 
