@@ -44,7 +44,7 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 		global $template, $phpbb_root_path, $phpEx, $phpbb_container;
 
 		$template->assign_vars(array(
-			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('newspage'),
+			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('news'),
 			'U_NEWSPAGE_CSS'=> append_sid($phpbb_root_path . 'ext/nickvergessen/newspage/styles/prosilver/theme/newspage.css'),
 		));
 	}
@@ -55,9 +55,9 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 
 		if ($event['on_page'][1] == 'app')
 		{
-			if (utf8_strpos($event['row']['session_page'], 'controller=newspage/') !== false)
+			if (utf8_strpos($event['row']['session_page'], 'controller=news') !== false)
 			{
-				$event['location_url'] = append_sid($phpbb_root_path . 'app.' . $phpEx, 'controller=newspage/');
+				$event['location_url'] = append_sid($phpbb_root_path . 'app.' . $phpEx, 'controller=news');
 				$event['location'] = $user->lang['NEWS'];
 			}
 		}

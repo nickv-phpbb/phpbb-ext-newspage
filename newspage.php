@@ -88,13 +88,12 @@ class phpbb_ext_nickvergessen_newspage
 
 	protected $archive;
 
-	public function set_archive($archive)
+	public function set_archive($year, $month)
 	{
-		if (preg_match("/(0[1-9]|1[0-2])_(19[7-9][0-9]|20([0-2][0-9]|3[0-7]))/", $archive))
-		{
-			$this->archive = $archive;
-		}
-		$this->archive = $archive;
+		$this->archive = array(
+			'y'	=> (int) $year,
+			'm'	=> (int) $month,
+		);
 
 		return $this;
 	}
@@ -108,11 +107,6 @@ class phpbb_ext_nickvergessen_newspage
 	*/
 	public function base()
 	{
-		if ($this->config['news_cat_show'])
-		{
-			$this->generate_category_list();
-		}
-
 		/**
 		* Select topic_ids for the news
 		*/
@@ -138,9 +132,6 @@ class phpbb_ext_nickvergessen_newspage
 
 		if (empty($topic_ids))
 		{
-			// Abort, no news found, dont waste time in here!
-			$this->generate_archive_list($this->category, $this->archive);
-
 			$l_no_news = ($this->archive) ? $this->user->lang['NO_NEWS_ARCHIVE'] : (($this->category) ? $this->user->lang['NO_NEWS_CATEGORY'] : $this->user->lang['NO_NEWS']);
 			$this->template->assign_var('L_NO_NEWS', $l_no_news);
 
@@ -350,7 +341,7 @@ class phpbb_ext_nickvergessen_newspage
 				'U_REPORT'				=> ($this->auth->acl_get('f_report', $forum_id)) ? append_sid("{$this->root_path}report.{$this->php_ext}", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 				'U_NOTES'				=> ($this->auth->acl_getf_global('m_')) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $this->user->session_id) : '',
 				'U_WARN'				=> ($this->auth->acl_get('m_warn') && $poster_id != $this->user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $this->user->session_id) : '',
-				'U_NEWS'				=> $this->helper->url('newspage', 'news=' . $topic_id),
+				'U_NEWS'				=> $this->helper->url('news/' . $topic_id),
 
 				'POST_ICON_IMG'			=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 				'POST_ICON_IMG_WIDTH'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
@@ -409,9 +400,6 @@ class phpbb_ext_nickvergessen_newspage
 		}
 		$this->db->sql_freeresult($result);
 
-		// Build archiv-list
-		$total_news = $this->generate_archive_list($this->category, $this->archive);
-
 		// Specify some images
 		$this->template->assign_vars(array(
 			'REPORTED_IMG'			=> $this->user->img('icon_topic_reported', 'POST_REPORTED'),
@@ -453,11 +441,6 @@ class phpbb_ext_nickvergessen_newspage
 			));
 		}
 
-		if (!$this->news)
-		{
-			$this->generate_pagination($total_news, $this->start, $this->archive, $this->category);
-		}
-
 		return;
 	}
 
@@ -476,14 +459,12 @@ class phpbb_ext_nickvergessen_newspage
 			$sql_array['WHERE'] .= ' AND topic_id = ' . $this->news;
 			$sql_array['ORDER_BY'] = '';
 		}
-		else if ($this->archive)
+		else if (empty($this->archive))
 		{
-			list($archive_month, $archive_year) = explode('_', $this->archive);
-
-			$archive_start = gmmktime(0, 0, 0, (int) $archive_month, 1, (int) $archive_year);
+			$archive_start = gmmktime(0, 0, 0, $this->archive['m'], 1, $this->archive['y']);
 			$archive_start = $archive_start - $this->user->timezone;
 
-			$archive_end = gmmktime(0, 0, 0, (int) $archive_month + 1, 1, (int) $archive_year);
+			$archive_end = gmmktime(0, 0, 0, $this->archive['m'] + 1, 1, $this->archive['y']);
 			$archive_end = $archive_end - $this->user->timezone;
 
 			$archive_name = sprintf($this->user->lang['NEWS_ARCHIVE_OF'], $this->user->format_date($archive_start, 'F Y'));
@@ -547,7 +528,7 @@ class phpbb_ext_nickvergessen_newspage
 	/**
 	* Generate the category list of the news forums and populate it into the template
 	*/
-	protected function generate_category_list()
+	public function generate_category_list()
 	{
 		$sql = 'SELECT forum_id, forum_name, forum_topics_approved
 			FROM ' . FORUMS_TABLE . '
@@ -559,7 +540,7 @@ class phpbb_ext_nickvergessen_newspage
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$this->template->assign_block_vars('cat_block', array(
-				'U_NEWS_CAT'		=> $this->helper->url('newspage', 'f=' . $row['forum_id']),
+				'U_NEWS_CAT'		=> $this->get_base_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
 				'NEWS_CAT'			=> $row['forum_name'],
 				'NEWS_COUNT'		=> $row['forum_topics_approved'],
 			));
@@ -567,108 +548,126 @@ class phpbb_ext_nickvergessen_newspage
 		$this->db->sql_freeresult($result);
 	}
 
+	protected $num_pagination_items = 0;
 	/**
 	* Generate the achrive list of the news forums and populate it into the template
 	*
-	* @param	int		$limit_category	Limit the list to a given category
-	* @param	string	$is_archive		Limit the total news count to a given archive
-	* @return	int		Return the number of total news for the pagination
+	* @return	null
 	*/
-	protected function generate_archive_list($limit_category, $is_archive = '')
+	public function generate_archive_list()
 	{
+		$this->num_pagination_items = 0;
+
 		$archiv_years = $archiv_months = $checked_months = array();
 		$sql = 'SELECT topic_time
 			FROM ' . TOPICS_TABLE . '
-			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums($limit_category), false, true) . '
+			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums($this->category), false, true) . '
 				AND topic_visibility = ' . ITEM_APPROVED . '
 			ORDER BY topic_time DESC';
 		$result = $this->db->sql_query($sql);
 
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$month_name = $this->user->format_date($row['topic_time'], 'F');
-			$archiv_year = $this->user->format_date($row['topic_time'], 'Y');
+			$year = $this->user->format_date($row['topic_time'], 'Y');
+			$month = $this->user->format_date($row['topic_time'], 'm');
 
-			$archiv_month = $month_name . ' ' . $archiv_year;
-			if (in_array($archiv_month, $checked_months))
+			if (!isset($archiv_months[$year]))
 			{
-				$archiv_months[$archiv_year][$archiv_month]['count']++;
+				$archiv_years[$year] = 0;
+			}
+
+			if (isset($archiv_months[$year][$month]))
+			{
+				$archiv_years[$year]++;
+				$archiv_months[$year][$month]['count']++;
 				continue;
 			}
 
-			if (!in_array($archiv_year, $archiv_years))
-			{
-				$archiv_years[] = $archiv_year;
-			}
-
-			$checked_months[] = $archiv_month;
-			$archiv_months[$archiv_year][$archiv_month] = array(
-				'url'	=> $this->user->format_date($row['topic_time'], 'm_Y'),
-				'name'	=> $month_name,
+			$archiv_months[$year][$month] = array(
+				'url'	=> $this->user->format_date($row['topic_time'], 'Y/m'),
+				'name'	=> $this->user->format_date($row['topic_time'], 'F'),
 				'count'	=> 1,
 			);
 		}
 		$this->db->sql_freeresult($result);
 
-		$total_news = 0;
-		foreach ($archiv_years as $archive_year)
+		foreach ($archiv_years as $year => $news)
 		{
 			$this->template->assign_block_vars('archive_block', array(
-				'NEWS_YEAR'		=> $archive_year,
+				'NEWS_YEAR'		=> $year,
 			));
-			foreach ($archiv_months[$archive_year] as $archive_month)
+			foreach ($archiv_months[$year] as $month => $archive)
 			{
-				$this->template->assign_block_vars('archive_block.archive_row', array(
-					'U_NEWS_MONTH'		=> $this->helper->url('newspage', 'archive=' . $archive_month['url'] . (($limit_category && !empty($this->config['news_cat_show'])) ? "&amp;f=$limit_category" : '')),
-					'NEWS_MONTH'		=> $archive_month['name'],
-					'NEWS_COUNT'		=> $archive_month['count'],
-				));
-
-				if (($is_archive == $archive_month['url']) || !$is_archive)
+				$active_archive = false;
+				if (empty($this->archive) || ($this->archive['y'] == $year && $this->archive['m'] == $month) || ($this->archive['y'] == 0 && $this->archive['m'] == 0))
 				{
-					$total_news += $archive_month['count'];
+					$active_archive = ($this->archive['y'] == $year && $this->archive['m'] == $month);
+					$this->num_pagination_items += $archive['count'];
 				}
+
+				$this->template->assign_block_vars('archive_block.archive_row', array(
+					'U_NEWS_MONTH'		=> $this->get_base_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
+					'NEWS_MONTH'		=> $archive['name'],
+					'NEWS_COUNT'		=> $archive['count'],
+				));
 			}
 		}
 
-		return $total_news;
+		return;
 	}
 
 	/**
 	* Generate the pagination for the news list
 	*
-	* @param	int		$num_news		Number of total news
-	* @param	int		$start			Start argument of current page
-	* @param	string	$is_archive		Append archive to pagination url if required
-	* @param	int		$limit_category	Limit the list to a given forum
 	* @return	null
 	*/
-	protected function generate_pagination($num_news, $start, $is_archive = '', $limit_category = 0)
+	public function generate_pagination()
 	{
-		$base_url_params = array();
-
-		if (!$is_archive)
+		if (empty($this->archive) || ($this->archive['y'] == 0 && $this->archive['m'] == 0))
 		{
 			$max_num_news = $this->config['news_pages'] * $this->config['news_number'];
-			$pagination_news = min($max_num_news, $num_news);
+			$pagination_news = min($max_num_news, $this->num_pagination_items);
 		}
 		else
 		{
-			$pagination_news = $num_news;
-			$base_url_params['archive'] = $is_archive;
+			$pagination_news = $this->num_pagination_items;
 		}
 
-		if ($limit_category)
-		{
-			$base_url_params['f'] = $limit_category;
-		}
-
-		$base_url = $this->helper->url('newspage', $base_url_params);
-		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', 'start', $pagination_news, $this->config['news_number'], $start);
+		$base_url = $this->get_base_url();
+		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', 'start', $pagination_news, $this->config['news_number'], $this->start);
 
 		$this->template->assign_vars(array(
-			'PAGE_NUMBER'		=> phpbb_on_page($this->template, $this->user, $base_url, $pagination_news, $this->config['news_number'], $start),
-			'TOTAL_NEWS'		=> $this->user->lang('VIEW_NEWS_POSTS', $num_news),
+			'PAGE_NUMBER'		=> phpbb_on_page($this->template, $this->user, $base_url, $pagination_news, $this->config['news_number'], $this->start),
+			'TOTAL_NEWS'		=> $this->user->lang('VIEW_NEWS_POSTS', $this->num_pagination_items),
 		));
+	}
+
+	/**
+	* Generate the pagination for the news list
+	*
+	* @return	null
+	*/
+	public function get_base_url($force_category = false, $force_archive = false)
+	{
+		$base_url = 'news';
+		if ($force_category !== false)
+		{
+			$base_url .= ($force_category !== '') ? '/category/' . $force_category : '';
+		}
+		else if ($this->category)
+		{
+			$base_url .= '/category/' . $this->category;
+		}
+
+		if ($force_archive !== false)
+		{
+			$base_url .= ($force_archive !== '') ? '/archive/' . $force_archive : '';
+		}
+		else if (!empty($this->archive) && $this->archive['y'] != 0 && $this->archive['m'] != 0)
+		{
+			$base_url .= '/archive/' . $this->archive['y'] . '/' . sprintf('%02d', $this->archive['m']);
+		}
+
+		return $this->helper->url($base_url);
 	}
 }

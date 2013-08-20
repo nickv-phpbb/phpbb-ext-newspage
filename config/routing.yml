@@ -1,6 +1,31 @@
 newspage_base_controller:
-    pattern: /newspage
-    defaults: { _controller: nickvergessen.newspage.controller:base }
-newspage_base2_controller:
-    pattern: /newspage/
-    defaults: { _controller: nickvergessen.newspage.controller:base }
+    pattern: /news
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0 }
+
+newspage_archive_controller:
+    pattern: /news/archive/{year}/{month}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0 }
+    requirements:
+        year:      \d+
+        month:     \d+
+
+newspage_category_controller:
+    pattern: /news/category/{forum_id}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, year: 0, month: 0 }
+    requirements:
+        forum_id:  \d+
+
+newspage_category_archive_controller:
+    pattern: /news/category/{forum_id}/archive/{year}/{month}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage }
+    requirements:
+        forum_id:  \d+
+        year:      \d+
+        month:     \d+
+
+
+newspage_singlenews_controller:
+    pattern: /news/{topic_id}
+    defaults: { _controller: nickvergessen.newspage.controller:single_news }
+    requirements:
+        topic_id:  \d+

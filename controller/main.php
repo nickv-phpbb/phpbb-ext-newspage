@@ -54,20 +54,57 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	}
 
 	/**
-	* Base controller to be accessed with the URL /newspage/{page}
+	* Base controller to be accessed with the URL /news
 	* (where {page} is the placeholder for a value)
 	*
-	* @param int	$page	Page number taken from the URL
+	* @param int	$forum_id		Forum ID of the category to display
+	* @param int	$year			Limit the news to a certain year
+	* @param int	$month			Limit the news to a certain month
 	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
-	public function base($page = null)
+	public function newspage($forum_id, $year, $month)
 	{
-		$this->newspage->set_start($this->request->variable('start', 0))
-			->set_category($this->request->variable('f', 0))
-			->set_news($this->request->variable('news', 0))
-			->set_archive($this->request->variable('archive', ''));
+
+		$this->newspage->set_category($forum_id)
+			->set_archive($year, $month);
+
+		return $this->base();
+	}
+
+	/**
+	* Base controller to be accessed with the URL /news/{topic_id}
+	*
+	* @param int	$topic_id		Topic ID of the news to display
+	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
+	*/
+	public function single_news($topic_id)
+	{
+		$this->newspage->set_news($topic_id);
+
+		return $this->base(false);
+	}
+
+	/**
+	* Base controller to be accessed with the URL /news/{id}
+	*
+	* @param int	$id		Topic ID of the news to display
+	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
+	*/
+	public function base($display_pagination = true)
+	{
+		$this->newspage->set_start($this->request->variable('start', 0));
+		$this->newspage->generate_archive_list();
+		if ($display_pagination)
+		{
+			$this->newspage->generate_pagination();
+		}
+		if ($this->config['news_cat_show'])
+		{
+			$this->newspage->generate_category_list();
+		}
 
 		$this->newspage->base();
+
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
 	}
 }
