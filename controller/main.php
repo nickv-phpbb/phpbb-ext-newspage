@@ -10,34 +10,32 @@
 
 class phpbb_ext_nickvergessen_newspage_controller_main
 {
+	/* @var phpbb_config */
+	protected $config;
+
+	/* @var phpbb_controller_helper */
+	protected $helper;
+	/* @var phpbb_ext_nickvergessen_newspage */
+	protected $newspage;
+
+	/* @var string phpBB root path */
+	protected $root_path;
+
+	/* @var string phpEx */
+	protected $php_ext;
+
 	/**
 	* Constructor
-	* NOTE: The parameters of this method must match in order and type with
-	* the dependencies defined in the services.yml file for this service.
 	*
-	* @param phpbb_auth		$auth		Auth object
-	* @param phpbb_cache_service	$cache		Cache object
 	* @param phpbb_config	$config		Config object
-	* @param phpbb_db_driver	$db		Database object
-	* @param phpbb_request	$request	Request object
-	* @param phpbb_template	$template	Template object
-	* @param phpbb_user		$user		User object
-	* @param phpbb_content_visibility		$content_visibility	Content visibility object
 	* @param phpbb_controller_helper		$helper				Controller helper object
 	* @param phpbb_ext_nickvergessen_newspage		$newspage	Newspage object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(phpbb_auth $auth, phpbb_cache_service $cache, phpbb_config $config, phpbb_db_driver $db, phpbb_request $request, phpbb_template $template, phpbb_user $user, phpbb_content_visibility $content_visibility, phpbb_controller_helper $helper, phpbb_ext_nickvergessen_newspage $newspage, $root_path, $php_ext)
+	public function __construct(phpbb_config $config, phpbb_controller_helper $helper, phpbb_ext_nickvergessen_newspage $newspage, $root_path, $php_ext)
 	{
-		$this->auth = $auth;
-		$this->cache = $cache;
 		$this->config = $config;
-		$this->db = $db;
-		$this->request = $request;
-		$this->template = $template;
-		$this->user = $user;
-		$this->content_visibility = $content_visibility;
 		$this->helper = $helper;
 		$this->newspage = $newspage;
 		$this->root_path = $root_path;
@@ -54,25 +52,33 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	}
 
 	/**
-	* Base controller to be accessed with the URL /news
-	* (where {page} is the placeholder for a value)
+	* Newspage controller to display multiple news
+	*
+	* Route must be a sequence of the following substrings,
+	* the order is mandatory:
+	*	/news							[mandatory]
+	*		/category/{forum_id}		[optional]
+	*		/archive/{year}/{month}		[optional]
+	*		/page/{page}				[optional]
 	*
 	* @param int	$forum_id		Forum ID of the category to display
 	* @param int	$year			Limit the news to a certain year
 	* @param int	$month			Limit the news to a certain month
+	* @param int	$page			Page to display
 	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
-	public function newspage($forum_id, $year, $month)
+	public function newspage($forum_id, $year, $month, $page)
 	{
 
 		$this->newspage->set_category($forum_id)
-			->set_archive($year, $month);
+			->set_archive($year, $month)
+			->set_start(($page - 1) * $this->config['news_number']);
 
 		return $this->base();
 	}
 
 	/**
-	* Base controller to be accessed with the URL /news/{topic_id}
+	* News controller to be accessed with the URL /news/{topic_id} to display a single news
 	*
 	* @param int	$topic_id		Topic ID of the news to display
 	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
@@ -87,12 +93,11 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	/**
 	* Base controller to be accessed with the URL /news/{id}
 	*
-	* @param int	$id		Topic ID of the news to display
+	* @param	bool	$display_pagination		Force to hide the pagination
 	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
 	public function base($display_pagination = true)
 	{
-		$this->newspage->set_start($this->request->variable('start', 0));
 		$this->newspage->generate_archive_list();
 		if ($display_pagination)
 		{
