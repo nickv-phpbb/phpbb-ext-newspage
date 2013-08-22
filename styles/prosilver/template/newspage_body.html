@@ -158,5 +158,13 @@
 	<span class="corners-bottom"><span></span></span></div>
 </div>
 <!-- END postrow -->
+
+<!-- IF U_PREVIOUS_PAGE or U_NEXT_PAGE -->
+<fieldset class="display-options">
+	<!-- IF U_PREVIOUS_PAGE --><a href="{U_PREVIOUS_PAGE}" class="left-box arrow-{S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
+	<!-- IF U_NEXT_PAGE --><a href="{U_NEXT_PAGE}" class="right-box arrow-{S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
+</fieldset>
+<!-- ENDIF -->
+
 </div>
 <!-- INCLUDE overall_footer.html -->
