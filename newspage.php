@@ -10,6 +10,18 @@
 
 class phpbb_ext_nickvergessen_newspage
 {
+	protected $num_pagination_items = 0;
+
+	protected $page_title;
+
+	protected $start;
+
+	protected $news;
+
+	protected $archive;
+
+	protected $category;
+
 	/**
 	* Constructor
 	* NOTE: The parameters of this method must match in order and type with
@@ -52,14 +64,10 @@ class phpbb_ext_nickvergessen_newspage
 		$this->page_title = $this->user->lang['NEWS'];
 	}
 
-	protected $page_title;
-
 	public function get_page_title()
 	{
 		return $this->page_title;
 	}
-
-	protected $start;
 
 	public function set_start($start)
 	{
@@ -68,8 +76,6 @@ class phpbb_ext_nickvergessen_newspage
 		return $this;
 	}
 
-	protected $category;
-
 	public function set_category($category)
 	{
 		$this->category = (int) $category;
@@ -77,16 +83,12 @@ class phpbb_ext_nickvergessen_newspage
 		return $this;
 	}
 
-	protected $news;
-
 	public function set_news($news)
 	{
 		$this->news = (int) $news;
 
 		return $this;
 	}
-
-	protected $archive;
 
 	public function set_archive($year, $month)
 	{
@@ -540,7 +542,7 @@ class phpbb_ext_nickvergessen_newspage
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$this->template->assign_block_vars('cat_block', array(
-				'U_NEWS_CAT'		=> $this->get_base_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
+				'U_NEWS_CAT'		=> $this->get_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
 				'NEWS_CAT'			=> $row['forum_name'],
 				'NEWS_COUNT'		=> $row['forum_topics_approved'],
 			));
@@ -548,7 +550,6 @@ class phpbb_ext_nickvergessen_newspage
 		$this->db->sql_freeresult($result);
 	}
 
-	protected $num_pagination_items = 0;
 	/**
 	* Generate the achrive list of the news forums and populate it into the template
 	*
@@ -606,7 +607,7 @@ class phpbb_ext_nickvergessen_newspage
 				}
 
 				$this->template->assign_block_vars('archive_block.archive_row', array(
-					'U_NEWS_MONTH'		=> $this->get_base_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
+					'U_NEWS_MONTH'		=> $this->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
 					'NEWS_MONTH'		=> $archive['name'],
 					'NEWS_COUNT'		=> $archive['count'],
 				));
@@ -633,8 +634,8 @@ class phpbb_ext_nickvergessen_newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
-		$base_url = $this->get_base_url();
-		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', 'start', $pagination_news, $this->config['news_number'], $this->start);
+		$base_url = $this->get_url(false, false, '/page/%d');
+		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', '/page/%d', $pagination_news, $this->config['news_number'], $this->start);
 
 		$this->template->assign_vars(array(
 			'PAGE_NUMBER'		=> phpbb_on_page($this->template, $this->user, $base_url, $pagination_news, $this->config['news_number'], $this->start),
@@ -645,9 +646,12 @@ class phpbb_ext_nickvergessen_newspage
 	/**
 	* Generate the pagination for the news list
 	*
-	* @return	null
+	* @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	* @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	* @return	string	$append_route		Additional string that should be appended to the route
+	* @return		string		Full URL with append_sid performed on it
 	*/
-	public function get_base_url($force_category = false, $force_archive = false)
+	public function get_url($force_category = false, $force_archive = false, $append_route = '')
 	{
 		$base_url = 'news';
 		if ($force_category !== false)
@@ -668,6 +672,6 @@ class phpbb_ext_nickvergessen_newspage
 			$base_url .= '/archive/' . $this->archive['y'] . '/' . sprintf('%02d', $this->archive['m']);
 		}
 
-		return $this->helper->url($base_url);
+		return $this->helper->url($base_url . $append_route);
 	}
 }
