@@ -1,4 +1,6 @@
 <!-- INCLUDE overall_header.html -->
+
+<!-- IF .cat_block or .archive_block -->
 	<div class="newspage-archive">
 		<!-- IF .cat_block -->
 			<!-- INCLUDE newspage_categories.html -->
@@ -10,6 +12,8 @@
 	</div>
 
 	<div class="newspage-news">
+<!-- ENDIF -->
+
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 
 <!-- IF (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
@@ -86,16 +90,16 @@
 				</div>
 		</div>
 <!-- IF NEWS_USER_INFO -->
-		<!-- IF not postrow.S_IGNORE_POST -->
-			<dl class="postprofile" id="profile{postrow.POST_ID}">
-			<dt>
-				<!-- IF postrow.POSTER_AVATAR -->
-					<!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --><br />
-				<!-- ENDIF -->
-				<!-- IF not postrow.U_POST_AUTHOR --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ELSE -->{postrow.POST_AUTHOR_FULL}<!-- ENDIF -->
-			</dt>
+	<!-- IF not postrow.S_IGNORE_POST -->
+		<dl class="postprofile" id="profile{postrow.POST_ID}">
+		<dt>
+			<!-- IF postrow.POSTER_AVATAR -->
+				<!-- IF postrow.U_POST_AUTHOR --><a href="{postrow.U_POST_AUTHOR}">{postrow.POSTER_AVATAR}</a><!-- ELSE -->{postrow.POSTER_AVATAR}<!-- ENDIF --><br />
+			<!-- ENDIF -->
+			<!-- IF not postrow.U_POST_AUTHOR --><strong>{postrow.POST_AUTHOR_FULL}</strong><!-- ELSE -->{postrow.POST_AUTHOR_FULL}<!-- ENDIF -->
+		</dt>
 
-			<!-- IF postrow.RANK_TITLE or postrow.RANK_IMG --><dd>{postrow.RANK_TITLE}<!-- IF postrow.RANK_TITLE and postrow.RANK_IMG --><br /><!-- ENDIF -->{postrow.RANK_IMG}</dd><!-- ENDIF -->
+		<!-- IF postrow.RANK_TITLE or postrow.RANK_IMG --><dd>{postrow.RANK_TITLE}<!-- IF postrow.RANK_TITLE and postrow.RANK_IMG --><br /><!-- ENDIF -->{postrow.RANK_IMG}</dd><!-- ENDIF -->
 
 		<dd>&nbsp;</dd>
 
@@ -154,7 +158,7 @@
 <!-- ENDIF -->
 
 <!-- IF .pagination -->
-<hr />
+<hr class="divider" />
 <div class="topic-actions">
 	<div class="pagination">
 		{TOTAL_NEWS} &bull; <!-- INCLUDE pagination.html -->
@@ -162,5 +166,8 @@
 </div>
 <!-- ENDIF -->
 
-</div>
+<!-- IF .cat_block or .archive_block -->
+	</div>
+<!-- ENDIF -->
+
 <!-- INCLUDE overall_footer.html -->
