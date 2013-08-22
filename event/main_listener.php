@@ -35,8 +35,12 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 
 	public function load_language_on_setup($event)
 	{
-		global $user;
-		$user->add_lang_ext('nickvergessen/newspage', 'newspage');
+		$lang_set_ext = $event['lang_set_ext'];
+		$lang_set_ext[] = array(
+			'ext_name' => 'nickvergessen/newspage',
+			'lang_set' => 'newspage',
+		);
+		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
 	public function add_page_header_link($event)
