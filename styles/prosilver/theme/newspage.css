@@ -13,6 +13,7 @@
 div.archive {
 	background: #EBEBEB;
 }
+
 div.archive_block {
 	border-bottom: 1px solid #CCCCCC;
 	font-weight: bold;
@@ -20,6 +21,7 @@ div.archive_block {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
+
 div.archive_row {
 	border-bottom: 1px solid #CCCCCC;
 	border-top: 1px solid #FFFFFF;
@@ -27,9 +29,28 @@ div.archive_row {
 	padding-top: 4px;
 	padding-bottom: 4px;
 }
+
 div.archive_row-last {
 	border-top: 1px solid #FFFFFF;
 	padding-left: 4px;
 	padding-top: 4px;
 	padding-bottom: 4px;
+}
+
+div.newspage-archive {
+	width: 20%;
+	float: right;
+}
+
+.rtl div.newspage-archive {
+	float: left;
+}
+
+div.newspage-news {
+	width: 79%;
+	float: left;
+}
+
+.rtl div.newspage-news {
+	float: right;
 }

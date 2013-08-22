@@ -1,28 +1,15 @@
 <!-- INCLUDE overall_header.html -->
-	<div style="float: {S_CONTENT_FLOW_END}; width: 20%;">
-	<h2>{L_NEWS_ARCHIVE}</h2>
+	<div class="newspage-archive">
 		<!-- IF .cat_block -->
-			<div class="panel archive"><span class="corners-top"><span></span></span>
-			<div class="archive_block">{L_NEWS_CAT}</div>
-			<!-- BEGIN cat_block -->
-				<div class="<!-- IF cat_block.S_LAST_ROW -->archive_row-last<!-- ELSE -->archive_row<!-- ENDIF -->"><strong><a href="{cat_block.U_NEWS_CAT}">{cat_block.NEWS_CAT}</a> ({cat_block.NEWS_COUNT})</strong></div>
-			<!-- END cat_block -->
-			<span class="corners-bottom"><span></span></span></div>
-		<br />
+			<!-- INCLUDE newspage_categories.html -->
 		<!-- ENDIF -->
-		<!-- IF not S_NEWS_ARCHIVE_PER_YEAR --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
-			<!-- BEGIN archive_block --><!-- IF not S_NEWS_ARCHIVE_PER_YEAR and not archive_block.S_FIRST_ROW --><br /><!-- ENDIF -->
-			<!-- IF S_NEWS_ARCHIVE_PER_YEAR --><div class="panel archive"><span class="corners-top"><span></span></span><!-- ENDIF -->
-			<div class="archive_block">{L_NEWS_ARCHIVE} {archive_block.NEWS_YEAR}</div>
-					<!-- BEGIN archive_row -->
-						<div class="<!-- IF archive_block.archive_row.S_LAST_ROW -->archive_row-last<!-- ELSE -->archive_row<!-- ENDIF -->"><strong><a href="{archive_block.archive_row.U_NEWS_MONTH}">{archive_block.archive_row.NEWS_MONTH}</a> ({archive_block.archive_row.NEWS_COUNT})</strong></div>
-					<!-- END archive_row -->
-				<!-- IF S_NEWS_ARCHIVE_PER_YEAR --><span class="corners-bottom"><span></span></span></div><br /><!-- ENDIF -->
-			<!-- END archive_block -->
-		<!-- IF not S_NEWS_ARCHIVE_PER_YEAR --><span class="corners-bottom"><span></span></span></div><!-- ENDIF -->
+
+		<!-- IF .archive_block -->
+			<!-- INCLUDE newspage_archives.html -->
+		<!-- ENDIF -->
 	</div>
 
-	<div style="float: {S_CONTENT_FLOW_BEGIN}; width: 79%;">
+	<div class="newspage-news">
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 
 <!-- IF (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
@@ -164,6 +151,15 @@
 	<!-- IF U_PREVIOUS_PAGE --><a href="{U_PREVIOUS_PAGE}" class="left-box arrow-{S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
 	<!-- IF U_NEXT_PAGE --><a href="{U_NEXT_PAGE}" class="right-box arrow-{S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
 </fieldset>
+<!-- ENDIF -->
+
+<!-- IF .pagination -->
+<hr />
+<div class="topic-actions">
+	<div class="pagination">
+		{TOTAL_NEWS} &bull; <!-- INCLUDE pagination.html -->
+	</div>
+</div>
 <!-- ENDIF -->
 
 </div>
