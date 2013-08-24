@@ -13,6 +13,12 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	/* @var phpbb_config */
 	protected $config;
 
+	/* @var phpbb_template */
+	protected $template;
+
+	/* @var phpbb_user */
+	protected $user;
+
 	/* @var phpbb_controller_helper */
 	protected $helper;
 	/* @var phpbb_ext_nickvergessen_newspage */
@@ -28,14 +34,18 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	* Constructor
 	*
 	* @param phpbb_config	$config		Config object
+	* @param phpbb_template	$template	Template object
+	* @param  phpbb_user	$user		User object
 	* @param phpbb_controller_helper		$helper				Controller helper object
 	* @param phpbb_ext_nickvergessen_newspage		$newspage	Newspage object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(phpbb_config $config, phpbb_controller_helper $helper, phpbb_ext_nickvergessen_newspage $newspage, $root_path, $php_ext)
+	public function __construct(phpbb_config $config, phpbb_template $template, phpbb_user $user, phpbb_controller_helper $helper, phpbb_ext_nickvergessen_newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
+		$this->template = $template;
+		$this->user = $user;
 		$this->helper = $helper;
 		$this->newspage = $newspage;
 		$this->root_path = $root_path;
@@ -109,7 +119,43 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 		}
 
 		$this->newspage->base();
+		$this->assign_images($this->config['news_user_info'], $this->config['news_post_buttons']);
 
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
+	}
+
+	public function assign_images($assign_user_buttons, $assign_post_buttons)
+	{
+		$this->template->assign_vars(array(
+			'REPORTED_IMG'			=> $this->user->img('icon_topic_reported', 'POST_REPORTED'),
+		));
+
+		if ($assign_user_buttons)
+		{
+			$this->template->assign_vars(array(
+				'PROFILE_IMG'		=> $this->user->img('icon_user_profile', 'READ_PROFILE'),
+				'SEARCH_IMG'		=> $this->user->img('icon_user_search', 'SEARCH_USER_POSTS'),
+				'PM_IMG'			=> $this->user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
+				'EMAIL_IMG'			=> $this->user->img('icon_contact_email', 'SEND_EMAIL'),
+				'WWW_IMG'			=> $this->user->img('icon_contact_www', 'VISIT_WEBSITE'),
+				'ICQ_IMG'			=> $this->user->img('icon_contact_icq', 'ICQ'),
+				'AIM_IMG'			=> $this->user->img('icon_contact_aim', 'AIM'),
+				'MSN_IMG'			=> $this->user->img('icon_contact_msnm', 'MSNM'),
+				'YIM_IMG'			=> $this->user->img('icon_contact_yahoo', 'YIM'),
+				'JABBER_IMG'		=> $this->user->img('icon_contact_jabber', 'JABBER'),
+			));
+		}
+
+		if ($assign_post_buttons)
+		{
+			$this->template->assign_vars(array(
+				'QUOTE_IMG'			=> $this->user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
+				'EDIT_IMG'			=> $this->user->img('icon_post_edit', 'EDIT_POST'),
+				'DELETE_IMG'		=> $this->user->img('icon_post_delete', 'DELETE_POST'),
+				'INFO_IMG'			=> $this->user->img('icon_post_info', 'VIEW_INFO'),
+				'REPORT_IMG'		=> $this->user->img('icon_post_report', 'REPORT_POST'),
+				'WARN_IMG'			=> $this->user->img('icon_user_warn', 'WARN_USER'),
+			));
+		}
 	}
 }

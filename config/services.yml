@@ -3,6 +3,8 @@ services:
         class: phpbb_ext_nickvergessen_newspage_controller_main
         arguments:
             - @config
+            - @template
+            - @user
             - @controller.helper
             - @nickvergessen.newspage
             - %core.root_path%

@@ -140,9 +140,11 @@ class phpbb_ext_nickvergessen_newspage
 			return;
 		}
 
-		// Grab ranks and icons
+		// Grab ranks, icons, online-status and attachments
 		$ranks = $this->cache->obtain_ranks();
 		$icons = $this->cache->obtain_icons();
+		$user_online_tracking_info = (!empty($topic_posters)) ? $this->get_online_posters($topic_posters) : array();
+		$attachments = (!empty($post_ids) && $this->config['news_attach_show']) ? $this->get_attachments($post_ids) : array();
 
 		// Get topic tracking
 		$topic_ids_ary = $topic_ids;
@@ -151,43 +153,6 @@ class phpbb_ext_nickvergessen_newspage
 			$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_ids);
 		}
 		$topic_ids = $topic_ids_ary;
-
-		// Get user online-status
-		$user_online_tracking_info = array();
-		$sql = 'SELECT session_user_id
-			FROM ' . SESSIONS_TABLE . '
-			WHERE ' . $this->db->sql_in_set('session_user_id', $topic_posters, false, true) . '
-				AND session_user_id <> ' . ANONYMOUS . '
-				AND session_viewonline = 1';
-		$result = $this->db->sql_query($sql);
-
-		while ($row = $this->db->sql_fetchrow($result))
-		{
-			$user_online_tracking_info[] = $row['session_user_id'];
-		}
-		$this->db->sql_freeresult($result);
-
-
-		// Get attachments
-		$attachments = array();
-		if (sizeof($post_ids) && $this->config['news_attach_show'])
-		{
-			if ($this->auth->acl_get('u_download'))
-			{
-				$sql = 'SELECT *
-					FROM ' . ATTACHMENTS_TABLE . '
-					WHERE ' . $this->db->sql_in_set('post_msg_id', $post_ids) . '
-						AND in_message = 0
-					ORDER BY filetime DESC, post_msg_id ASC';
-				$result = $this->db->sql_query($sql);
-
-				while ($row = $this->db->sql_fetchrow($result))
-				{
-					$attachments[$row['post_msg_id']][] = $row;
-				}
-				$this->db->sql_freeresult($result);
-			}
-		}
 
 		$sql_array = array(
 			'SELECT'	=> 't.*, i.icons_url, i.icons_width, i.icons_height, p.*, u.*',
@@ -404,9 +369,6 @@ class phpbb_ext_nickvergessen_newspage
 
 		// Specify some images
 		$this->template->assign_vars(array(
-			'REPORTED_IMG'			=> $this->user->img('icon_topic_reported', 'POST_REPORTED'),
-			'UNAPPROVED_IMG'		=> $this->user->img('icon_topic_unapproved', 'POST_UNAPPROVED'),
-
 			'NEWS_USER_INFO'			=> $this->config['news_user_info'],
 			'NEWS_POST_BUTTONS'			=> $this->config['news_post_buttons'],
 			'S_NEWS_ARCHIVE_PER_YEAR'	=> $this->config['news_archive_per_year'],
@@ -415,35 +377,49 @@ class phpbb_ext_nickvergessen_newspage
 			'NEWS_TITLE'				=> $this->get_page_title(),
 		));
 
-		if ($this->config['news_user_info'])
-		{
-			$this->template->assign_vars(array(
-				'PROFILE_IMG'		=> $this->user->img('icon_user_profile', 'READ_PROFILE'),
-				'SEARCH_IMG'		=> $this->user->img('icon_user_search', 'SEARCH_USER_POSTS'),
-				'PM_IMG'			=> $this->user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
-				'EMAIL_IMG'			=> $this->user->img('icon_contact_email', 'SEND_EMAIL'),
-				'WWW_IMG'			=> $this->user->img('icon_contact_www', 'VISIT_WEBSITE'),
-				'ICQ_IMG'			=> $this->user->img('icon_contact_icq', 'ICQ'),
-				'AIM_IMG'			=> $this->user->img('icon_contact_aim', 'AIM'),
-				'MSN_IMG'			=> $this->user->img('icon_contact_msnm', 'MSNM'),
-				'YIM_IMG'			=> $this->user->img('icon_contact_yahoo', 'YIM'),
-				'JABBER_IMG'		=> $this->user->img('icon_contact_jabber', 'JABBER'),
-			));
-		}
-
-		if ($this->config['news_post_buttons'])
-		{
-			$this->template->assign_vars(array(
-				'QUOTE_IMG'			=> $this->user->img('icon_post_quote', 'REPLY_WITH_QUOTE'),
-				'EDIT_IMG'			=> $this->user->img('icon_post_edit', 'EDIT_POST'),
-				'DELETE_IMG'		=> $this->user->img('icon_post_delete', 'DELETE_POST'),
-				'INFO_IMG'			=> $this->user->img('icon_post_info', 'VIEW_INFO'),
-				'REPORT_IMG'		=> $this->user->img('icon_post_report', 'REPORT_POST'),
-				'WARN_IMG'			=> $this->user->img('icon_user_warn', 'WARN_USER'),
-			));
-		}
-
 		return;
+	}
+
+	public function get_online_posters(array $posters)
+	{
+		$users = array();
+		$sql = 'SELECT session_user_id
+			FROM ' . SESSIONS_TABLE . '
+			WHERE ' . $this->db->sql_in_set('session_user_id', $posters) . '
+				AND session_user_id <> ' . ANONYMOUS . '
+				AND session_viewonline = 1';
+		$result = $this->db->sql_query($sql);
+
+		while ($row = $this->db->sql_fetchrow($result))
+		{
+			$users[] = $row['session_user_id'];
+		}
+		$this->db->sql_freeresult($result);
+
+		return $users;
+	}
+
+	public function get_attachments(array $post_ids)
+	{
+		$attachments = array();
+
+		if ($this->auth->acl_get('u_download'))
+		{
+			$sql = 'SELECT *
+				FROM ' . ATTACHMENTS_TABLE . '
+				WHERE ' . $this->db->sql_in_set('post_msg_id', $post_ids) . '
+					AND in_message = 0
+				ORDER BY filetime DESC, post_msg_id ASC';
+			$result = $this->db->sql_query($sql);
+
+			while ($row = $this->db->sql_fetchrow($result))
+			{
+				$attachments[$row['post_msg_id']][] = $row;
+			}
+			$this->db->sql_freeresult($result);
+		}
+
+		return $attachments;
 	}
 
 	public function get_newstopic_sql()
