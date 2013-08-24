@@ -155,7 +155,7 @@ class phpbb_ext_nickvergessen_newspage
 		$topic_ids = $topic_ids_ary;
 
 		$sql_array = array(
-			'SELECT'	=> 't.*, i.icons_url, i.icons_width, i.icons_height, p.*, u.*',
+			'SELECT'	=> 't.*, p.*, u.*',
 			'FROM'		=> array(TOPICS_TABLE => 't'),
 			'LEFT_JOIN'	=> array(
 				array(
@@ -165,10 +165,6 @@ class phpbb_ext_nickvergessen_newspage
 				array(
 					'FROM'	=> array(USERS_TABLE => 'u'),
 					'ON'	=> 'u.user_id = p.poster_id'
-				),
-				array(
-					'FROM'	=> array(ICONS_TABLE => 'i'),
-					'ON'	=> 't.icon_id = i.icons_id'
 				),
 			),
 			'ORDER_BY'	=> 't.topic_time ' . (($this->archive) ? 'ASC' : 'DESC'),
