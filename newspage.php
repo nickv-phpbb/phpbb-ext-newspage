@@ -160,15 +160,15 @@ class phpbb_ext_nickvergessen_newspage
 			'LEFT_JOIN'	=> array(
 				array(
 					'FROM'	=> array(POSTS_TABLE => 'p'),
-					'ON'	=> 'p.post_id = t.topic_first_post_id'
+					'ON'	=> 'p.post_id = t.topic_first_post_id',
 				),
 				array(
 					'FROM'	=> array(USERS_TABLE => 'u'),
-					'ON'	=> 'u.user_id = p.poster_id'
+					'ON'	=> 'u.user_id = p.poster_id',
 				),
 			),
 			'ORDER_BY'	=> 't.topic_time ' . (($this->archive) ? 'ASC' : 'DESC'),
-			'WHERE'		=> $this->db->sql_in_set('t.topic_id', $topic_ids, false, true),
+			'WHERE'		=> $this->db->sql_in_set('t.topic_id', $topic_ids),
 		);
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -183,15 +183,15 @@ class phpbb_ext_nickvergessen_newspage
 			$post_list = $post_edit_list = array();
 			$display_notice = false;
 
-			if ($this->news)
-			{
-				$this->page_title = censor_text($row['post_subject']);
-			}
 
 			$post_unread = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
 
 			//parse message for display
-			if (!$this->news)
+			if ($this->news)
+			{
+				$this->page_title = censor_text($row['post_subject']);
+			}
+			else
 			{
 				/**
 				* The BBCode engine is not yet finished, so currently we just ignore the cool shortening of
@@ -203,20 +203,8 @@ class phpbb_ext_nickvergessen_newspage
 				*/
 			}
 
-			$message = $row['post_text'];
-			$bbcode_bitfield = '';
-			$bbcode_bitfield = $bbcode_bitfield | base64_decode($row['bbcode_bitfield']);
-			if ($bbcode_bitfield !== '')
-			{
-				$bbcode = new bbcode(base64_encode($bbcode_bitfield));
-			}
-			$message = censor_text($message);
-			if ($row['bbcode_bitfield'])
-			{
-				$bbcode->bbcode_second_pass($message, $row['bbcode_uid'], $row['bbcode_bitfield']);
-			}
-			$message = str_replace("\n", '<br />', $message);
-			$message = smiley_text($message);
+			$parse_flags = ($row['bbcode_bitfield'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
+			$message = generate_text_for_display($row['post_text'], $row['bbcode_uid'], $row['bbcode_bitfield'], $parse_flags, true);
 
 			if (!$this->auth->acl_get('f_download', $forum_id))
 			{
