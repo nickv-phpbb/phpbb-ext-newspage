@@ -49,7 +49,6 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 
 		$template->assign_vars(array(
 			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('news'),
-			'U_NEWSPAGE_CSS'=> append_sid($phpbb_root_path . 'ext/nickvergessen/newspage/styles/prosilver/theme/newspage.css'),
 		));
 	}
 
