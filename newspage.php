@@ -100,14 +100,7 @@ class phpbb_ext_nickvergessen_newspage
 		return $this;
 	}
 
-	/**
-	* Base controller to be accessed with the URL /newspage/{page}
-	* (where {page} is the placeholder for a value)
-	*
-	* @param int	$page	Page number taken from the URL
-	* @return null
-	*/
-	public function base()
+	public function get_news_ids()
 	{
 		/**
 		* Select topic_ids for the news
@@ -122,20 +115,25 @@ class phpbb_ext_nickvergessen_newspage
 			$result = $this->db->sql_query_limit($sql, $this->config['news_number'], $this->start);
 		}
 
-		$forums = $topic_ids = $post_ids = $topic_posters = array();
+		$this->forums = $this->topic_ids = $this->post_ids = $this->poster_ids = array();
 		while ($row = $this->db->sql_fetchrow($result))
 		{
-			$post_ids[] = $row['topic_first_post_id'];
-			$topic_ids[] = $row['topic_id'];
-			$topic_posters[] = $row['topic_poster'];
-			$forums[$row['forum_id']][] = $row['topic_id'];
+			$this->post_ids[] = (int) $row['topic_first_post_id'];
+			$this->topic_ids[] = (int) $row['topic_id'];
+			$this->poster_ids[] = (int) $row['topic_poster'];
+			$this->forums[(int) $row['forum_id']][] = (int) $row['topic_id'];
 		}
 		$this->db->sql_freeresult($result);
+	}
 
-		if (empty($topic_ids))
+	public function base()
+	{
+		$this->get_news_ids();
+
+		if (empty($this->topic_ids))
 		{
-			$l_no_news = ($this->archive) ? $this->user->lang['NO_NEWS_ARCHIVE'] : (($this->category) ? $this->user->lang['NO_NEWS_CATEGORY'] : $this->user->lang['NO_NEWS']);
-			$this->template->assign_var('L_NO_NEWS', $l_no_news);
+			$l_no_news = ($this->archive) ? 'NO_NEWS_ARCHIVE' : (($this->category) ? 'NO_NEWS_CATEGORY' : 'NO_NEWS');
+			$this->template->assign_var('L_NO_NEWS', $this->user->lang($l_no_news));
 
 			return;
 		}
@@ -143,16 +141,14 @@ class phpbb_ext_nickvergessen_newspage
 		// Grab ranks, icons, online-status and attachments
 		$ranks = $this->cache->obtain_ranks();
 		$icons = $this->cache->obtain_icons();
-		$user_online_tracking_info = (!empty($topic_posters)) ? $this->get_online_posters($topic_posters) : array();
-		$attachments = (!empty($post_ids) && $this->config['news_attach_show']) ? $this->get_attachments($post_ids) : array();
+		$user_online_tracking_info = (!empty($this->poster_ids)) ? $this->get_online_posters($this->poster_ids) : array();
+		$attachments = (!empty($this->post_ids) && $this->config['news_attach_show']) ? $this->get_attachments($this->post_ids) : array();
 
 		// Get topic tracking
-		$topic_ids_ary = $topic_ids;
-		foreach ($forums as $forum_id => $topic_ids)
+		foreach ($this->forums as $forum_id => $topic_ids)
 		{
 			$topic_tracking_info[$forum_id] = get_complete_topic_tracking($forum_id, $topic_ids);
 		}
-		$topic_ids = $topic_ids_ary;
 
 		$sql_array = array(
 			'SELECT'	=> 't.*, p.*, u.*',
@@ -168,7 +164,7 @@ class phpbb_ext_nickvergessen_newspage
 				),
 			),
 			'ORDER_BY'	=> 't.topic_time ' . (($this->archive) ? 'ASC' : 'DESC'),
-			'WHERE'		=> $this->db->sql_in_set('t.topic_id', $topic_ids),
+			'WHERE'		=> $this->db->sql_in_set('t.topic_id', $this->topic_ids),
 		);
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
 		$result = $this->db->sql_query($sql);
@@ -176,10 +172,10 @@ class phpbb_ext_nickvergessen_newspage
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			// Set some variables
-			$post_id = $row['post_id'];
-			$poster_id = $row['poster_id'];
-			$topic_id = $row['topic_id'];
-			$forum_id = $row['forum_id'];
+			$post_id = (int) $row['post_id'];
+			$poster_id = (int) $row['poster_id'];
+			$topic_id = (int) $row['topic_id'];
+			$forum_id = (int) $row['forum_id'];
 			$post_list = $post_edit_list = array();
 			$display_notice = false;
 
@@ -210,9 +206,9 @@ class phpbb_ext_nickvergessen_newspage
 			{
 				$display_notice = true;
 			}
-			else if (!empty($attachments[$row['post_id']]))
+			else if (!empty($attachments[$post_id]))
 			{
-				parse_attachments($forum_id, $message, $attachments[$row['post_id']], $update_count);
+				parse_attachments($forum_id, $message, $attachments[$post_id], $update_count);
 			}
 
 			$row['post_text'] = $message;
@@ -237,28 +233,22 @@ class phpbb_ext_nickvergessen_newspage
 				}
 
 				$l_edit_time_total = ($row['post_edit_count'] == 1) ? $this->user->lang['EDITED_TIME_TOTAL'] : $this->user->lang['EDITED_TIMES_TOTAL'];
+
+				if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
+				{
+					$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
+				}
+				else
+				{
+					$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
+				}
+
 				if ($row['post_edit_reason'])
 				{
-					if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
-					{
-						$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
-					}
-					else
-					{
-						$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
-					}
 					$l_edited_by = sprintf($l_edit_time_total, $display_username, $this->user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
 				}
 				else
 				{
-					if (!$row['post_edit_user'] || $row['post_edit_user'] == $poster_id)
-					{
-						$display_username = get_username_string('full', $poster_id, $row['username'], $row['user_colour'], $row['post_username']);
-					}
-					else
-					{
-						$display_username = get_username_string('full', $row['post_edit_user'], $post_edit_list[$row['post_edit_user']]['username'], $post_edit_list[$row['post_edit_user']]['user_colour']);
-					}
 					$l_edited_by = sprintf($l_edit_time_total, $display_username, $this->user->format_date($row['post_edit_time'], false, true), $row['post_edit_count']);
 				}
 			}
@@ -266,7 +256,8 @@ class phpbb_ext_nickvergessen_newspage
 			{
 				$l_edited_by = '';
 			}
-			$flags = (($row['enable_bbcode']) ? 1 : 0) + (($row['enable_smilies']) ? 2 : 0) + (($row['enable_magic_url']) ? 4 : 0);
+
+			$flags = ($row['user_sig_bbcode_bitfield'] && $row['enable_bbcode'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
 			$row['user_sig'] = generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], $flags);
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
@@ -339,9 +330,9 @@ class phpbb_ext_nickvergessen_newspage
 			));
 
 			// Display not already displayed Attachments for this post, we already parsed them. ;)
-			if (!empty($attachments[$row['post_id']]))
+			if (!empty($attachments[$post_id]))
 			{
-				foreach ($attachments[$row['post_id']] as $attachment)
+				foreach ($attachments[$post_id] as $attachment)
 				{
 					$this->template->assign_block_vars('postrow.attachment', array(
 						'DISPLAY_ATTACHMENT'	=> $attachment,

@@ -45,7 +45,7 @@ class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubsc
 
 	public function add_page_header_link($event)
 	{
-		global $template, $phpbb_root_path, $phpEx, $phpbb_container;
+		global $template, $phpbb_container;
 
 		$template->assign_vars(array(
 			'U_NEWSPAGE'	=> $phpbb_container->get('controller.helper')->url('news'),
