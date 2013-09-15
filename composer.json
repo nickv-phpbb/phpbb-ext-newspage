@@ -22,7 +22,7 @@
 	],
 	"require": {
 		"php": ">=5.3",
-		"phpbb/phpbb": "3.1.*"
+		"phpbb/phpbb": "3.1.*@dev"
 	},
 	"extra": {
 		"display-name": "phpBB 3.1 NV Newspage Extension"
