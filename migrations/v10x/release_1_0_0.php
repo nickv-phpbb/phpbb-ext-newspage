@@ -7,9 +7,9 @@
 *
 */
 
-namespace nickvergessen\newspage\migrations;
+namespace nickvergessen\newspage\migrations\v10x;
 
-class v1_0_0 extends \phpbb\db\migration\migration
+class release_1_0_0 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{

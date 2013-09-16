@@ -7,9 +7,9 @@
 *
 */
 
-namespace nickvergessen\newspage\migrations;
+namespace nickvergessen\newspage\migrations\v10x;
 
-class v1_0_4 extends \phpbb\db\migration\migration
+class release_1_0_4 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
@@ -18,7 +18,7 @@ class v1_0_4 extends \phpbb\db\migration\migration
 
 	static public function depends_on()
 	{
-		return array('\nickvergessen\newspage\migrations\v1_0_3');
+		return array('\nickvergessen\newspage\migrations\v10x\release_1_0_3');
 	}
 
 	public function update_data()
