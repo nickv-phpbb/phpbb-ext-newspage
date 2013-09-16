@@ -8,6 +8,8 @@
 *
 */
 
+namespace nickvergessen\newspage\acp;
+
 /**
 * @ignore
 */
@@ -16,7 +18,7 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-class phpbb_ext_nickvergessen_newspage_acp_main_module
+class main_module
 {
 	var $u_action;
 

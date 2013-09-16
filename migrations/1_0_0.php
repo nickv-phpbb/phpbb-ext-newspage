@@ -7,7 +7,9 @@
 *
 */
 
-class phpbb_ext_nickvergessen_newspage_migrations_1_0_0 extends phpbb_db_migration
+namespace nickvergessen\newspage\migrations;
+
+class v1_0_0 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
@@ -16,7 +18,7 @@ class phpbb_ext_nickvergessen_newspage_migrations_1_0_0 extends phpbb_db_migrati
 
 	static public function depends_on()
 	{
-		return array('phpbb_db_migration_data_310_dev');
+		return array('\phpbb\db\migration\data\v310\dev');
 	}
 
 	public function update_data()
@@ -37,7 +39,7 @@ class phpbb_ext_nickvergessen_newspage_migrations_1_0_0 extends phpbb_db_migrati
 				'acp',
 				'ACP_NEWSPAGE_TITLE',
 				array(
-					'module_basename'	=> 'phpbb_ext_nickvergessen_newspage_acp_main_module',
+					'module_basename'	=> '\nickvergessen\newspage\acp\main_module',
 					'modes'				=> array('config_newspage'),
 				),
 			)),

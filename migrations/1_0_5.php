@@ -7,7 +7,9 @@
 *
 */
 
-class phpbb_ext_nickvergessen_newspage_migrations_1_0_5 extends phpbb_db_migration
+namespace nickvergessen\newspage\migrations;
+
+class v1_0_5 extends \phpbb\db\migration\migration
 {
 	public function effectively_installed()
 	{
@@ -16,7 +18,7 @@ class phpbb_ext_nickvergessen_newspage_migrations_1_0_5 extends phpbb_db_migrati
 
 	static public function depends_on()
 	{
-		return array('phpbb_ext_nickvergessen_newspage_migrations_1_0_4');
+		return array('\nickvergessen\newspage\migrations\v1_0_4');
 	}
 
 	public function update_data()

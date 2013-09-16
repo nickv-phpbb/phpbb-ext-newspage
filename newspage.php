@@ -8,7 +8,9 @@
 *
 */
 
-class phpbb_ext_nickvergessen_newspage
+namespace nickvergessen\newspage;
+
+class newspage
 {
 	protected $num_pagination_items = 0;
 
@@ -27,19 +29,19 @@ class phpbb_ext_nickvergessen_newspage
 	* NOTE: The parameters of this method must match in order and type with
 	* the dependencies defined in the services.yml file for this service.
 	*
-	* @param phpbb_auth		$auth		Auth object
-	* @param phpbb_cache_service	$cache		Cache object
-	* @param phpbb_config	$config		Config object
-	* @param phpbb_db_driver	$db		Database object
-	* @param phpbb_request	$request	Request object
-	* @param phpbb_template	$template	Template object
-	* @param phpbb_user		$user		User object
-	* @param phpbb_content_visibility		$content_visibility	Content visibility object
-	* @param phpbb_controller_helper		$helper				Controller helper object
+	* @param \phpbb\auth		$auth		Auth object
+	* @param \phpbb\cache\service	$cache		Cache object
+	* @param \phpbb\config	$config		Config object
+	* @param \phpbb\db\driver	$db		Database object
+	* @param \phpbb\request	$request	Request object
+	* @param \phpbb\template	$template	Template object
+	* @param \phpbb\user		$user		User object
+	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
+	* @param \phpbb\controller\helper		$helper				Controller helper object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(phpbb_auth $auth, phpbb_cache_service $cache, phpbb_config $config, phpbb_db_driver $db, phpbb_request $request, phpbb_template $template, phpbb_user $user, phpbb_content_visibility $content_visibility, phpbb_controller_helper $helper, $root_path, $php_ext)
+	public function __construct(\phpbb\auth $auth, \phpbb\cache\service $cache, \phpbb\config $config, \phpbb\db\driver $db, \phpbb\request $request, \phpbb\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -193,7 +195,7 @@ class phpbb_ext_nickvergessen_newspage
 				* The BBCode engine is not yet finished, so currently we just ignore the cool shortening of
 				* the trim message tool and hope, that the new engine supports a substr() on parsed texts.
 				*
-				$trim = new phpbb_trim_message($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
+				$trim = new \phpbb\trim_message($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
 				$row['post_text'] = $trim->message();
 				unset($trim);
 				*/

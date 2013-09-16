@@ -8,6 +8,8 @@
 *
 */
 
+namespace nickvergessen\newspage\acp;
+
 /**
 * @ignore
 */
@@ -16,12 +18,12 @@ if (!defined('IN_PHPBB'))
 	exit;
 }
 
-class phpbb_ext_nickvergessen_newspage_acp_main_info
+class main_info
 {
 	function module()
 	{
 		return array(
-			'filename'	=> 'phpbb_ext_nickvergessen_newspage_acp_main_module',
+			'filename'	=> '\nickvergessen\newspage\acp\main_module',
 			'title'		=> 'ACP_NEWSPAGE_TITLE',
 			'version'	=> '1.0.1',
 			'modes'		=> array(

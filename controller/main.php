@@ -8,20 +8,23 @@
 *
 */
 
-class phpbb_ext_nickvergessen_newspage_controller_main
+namespace nickvergessen\newspage\controller;
+
+class main
 {
-	/* @var phpbb_config */
+	/* @var \phpbb\config */
 	protected $config;
 
-	/* @var phpbb_template */
+	/* @var \phpbb\template */
 	protected $template;
 
-	/* @var phpbb_user */
+	/* @var \phpbb\user */
 	protected $user;
 
-	/* @var phpbb_controller_helper */
+	/* @var \phpbb\controller\helper */
 	protected $helper;
-	/* @var phpbb_ext_nickvergessen_newspage */
+
+	/* @var \nickvergessen\newspage */
 	protected $newspage;
 
 	/* @var string phpBB root path */
@@ -33,15 +36,15 @@ class phpbb_ext_nickvergessen_newspage_controller_main
 	/**
 	* Constructor
 	*
-	* @param phpbb_config	$config		Config object
-	* @param phpbb_template	$template	Template object
-	* @param  phpbb_user	$user		User object
-	* @param phpbb_controller_helper		$helper				Controller helper object
-	* @param phpbb_ext_nickvergessen_newspage		$newspage	Newspage object
+	* @param \phpbb\config	$config		Config object
+	* @param \phpbb\template	$template	Template object
+	* @param \phpbb\user	$user		User object
+	* @param \phpbb\controller\helper		$helper				Controller helper object
+	* @param \nickvergessen\newspage		$newspage	Newspage object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(phpbb_config $config, phpbb_template $template, phpbb_user $user, phpbb_controller_helper $helper, phpbb_ext_nickvergessen_newspage $newspage, $root_path, $php_ext)
+	public function __construct(\phpbb\config $config, \phpbb\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->template = $template;

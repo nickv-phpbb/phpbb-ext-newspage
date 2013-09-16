@@ -8,6 +8,8 @@
 *
 */
 
+namespace nickvergessen\newspage\event;
+
 /**
 * @ignore
 */
@@ -22,7 +24,7 @@ if (!defined('IN_PHPBB'))
 */
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-class phpbb_ext_nickvergessen_newspage_event_main_listener implements EventSubscriberInterface
+class main_listener implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents()
 	{

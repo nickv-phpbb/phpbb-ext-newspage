@@ -1,6 +1,6 @@
 services:
     nickvergessen.newspage.controller:
-        class: phpbb_ext_nickvergessen_newspage_controller_main
+        class: nickvergessen\newspage\controller\main
         arguments:
             - @config
             - @template
@@ -10,7 +10,7 @@ services:
             - %core.root_path%
             - %core.php_ext%
     nickvergessen.newspage:
-        class: phpbb_ext_nickvergessen_newspage
+        class: nickvergessen\newspage\newspage
         arguments:
             - @auth
             - @cache
