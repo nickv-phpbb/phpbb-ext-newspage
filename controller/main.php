@@ -44,7 +44,7 @@ class main
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\config $config, \phpbb\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage $newspage, $root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->template = $template;

@@ -41,7 +41,7 @@ class newspage
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\auth $auth, \phpbb\cache\service $cache, \phpbb\config $config, \phpbb\db\driver $db, \phpbb\request $request, \phpbb\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
