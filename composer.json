@@ -1,30 +1,28 @@
 {
 	"name": "nickvergessen/newspage",
-	"type": "phpbb3-extension",
+	"type": "phpbb-extension",
 	"description": "Adds a extra-page to the board where a switchable number of news are displayed. The text can be shorten to a certain number of chars. Also the Icons can be switched of (post icons, user icons)",
 	"homepage": "https://github.com/nickvergessen/phpbb3-mod-newspage",
 	"version": "1.1.0",
-	"time": "2013-03-16 01:01:01",
+	"time": "2013-03-16",
 	"licence": "GPL-2.0",
 	"authors": [
 		{
 			"name": "Joas Schilling",
-			"username": "nickvergessen",
 			"email": "nickvergessen@gmx.de",
 			"homepage": "http://www.flying-bits.org",
 			"role": "Lead Developer"
 		},
 		{
 			"name": "Falk Seidel",
-			"username": "Unimatrix_0",
 			"email": "admin@un1matr1x.de",
 			"homepage": "http://un1matr1x.de",
-			"role": "Developer (since 2011-01-22)"
+			"role": "Developer"
 		}
 	],
 	"require": {
 		"php": ">=5.3",
-		"phpbb": ">=3.1.0-dev"
+		"phpbb/phpbb": "3.1.*@dev"
 	},
 	"extra": {
 		"display-name": "phpBB 3.1 NV Newspage Extension"
