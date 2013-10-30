@@ -10,19 +10,20 @@
 	padding: 1px 17px 0 0;
 }
 
-div.archive {
+div.news-block {
 	background: #EBEBEB;
 }
 
-div.archive_block {
+div.news-block h3 {
 	border-bottom: 1px solid #CCCCCC;
+	margin-bottom: 0;
+	color: #28313F;
 	font-weight: bold;
-	padding-left: 4px;
-	padding-top: 4px;
-	padding-bottom: 4px;
 }
 
-div.archive_row {
+div.news-block li {
+	list-style-type: none;
+	font-weight: bold;
 	border-bottom: 1px solid #CCCCCC;
 	border-top: 1px solid #FFFFFF;
 	padding-left: 4px;
@@ -30,19 +31,16 @@ div.archive_row {
 	padding-bottom: 4px;
 }
 
-div.archive_row-last {
-	border-top: 1px solid #FFFFFF;
-	padding-left: 4px;
-	padding-top: 4px;
-	padding-bottom: 4px;
+div.news-block li:last-child {
+	border-bottom: none;
 }
 
-div.newspage-archive {
+div.newspage-block {
 	width: 20%;
 	float: right;
 }
 
-.rtl div.newspage-archive {
+.rtl div.newspage-block {
 	float: left;
 }
 
@@ -56,7 +54,7 @@ div.newspage-news {
 }
 
 @media only screen and (max-width: 950px), only screen and (max-device-width: 950px) {
-	div.newspage-archive {
+	div.newspage-block {
 		width: 100%;
 		float: none;
 		display: block;

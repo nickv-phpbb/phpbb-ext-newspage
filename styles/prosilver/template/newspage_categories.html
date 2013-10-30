@@ -1,14 +1,11 @@
-<div class="panel archive">
+<div class="panel news-block">
 	<div class="inner">
-		<div class="archive_block">{L_NEWS_CAT}</div>
+		<h3>{L_NEWS_CAT}</h3>
 
+		<ul>
 		<!-- BEGIN cat_block -->
-			<div class="archive_row<!-- IF cat_block.S_LAST_ROW -->-last<!-- ENDIF -->">
-				<strong>
-					<a href="{cat_block.U_NEWS_CAT}">{cat_block.NEWS_CAT}</a>
-					({cat_block.NEWS_COUNT})
-				</strong>
-			</div>
+			<li><a href="{cat_block.U_NEWS_CAT}">{cat_block.NEWS_CAT}</a> ({cat_block.NEWS_COUNT})</li>
 		<!-- END cat_block -->
+		</ul>
 	</div>
 </div>

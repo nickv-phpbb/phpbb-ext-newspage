@@ -1,18 +1,15 @@
 <!-- BEGIN archive_block -->
 	<!-- IF S_NEWS_ARCHIVE_PER_YEAR or archive_block.S_FIRST_ROW -->
-		<div class="panel archive">
+		<div class="panel news-block">
 			<div class="inner">
 	<!-- ENDIF -->
 
-	<div class="archive_block">{L_NEWS_ARCHIVE} {archive_block.NEWS_YEAR}</div>
+	<h3>{L_NEWS_ARCHIVE} {archive_block.NEWS_YEAR}</h3>
+	<ul>
 	<!-- BEGIN archive_row -->
-		<div class="archive_row<!-- IF archive_block.archive_row.S_LAST_ROW -->-last<!-- ENDIF -->">
-			<strong>
-				<a href="{archive_block.archive_row.U_NEWS_MONTH}">{archive_block.archive_row.NEWS_MONTH}</a>
-				({archive_block.archive_row.NEWS_COUNT})
-			</strong>
-		</div>
+		<li><a href="{archive_block.archive_row.U_NEWS_MONTH}">{archive_block.archive_row.NEWS_MONTH}</a> ({archive_block.archive_row.NEWS_COUNT})</li>
 	<!-- END archive_row -->
+	</ul>
 
 	<!-- IF S_NEWS_ARCHIVE_PER_YEAR or archive_block.S_LAST_ROW -->
 			</div>
