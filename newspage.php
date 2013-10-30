@@ -102,6 +102,11 @@ class newspage
 		return $this;
 	}
 
+	public function is_archive()
+	{
+		return $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
+	}
+
 	public function get_news_ids()
 	{
 		/**
@@ -134,7 +139,7 @@ class newspage
 
 		if (empty($this->topic_ids))
 		{
-			$l_no_news = ($this->archive) ? 'NO_NEWS_ARCHIVE' : (($this->category) ? 'NO_NEWS_CATEGORY' : 'NO_NEWS');
+			$l_no_news = ($this->is_archive()) ? 'NO_NEWS_ARCHIVE' : (($this->category) ? 'NO_NEWS_CATEGORY' : 'NO_NEWS');
 			$this->template->assign_var('L_NO_NEWS', $this->user->lang($l_no_news));
 
 			return;
@@ -165,7 +170,7 @@ class newspage
 					'ON'	=> 'u.user_id = p.poster_id',
 				),
 			),
-			'ORDER_BY'	=> 't.topic_time ' . (($this->archive) ? 'ASC' : 'DESC'),
+			'ORDER_BY'	=> 't.topic_time ' . (($this->is_archive()) ? 'ASC' : 'DESC'),
 			'WHERE'		=> $this->db->sql_in_set('t.topic_id', $this->topic_ids),
 		);
 		$sql = $this->db->sql_build_query('SELECT', $sql_array);
@@ -414,7 +419,7 @@ class newspage
 			$sql_array['WHERE'] .= ' AND topic_id = ' . $this->news;
 			$sql_array['ORDER_BY'] = '';
 		}
-		else if (empty($this->archive))
+		else if ($this->is_archive())
 		{
 			$archive_start = gmmktime(0, 0, 0, $this->archive['m'], 1, $this->archive['y']);
 			$archive_start = $archive_start - $this->user->timezone;
@@ -577,7 +582,7 @@ class newspage
 	*/
 	public function generate_pagination()
 	{
-		if (empty($this->archive) || ($this->archive['y'] == 0 && $this->archive['m'] == 0))
+		if (!$this->is_archive())
 		{
 			$max_num_news = $this->config['news_pages'] * $this->config['news_number'];
 			$pagination_news = min($max_num_news, $this->num_pagination_items);
@@ -620,7 +625,7 @@ class newspage
 		{
 			$base_url .= ($force_archive !== '') ? '/archive/' . $force_archive : '';
 		}
-		else if (!empty($this->archive) && $this->archive['y'] != 0 && $this->archive['m'] != 0)
+		else if ($this->is_archive())
 		{
 			$base_url .= '/archive/' . $this->archive['y'] . '/' . sprintf('%02d', $this->archive['m']);
 		}
