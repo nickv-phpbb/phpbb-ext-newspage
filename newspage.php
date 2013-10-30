@@ -421,13 +421,9 @@ class newspage
 		}
 		else if ($this->is_archive())
 		{
-			$archive_start = gmmktime(0, 0, 0, $this->archive['m'], 1, $this->archive['y']);
-			$archive_start = $archive_start - $this->user->timezone;
-
-			$archive_end = gmmktime(0, 0, 0, $this->archive['m'] + 1, 1, $this->archive['y']);
-			$archive_end = $archive_end - $this->user->timezone;
-
-			$archive_name = sprintf($this->user->lang['NEWS_ARCHIVE_OF'], $this->user->format_date($archive_start, 'F Y'));
+			$archive_start = $this->user->get_timestamp_from_format('Y-n-d H:i:s', $this->archive['y'] . '-' . $this->archive['m'] . '-01 0:00:00');
+			$archive_end = $this->user->get_timestamp_from_format('Y-n-d H:i:s', $this->archive['y'] . '-' . ($this->archive['m'] + 1) . '-01 0:00:00') - 1;
+			$archive_name = $this->user->lang('NEWS_ARCHIVE_OF', $this->user->format_date($archive_start, 'F Y'));
 
 			$this->page_title = $archive_name;
 			$sql_array['WHERE'] .= ' AND topic_time >= ' . (int) $archive_start . ' AND topic_time <= ' . (int) $archive_end;
