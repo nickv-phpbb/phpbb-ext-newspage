@@ -54,3 +54,17 @@ div.newspage-news {
 .rtl div.newspage-news {
 	float: right;
 }
+
+@media only screen and (max-width: 950px), only screen and (max-device-width: 950px) {
+	div.newspage-archive {
+		width: 100%;
+		float: none;
+		display: block;
+	}
+
+	div.newspage-news {
+		width: 100%;
+		float: none;
+		display: block;
+	}
+}
