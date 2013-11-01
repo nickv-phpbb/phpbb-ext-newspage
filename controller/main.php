@@ -82,7 +82,6 @@ class main
 	*/
 	public function newspage($forum_id, $year, $month, $page)
 	{
-
 		$this->newspage->set_category($forum_id)
 			->set_archive($year, $month)
 			->set_start(($page - 1) * $this->config['news_number']);
