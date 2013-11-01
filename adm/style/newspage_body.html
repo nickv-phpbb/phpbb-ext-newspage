@@ -13,9 +13,10 @@
 				<input type="radio" class="radio" name="news_cat_show" value="0" <!-- IF not NEWS_CAT_SHOW -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
 		</dl>
 		<dl>
-			<dt><label for="news_archive_per_year">{L_NEWS_ARCHIVE_PER_YEAR}:</label><br /><span>{L_NEWS_ARCHIVE_PER_YEAR_EXPLAIN}</span></dt>
-			<dd><input type="radio" class="radio" name="news_archive_per_year" value="1" <!-- IF NEWS_ARCHIVE_PER_YEAR -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
-				<input type="radio" class="radio" name="news_archive_per_year" value="0" <!-- IF not NEWS_ARCHIVE_PER_YEAR -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
+			<dt><label for="news_archive_show">{L_NEWS_ARCHIVE_SHOW}:</label><br /><span>{L_NEWS_ARCHIVE_SHOW_EXPLAIN}</span></dt>
+			<dd><input type="radio" class="radio" name="news_archive_show" value="1" <!-- IF NEWS_ARCHIVE_SHOW == 1 -->checked="checked"<!-- ENDIF -->/> {L_YES} &nbsp;
+				<input type="radio" class="radio" name="news_archive_show" value="2" <!-- IF NEWS_ARCHIVE_SHOW == 2 -->checked="checked"<!-- ENDIF --> /> {L_NEWS_ARCHIVE_SHOW_PER_YEAR} &nbsp;
+				<input type="radio" class="radio" name="news_archive_show" value="0" <!-- IF NEWS_ARCHIVE_SHOW == 0 -->checked="checked"<!-- ENDIF --> /> {L_NO}</dd>
 		</dl>
 		<dl>
 			<dt><label for="news_number">{L_NEWS_NUMBER}:</label></dt>

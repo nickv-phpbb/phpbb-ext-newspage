@@ -111,7 +111,15 @@ class main
 	*/
 	public function base($display_pagination = true)
 	{
-		$this->newspage->generate_archive_list();
+		if ($this->config['news_archive_show'])
+		{
+			$this->newspage->generate_archive_list();
+		}
+		else
+		{
+			$this->newspage->count_num_pagination_items();
+		}
+
 		if ($display_pagination)
 		{
 			$this->newspage->generate_pagination();

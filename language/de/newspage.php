@@ -24,8 +24,9 @@ $lang = array_merge($lang, array(
 	'ACP_NEWSPAGE_CONFIG'		=> 'Newspage-Einstellungen',
 
 	'NEWS'						=> 'News',
-	'NEWS_ARCHIVE_PER_YEAR'				=> 'Archivblocks pro Jahr',
-	'NEWS_ARCHIVE_PER_YEAR_EXPLAIN'		=> 'Zeigt pro Jahr je einen seperaten Archivblock',
+	'NEWS_ARCHIVE_SHOW'			=> 'Archiv anzeigen',
+	'NEWS_ARCHIVE_SHOW_EXPLAIN'	=> 'Zeigt eine Liste mit den Monaten und der Anzahl der darin geschriebenen News.',
+	'NEWS_ARCHIVE_SHOW_PER_YEAR'=> 'Einen Block pro Jahr anzeigen',
 	'NEWS_ARCHIVE'				=> 'Archiv',
 	'NEWS_ARCHIVE_OF'			=> 'Archiv vom %s',
 	'NEWS_ATTACH_SHOW'			=> 'Anhänge anzeigen',

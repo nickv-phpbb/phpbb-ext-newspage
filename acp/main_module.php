@@ -48,7 +48,7 @@ class main_module
 			$config->set('news_shadow',				$request->variable('news_shadow_show', 0));
 			$config->set('news_attach_show',		$request->variable('news_attach_show', 0));
 			$config->set('news_cat_show',			$request->variable('news_cat_show', 0));
-			$config->set('news_archive_per_year',	$request->variable('news_archive_per_year', 0));
+			$config->set('news_archive_show',		$request->variable('news_archive_show', 0));
 
 			trigger_error($user->lang['NEWS_SAVED'] . adm_back_link($this->u_action));
 		}
@@ -63,7 +63,7 @@ class main_module
 			'NEWS_SHADOW_SHOW'		=> $config['news_shadow'],
 			'NEWS_ATTACH_SHOW'		=> $config['news_attach_show'],
 			'NEWS_CAT_SHOW'			=> $config['news_cat_show'],
-			'NEWS_ARCHIVE_PER_YEAR'	=> $config['news_archive_per_year'],
+			'NEWS_ARCHIVE_SHOW'		=> $config['news_archive_show'],
 			'S_SELECT_FORUMS'		=> make_forum_select(explode(',', $config['news_forums'])),
 		));
 	}
