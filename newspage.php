@@ -24,6 +24,9 @@ class newspage
 
 	protected $category;
 
+	const ARCHIVE_SHOW = 1;
+	const ARCHIVE_PER_YEAR = 2;
+
 	/**
 	* Constructor
 	* NOTE: The parameters of this method must match in order and type with
@@ -353,7 +356,7 @@ class newspage
 		$this->template->assign_vars(array(
 			'NEWS_USER_INFO'			=> $this->config['news_user_info'],
 			'NEWS_POST_BUTTONS'			=> $this->config['news_post_buttons'],
-			'S_NEWS_ARCHIVE_PER_YEAR'	=> $this->config['news_archive_per_year'],
+			'S_NEWS_ARCHIVE_PER_YEAR'	=> $this->config['news_archive_show'] == self::ARCHIVE_PER_YEAR,
 
 			'NEWS_ONLY'					=> $this->news,
 			'NEWS_TITLE'				=> $this->get_page_title(),
@@ -567,6 +570,27 @@ class newspage
 				));
 			}
 		}
+
+		return;
+	}
+
+	/**
+	* Counts the total number of news for pagination
+	*
+	* @return	null
+	*/
+	public function count_num_pagination_items()
+	{
+		$this->num_pagination_items = 0;
+
+		$archiv_years = $archiv_months = $checked_months = array();
+		$sql = 'SELECT COUNT(topic_id) AS num_news
+			FROM ' . TOPICS_TABLE . '
+			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums($this->category), false, true) . '
+				AND topic_visibility = ' . ITEM_APPROVED;
+		$result = $this->db->sql_query($sql);
+		$this->num_pagination_items = $this->db->sql_fetchfield('num_news');
+		$this->db->sql_freeresult($result);
 
 		return;
 	}
