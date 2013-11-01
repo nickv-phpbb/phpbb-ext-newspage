@@ -152,7 +152,7 @@ class newspage
 		$ranks = $this->cache->obtain_ranks();
 		$icons = $this->cache->obtain_icons();
 		$user_online_tracking_info = (!empty($this->poster_ids)) ? $this->get_online_posters($this->poster_ids) : array();
-		$attachments = (!empty($this->post_ids) && $this->config['news_attach_show']) ? $this->get_attachments($this->post_ids) : array();
+		$attachments = (!empty($this->post_ids)) ? $this->get_attachments($this->post_ids) : array();
 
 		// Get topic tracking
 		foreach ($this->forums as $forum_id => $topic_ids)
