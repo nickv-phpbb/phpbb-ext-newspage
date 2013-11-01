@@ -25,7 +25,7 @@ class better_archive_config_option extends \phpbb\db\migration\migration
 	{
 		return array(
 			array('config.add', array('news_archive_show', $this->config['news_archive_per_year'])),
-			array('config.remove', array('news_archive_per_year')),
+			array('config.remove', array('news_archive_per_year', 1)),
 		);
 	}
 }
