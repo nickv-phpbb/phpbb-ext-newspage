@@ -197,16 +197,15 @@ class newspage
 			{
 				$this->page_title = censor_text($row['post_subject']);
 			}
-			else
+			else if (class_exists('\nickvergessen\trimmessage\trim_message'))
 			{
 				/**
 				* The BBCode engine is not yet finished, so currently we just ignore the cool shortening of
 				* the trim message tool and hope, that the new engine supports a substr() on parsed texts.
-				*
-				$trim = new \phpbb\trim_message($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
+				*/
+				$trim = new \nickvergessen\trimmessage\trim_message($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
 				$row['post_text'] = $trim->message();
 				unset($trim);
-				*/
 			}
 
 			$parse_flags = ($row['bbcode_bitfield'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
