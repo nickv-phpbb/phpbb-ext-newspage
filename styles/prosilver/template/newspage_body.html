@@ -131,9 +131,9 @@
 					<!-- IF postrow.S_HAS_POLL -->
 						{L_NEWS_POLL}: <strong>{postrow.POLL_QUESTION}</strong> &raquo; <a href="{postrow.U_MINI_POST}">{L_NEWS_POLL_GOTO}</a><br /><br />
 					<!-- ENDIF -->
-					<strong>{L_NEWS_READ_FULL}:</strong> <em><a href="{postrow.U_NEWS}">{L_NEWS_READ_HERE}</a></em><br />
-					<strong>{L_NEWS_GO_TO_TOPIC}:</strong> <em><a href="{postrow.U_MINI_POST}">{postrow.POST_SUBJECT}</a></em><br />
-					<strong>{L_NEWS_COMMENTS}:</strong> <em>{postrow.NEWS_COMMENTS}</em>
+					<!-- IF not NEWS_ONLY --><a href="{postrow.U_NEWS}"><strong>{L_NEWS_READ_FULL}</strong></a><br /><!-- ENDIF -->
+					<a href="{postrow.U_MINI_POST}"><strong>{L_NEWS_GO_TO_TOPIC}{L_COLON}</strong> <em>{postrow.POST_SUBJECT}</em></a><br />
+					<a href="{postrow.U_MINI_POST}"><strong>{L_NEWS_COMMENTS}{L_COLON}</strong> <em>{postrow.NEWS_COMMENTS}</em></a>
 				</div>
 		</div>
 
