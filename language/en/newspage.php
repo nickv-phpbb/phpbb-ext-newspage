@@ -70,4 +70,9 @@ $lang = array_merge($lang, array(
 		1	=> '1 news',
 		2	=> '%d news',
 	),
+
+	'VIEWONLINE_NEWS'			=> 'Viewing news',
+	'VIEWONLINE_NEWS_ARCHIVE'	=> 'Viewing news of %s',
+	'VIEWONLINE_NEWS_CATEGORY'	=> 'Viewing news in %s',
+	'VIEWONLINE_NEWS_CATEGORY_ARCHIVE'	=> 'Viewing news in %s of %s',
 ));

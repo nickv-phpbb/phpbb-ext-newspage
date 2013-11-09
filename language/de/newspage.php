@@ -48,9 +48,9 @@ $lang = array_merge($lang, array(
 	'NEWS_READ_FULL'			=> 'News ganz lesen',
 	'NEWS_READ_HERE'			=> 'Hier',
 	'NEWS_SAVED'				=> 'Einstellung erfolgreich aktualisiert.',
-	'NEWS_USER_INFO'			=> 'Benutzerinformation anzeigen',
 	'NEWS_SHADOW_SHOW'			=> 'Schatten-Themen anzeigen',
 	'NEWS_SHADOW_SHOW_EXPLAIN'	=> 'Zeigt die News, wenn ein Link im alten Forum beibehalten wurde',
+	'NEWS_USER_INFO'			=> 'Benutzerinformation anzeigen',
 	'NEWS_USER_INFO_EXPLAIN'	=> '(Beiträge, Wohnort, ...)',
 
 	'NO_NEWS'					=> 'Es gibt keine News-Einträge.',
@@ -64,4 +64,15 @@ $lang = array_merge($lang, array(
 	'UPDATE_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage aktualisieren möchtest?',
 	'UNINSTALL_NEWSPAGE'		=> 'Newspage deinstallieren',
 	'UNINSTALL_NEWSPAGE_CONFIRM'	=> 'Bist du dir sicher, dass du die Newspage deinstallieren möchtest?',
+
+	'VIEW_NEWS_POSTS'			=> array(
+		0	=> 'Keine News',
+		1	=> '1 News',
+		2	=> '%d News',
+	),
+
+	'VIEWONLINE_NEWS'			=> 'Liest News',
+	'VIEWONLINE_NEWS_ARCHIVE'	=> 'Liest News von %s',
+	'VIEWONLINE_NEWS_CATEGORY'	=> 'Liest News in %s',
+	'VIEWONLINE_NEWS_CATEGORY_ARCHIVE'	=> 'Liest News in %s von %s',
 ));
