@@ -23,3 +23,12 @@ services:
             - @controller.helper
             - %core.root_path%
             - %core.php_ext%
+    nickvergessen.newspage.listener:
+        class: nickvergessen\newspage\event\main_listener
+        arguments:
+            - @controller.helper
+            - @template
+            - @user
+            - %core.php_ext%
+        tags:
+            - { name: event.listener }
