@@ -27,7 +27,7 @@ class main_info
 			'title'		=> 'ACP_NEWSPAGE_TITLE',
 			'version'	=> '1.0.1',
 			'modes'		=> array(
-				'config_newspage'	=> array('title' => 'ACP_NEWSPAGE_CONFIG', 'auth' => 'acl_a_board', 'cat' => array('ACP_NEWSPAGE_TITLE')),
+				'config_newspage'	=> array('title' => 'ACP_NEWSPAGE_CONFIG', 'auth' => 'acl_a_board && ext_nickvergessen/newspage', 'cat' => array('ACP_NEWSPAGE_TITLE')),
 			),
 		);
 	}
