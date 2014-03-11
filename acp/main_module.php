@@ -24,19 +24,19 @@ class main_module
 	* Link to the current active page
 	* @var string
 	*/
-	protected $u_action;
+	public $u_action;
 
 	/**
 	* Name of the template file we want to display
 	* @var string
 	*/
-	protected $tpl_name;
+	public $tpl_name;
 
 	/**
 	* Title of the page
 	* @var string
 	*/
-	protected $page_title;
+	public $page_title;
 
 	/**
 	* Main method of the module

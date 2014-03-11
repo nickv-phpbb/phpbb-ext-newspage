@@ -9,6 +9,10 @@ services:
             - @nickvergessen.newspage
             - %core.root_path%
             - %core.php_ext%
+    nickvergessen.newspage.helper:
+        class: nickvergessen\newspage\helper
+        arguments:
+            - @controller.helper
     nickvergessen.newspage:
         class: nickvergessen\newspage\newspage
         arguments:
@@ -21,6 +25,7 @@ services:
             - @user
             - @content.visibility
             - @controller.helper
+            - @nickvergessen.newspage.helper
             - @pagination
             - %core.root_path%
             - %core.php_ext%

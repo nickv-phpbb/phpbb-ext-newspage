@@ -44,11 +44,12 @@ class newspage
 	* @param \phpbb\user		$user		User object
 	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
+	* @param \nickvergessen\newspage\helper		$news_helper				Controller helper object
 	* @param \phpbb\pagination	$pagination	Pagination object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, \phpbb\pagination $pagination, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, \nickvergessen\newspage\helper $news_helper, \phpbb\pagination $pagination, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -59,6 +60,7 @@ class newspage
 		$this->user = $user;
 		$this->content_visibility = $content_visibility;
 		$this->helper = $helper;
+		$this->news_helper = $news_helper;
 		$this->pagination = $pagination;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
@@ -487,10 +489,11 @@ class newspage
 			ORDER BY left_id ASC';
 		$result = $this->db->sql_query($sql);
 
+		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
 			$this->template->assign_block_vars('cat_block', array(
-				'U_NEWS_CAT'		=> $this->get_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
+				'U_NEWS_CAT'		=> $route->get_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
 				'NEWS_CAT'			=> $row['forum_name'],
 				'NEWS_COUNT'		=> $row['forum_topics_approved'],
 			));
@@ -554,8 +557,9 @@ class newspage
 					$this->num_pagination_items += $archive['count'];
 				}
 
+				$route = $this->news_helper->generate_route($this->category, $this->archive);
 				$this->template->assign_block_vars('archive_block.archive_row', array(
-					'U_NEWS_MONTH'		=> $this->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
+					'U_NEWS_MONTH'		=> $route->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
 					'NEWS_MONTH'		=> $archive['name'],
 					'NEWS_COUNT'		=> $archive['count'],
 				));
@@ -602,130 +606,19 @@ class newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
+		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		$this->pagination->generate_template_pagination(
 			array(
 				'routes' => array(
-					$this->get_route(),
-					$this->get_route(false, false, true),
+					$route->get_route(),
+					$route->get_route(false, false, true),
 				),
-				'params' => $this->get_params(),
+				'params' => $route->get_params(),
 			), 'pagination', 'page', $pagination_news, $this->config['news_number'], $this->start);
 
 		$this->template->assign_vars(array(
 			'PAGE_NUMBER'		=> $this->pagination->on_page($pagination_news, $this->config['news_number'], $this->start),
 			'TOTAL_NEWS'		=> $this->user->lang('VIEW_NEWS_POSTS', $this->num_pagination_items),
 		));
-	}
-
-	/**
-	* Generate the pagination for the news list
-	*
-	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
-	* @return		string		Full URL with append_sid performed on it
-	*/
-	public function get_url($force_category = false, $force_archive = false, $force_page = false)
-	{
-		$route = 'newspage';
-		$params = array();
-
-		if ($force_category)
-		{
-			$params['forum_id'] = $force_category;
-			$route .= '_category';
-		}
-		else if ($this->category)
-		{
-			$params['forum_id'] = $this->category;
-			$route .= '_category';
-		}
-
-		if ($force_archive)
-		{
-			list($year, $month) = explode('/', $force_archive, 2);
-			$params['year'] = $year;
-			$params['month'] = $month;
-			$route .= '_archive';
-		}
-		else if ($this->is_archive())
-		{
-			$params['year'] = $this->archive['y'];
-			$params['month'] = sprintf('%02d', $this->archive['m']);
-			$route .= '_archive';
-		}
-
-		if ($force_page)
-		{
-			$params['page'] = $force_page;
-			$route .= '_page';
-		}
-
-		return $this->helper->route($route . '_controller', $params);
-	}
-
-	/**
-	* Returns the name of the route we should use
-	*
-	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
-	* @return		string
-	*/
-	public function get_route($force_category = false, $force_archive = false, $force_page = false)
-	{
-		$route = 'newspage';
-		if ($force_category || $this->category)
-		{
-			$route .= '_category';
-		}
-		if ($force_archive || $this->is_archive())
-		{
-			$route .= '_archive';
-		}
-		if ($force_page)
-		{
-			$route .= '_page';
-		}
-
-		return $route . '_controller';
-	}
-
-	/**
-	 * Returns the list of parameters of the route we should use
-	 *
-	 * @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	 * @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
-	 * @return		array
-	 */
-	public function get_params($force_category = false, $force_archive = false, $force_page = false)
-	{
-		$params = array();
-		if ($force_category)
-		{
-			$params['forum_id'] = $force_category;
-		}
-		else if ($this->category)
-		{
-			$params['forum_id'] = $this->category;
-		}
-		if ($force_archive)
-		{
-			list($year, $month) = explode('/', $force_archive, 2);
-			$params['year'] = $year;
-			$params['month'] = $month;
-		}
-		else if ($this->is_archive())
-		{
-			$params['year'] = $this->archive['y'];
-			$params['month'] = sprintf('%02d', $this->archive['m']);
-		}
-		if ($force_page)
-		{
-			$params['page'] = $force_page;
-		}
-
-		return $params;
 	}
 }

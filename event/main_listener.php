@@ -84,7 +84,7 @@ class main_listener implements EventSubscriberInterface
 		{
 			if ($event['row']['session_page'] === 'app.' . $this->php_ext . '/news')
 			{
-				$event['location_url'] = $this->helper->url('news');
+				$event['location_url'] = $this->helper->route('newspage_controller');
 				$event['location'] = $this->user->lang('VIEWONLINE_NEWS');
 			}
 			else if (($forum_id = $this->get_category_from_route($event['row']['session_page'])) &&
