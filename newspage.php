@@ -269,12 +269,6 @@ class newspage
 			$row['user_sig'] = generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], $flags);
 
 			get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
-			$row['user_email'] = ((!empty($row['user_allow_viewemail']) || $this->auth->acl_get('a_email')) && ($row['user_email'] != '')) ? ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=email&amp;u=$poster_id") : (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']) : '';
-			$row['user_msnm'] = ($row['user_msnm'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=msnm&amp;u=$poster_id") : '';
-			$row['user_icq'] = (!empty($row['user_icq'])) ? 'http://www.icq.com/people/' . urlencode($row['user_icq']) . '/' : '';
-			$row['user_icq_status_img'] = (!empty($row['user_icq'])) ? '<img src="http://web.icq.com/whitepages/online?icq=' . $row['user_icq'] . '&amp;img=5" width="18" height="18" alt="" />' : '';
-			$row['user_yim'] = ($row['user_yim']) ? 'http://edit.yahoo.com/config/send_webmesg?.target=' . $row['user_yim'] . '&amp;.src=pg' : '';
-			$row['user_aim'] = ($row['user_aim'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=aim&amp;u=$poster_id") : '';
 			$row['user_jabber'] = ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '';
 
 			$this->template->assign_block_vars('postrow', array(
@@ -325,15 +319,9 @@ class newspage
 				'RANK_IMG_SRC'			=> $row['rank_image_src'],
 				'POSTER_POSTS'			=> $row['user_posts'],
 				'POSTER_JOINED'			=> $this->user->format_date($row['user_regdate']),
-				'POSTER_FROM'			=> $row['user_from'],
 
 				'U_PM'					=> ($poster_id != ANONYMOUS && $this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && ($row['user_allow_pm'] || $this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_'))) ? append_sid("{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;action=quotepost&amp;p=' . $row['post_id']) : '',
 				'U_EMAIL'				=> $row['user_email'],
-				'U_WWW'					=> $row['user_website'],
-				'U_MSN'					=> $row['user_msnm'],
-				'U_ICQ'					=> $row['user_icq'],
-				'U_YIM'					=> $row['user_yim'],
-				'U_AIM'					=> $row['user_aim'],
 				'U_JABBER'				=> $row['user_jabber'],
 			));
 
