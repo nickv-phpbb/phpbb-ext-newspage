@@ -29,15 +29,13 @@ class newspage
 
 	/**
 	* Constructor
-	* NOTE: The parameters of this method must match in order and type with
-	* the dependencies defined in the services.yml file for this service.
 	*
-	* @param \phpbb\auth		$auth		Auth object
+	* @param \phpbb\auth\auth		$auth		Auth object
 	* @param \phpbb\cache\service	$cache		Cache object
-	* @param \phpbb\config	$config		Config object
-	* @param \phpbb\db\driver	$db		Database object
-	* @param \phpbb\request	$request	Request object
-	* @param \phpbb\template	$template	Template object
+	* @param \phpbb\config\config	$config		Config object
+	* @param \phpbb\db\driver\driver	$db		Database object
+	* @param \phpbb\request\request		$request	Request object
+	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user		$user		User object
 	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
@@ -151,7 +149,6 @@ class newspage
 		}
 
 		// Grab ranks, icons, online-status and attachments
-		$ranks = $this->cache->obtain_ranks();
 		$icons = $this->cache->obtain_icons();
 		$user_online_tracking_info = (!empty($this->poster_ids)) ? $this->get_online_posters($this->poster_ids) : array();
 		$attachments = (!empty($this->post_ids)) ? $this->get_attachments($this->post_ids) : array();
@@ -188,7 +185,7 @@ class newspage
 			$poster_id = (int) $row['poster_id'];
 			$topic_id = (int) $row['topic_id'];
 			$forum_id = (int) $row['forum_id'];
-			$post_list = $post_edit_list = array();
+			$post_edit_list = array();
 			$display_notice = false;
 
 
@@ -509,7 +506,7 @@ class newspage
 	}
 
 	/**
-	* Generate the achrive list of the news forums and populate it into the template
+	* Generate the archive list of the news forums and populate it into the template
 	*
 	* @return	null
 	*/
@@ -584,7 +581,6 @@ class newspage
 	{
 		$this->num_pagination_items = 0;
 
-		$archiv_years = $archiv_months = $checked_months = array();
 		$sql = 'SELECT COUNT(topic_id) AS num_news
 			FROM ' . TOPICS_TABLE . '
 			WHERE ' . $this->db->sql_in_set('forum_id', $this->get_forums($this->category), false, true) . '
@@ -613,7 +609,6 @@ class newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
-		$base_url = $this->get_url(false, false, true);
 		$this->pagination->generate_template_pagination(
 			array(
 				'routes' => array(
@@ -632,9 +627,9 @@ class newspage
 	/**
 	* Generate the pagination for the news list
 	*
-	* @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	* @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	* @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
 	* @return		string		Full URL with append_sid performed on it
 	*/
 	public function get_url($force_category = false, $force_archive = false, $force_page = false)
@@ -679,9 +674,9 @@ class newspage
 	/**
 	* Returns the name of the route we should use
 	*
-	* @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	* @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	* @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
 	* @return		string
 	*/
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
@@ -706,9 +701,9 @@ class newspage
 	/**
 	 * Returns the list of parameters of the route we should use
 	 *
-	 * @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	 * @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	 * @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	 * @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	 * @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
 	 * @return		array
 	 */
 	public function get_params($force_category = false, $force_archive = false, $force_page = false)
