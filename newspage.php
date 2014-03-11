@@ -312,7 +312,7 @@ class newspage
 				'SIGNATURE'				=> ($row['enable_sig']) ? $row['user_sig'] : '',
 				'NEWS_COMMENTS'			=> $this->content_visibility->get_count('topic_posts', $row, $forum_id) - 1,
 
-				'POSTER_AVATAR'			=> ($this->user->optionget('viewavatars')) ? get_user_avatar($row['user_avatar'], $row['user_avatar_type'], $row['user_avatar_width'], $row['user_avatar_height']) : '',
+				'POSTER_AVATAR'			=> ($this->user->optionget('viewavatars')) ? phpbb_get_user_avatar($row) : '',
 				'U_POST_AUTHOR'			=> get_username_string('profile', $poster_id, $row['username'], $row['user_colour'], $row['post_username']),
 				'RANK_TITLE'			=> $row['rank_title'],
 				'RANK_IMG'				=> $row['rank_image'],
