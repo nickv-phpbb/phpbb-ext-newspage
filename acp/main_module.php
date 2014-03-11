@@ -20,12 +20,34 @@ if (!defined('IN_PHPBB'))
 
 class main_module
 {
-	var $u_action;
+	/**
+	* Link to the current active page
+	* @var string
+	*/
+	protected $u_action;
 
+	/**
+	* Name of the template file we want to display
+	* @var string
+	*/
+	protected $tpl_name;
+
+	/**
+	* Title of the page
+	* @var string
+	*/
+	protected $page_title;
+
+	/**
+	* Main method of the module
+	*
+	* @param string $id
+	* @param string $mode
+	* @return	null
+	*/
 	function main($id, $mode)
 	{
-		global $db, $user, $auth, $template, $cache, $request;
-		global $config, $phpbb_root_path, $phpbb_admin_path, $phpEx;
+		global $config, $user, $template, $request;
 
 		$user->add_lang('acp/common');
 		$this->tpl_name = 'newspage_body';

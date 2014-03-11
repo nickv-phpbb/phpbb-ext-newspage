@@ -10,9 +10,7 @@
 
 namespace nickvergessen\newspage\event;
 
-/**
-* @ignore
-*/
+use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 if (!defined('IN_PHPBB'))
 {
@@ -22,8 +20,6 @@ if (!defined('IN_PHPBB'))
 /**
 * Event listener
 */
-use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
 class main_listener implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents()
@@ -51,7 +47,7 @@ class main_listener implements EventSubscriberInterface
 	* Constructor
 	*
 	* @param \phpbb\controller\helper	$helper		Controller helper object
-	* @param \phpbb\template			$template	Template object
+	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user				$user		User object
 	* @param string						$php_ext	phpEx
 	*/

@@ -27,6 +27,11 @@ class newspage
 	const ARCHIVE_SHOW = 1;
 	const ARCHIVE_PER_YEAR = 2;
 
+	protected $post_ids;
+	protected $topic_ids;
+	protected $forums;
+	protected $poster_ids;
+
 	/**
 	* Constructor
 	*

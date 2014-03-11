@@ -12,10 +12,10 @@ namespace nickvergessen\newspage\controller;
 
 class main
 {
-	/* @var \phpbb\config */
+	/* @var \phpbb\config\config */
 	protected $config;
 
-	/* @var \phpbb\template */
+	/* @var \phpbb\template\template */
 	protected $template;
 
 	/* @var \phpbb\user */
@@ -24,7 +24,7 @@ class main
 	/* @var \phpbb\controller\helper */
 	protected $helper;
 
-	/* @var \nickvergessen\newspage */
+	/* @var \nickvergessen\newspage\newspage */
 	protected $newspage;
 
 	/* @var string phpBB root path */
@@ -36,11 +36,11 @@ class main
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config	$config		Config object
-	* @param \phpbb\template	$template	Template object
+	* @param \phpbb\config\config		$config		Config object
+	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user	$user		User object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
-	* @param \nickvergessen\newspage		$newspage	Newspage object
+	* @param \nickvergessen\newspage\newspage		$newspage	Newspage object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
