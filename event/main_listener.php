@@ -76,7 +76,7 @@ class main_listener implements EventSubscriberInterface
 	public function add_page_header_link($event)
 	{
 		$this->template->assign_vars(array(
-			'U_NEWSPAGE'	=> $this->helper->url('news'),
+			'U_NEWSPAGE'	=> $this->helper->route('newspage_controller'),
 		));
 	}
 

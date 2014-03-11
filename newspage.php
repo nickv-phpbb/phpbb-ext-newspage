@@ -41,10 +41,11 @@ class newspage
 	* @param \phpbb\user		$user		User object
 	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
+	* @param \phpbb\pagination	$pagination	Pagination object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, \phpbb\pagination $pagination, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -55,6 +56,7 @@ class newspage
 		$this->user = $user;
 		$this->content_visibility = $content_visibility;
 		$this->helper = $helper;
+		$this->pagination = $pagination;
 		$this->root_path = $root_path;
 		$this->php_ext = $php_ext;
 
@@ -107,7 +109,7 @@ class newspage
 
 	public function is_archive()
 	{
-		return $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
+		return isset($this->archive['y']) && isset($this->archive['m']) && $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
 	}
 
 	public function get_news_ids()
@@ -292,7 +294,7 @@ class newspage
 				'U_REPORT'				=> ($this->auth->acl_get('f_report', $forum_id)) ? append_sid("{$this->root_path}report.{$this->php_ext}", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 				'U_NOTES'				=> ($this->auth->acl_getf_global('m_')) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $this->user->session_id) : '',
 				'U_WARN'				=> ($this->auth->acl_get('m_warn') && $poster_id != $this->user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $this->user->session_id) : '',
-				'U_NEWS'				=> $this->helper->url('news/' . $topic_id),
+				'U_NEWS'				=> $this->helper->route('newspage_singlenews_controller', array('topic_id' => $topic_id)),
 
 				'POST_ICON_IMG'			=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 				'POST_ICON_IMG_WIDTH'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
@@ -611,11 +613,18 @@ class newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
-		$base_url = $this->get_url(false, false, '/page/%d');
-		phpbb_generate_template_pagination($this->template, $base_url, 'pagination', '/page/%d', $pagination_news, $this->config['news_number'], $this->start);
+		$base_url = $this->get_url(false, false, true);
+		$this->pagination->generate_template_pagination(
+			array(
+				'routes' => array(
+					$this->get_route(),
+					$this->get_route(false, false, true),
+				),
+				'params' => $this->get_params(),
+			), 'pagination', 'page', $pagination_news, $this->config['news_number'], $this->start);
 
 		$this->template->assign_vars(array(
-			'PAGE_NUMBER'		=> phpbb_on_page($this->template, $this->user, $base_url, $pagination_news, $this->config['news_number'], $this->start),
+			'PAGE_NUMBER'		=> $this->pagination->on_page($pagination_news, $this->config['news_number'], $this->start),
 			'TOTAL_NEWS'		=> $this->user->lang('VIEW_NEWS_POSTS', $this->num_pagination_items),
 		));
 	}
@@ -625,30 +634,110 @@ class newspage
 	*
 	* @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
 	* @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
-	* @return	string	$append_route		Additional string that should be appended to the route
+	* @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
 	* @return		string		Full URL with append_sid performed on it
 	*/
-	public function get_url($force_category = false, $force_archive = false, $append_route = '')
+	public function get_url($force_category = false, $force_archive = false, $force_page = false)
 	{
-		$base_url = 'news';
-		if ($force_category !== false)
+		$route = 'newspage';
+		$params = array();
+
+		if ($force_category)
 		{
-			$base_url .= ($force_category !== '') ? '/category/' . $force_category : '';
+			$params['forum_id'] = $force_category;
+			$route .= '_category';
 		}
 		else if ($this->category)
 		{
-			$base_url .= '/category/' . $this->category;
+			$params['forum_id'] = $this->category;
+			$route .= '_category';
 		}
 
-		if ($force_archive !== false)
+		if ($force_archive)
 		{
-			$base_url .= ($force_archive !== '') ? '/archive/' . $force_archive : '';
+			list($year, $month) = explode('/', $force_archive, 2);
+			$params['year'] = $year;
+			$params['month'] = $month;
+			$route .= '_archive';
 		}
 		else if ($this->is_archive())
 		{
-			$base_url .= '/archive/' . $this->archive['y'] . '/' . sprintf('%02d', $this->archive['m']);
+			$params['year'] = $this->archive['y'];
+			$params['month'] = sprintf('%02d', $this->archive['m']);
+			$route .= '_archive';
 		}
 
-		return $this->helper->url($base_url . $append_route);
+		if ($force_page)
+		{
+			$params['page'] = $force_page;
+			$route .= '_page';
+		}
+
+		return $this->helper->route($route . '_controller', $params);
+	}
+
+	/**
+	* Returns the name of the route we should use
+	*
+	* @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	* @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	* @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	* @return		string
+	*/
+	public function get_route($force_category = false, $force_archive = false, $force_page = false)
+	{
+		$route = 'newspage';
+		if ($force_category || $this->category)
+		{
+			$route .= '_category';
+		}
+		if ($force_archive || $this->is_archive())
+		{
+			$route .= '_archive';
+		}
+		if ($force_page)
+		{
+			$route .= '_page';
+		}
+
+		return $route . '_controller';
+	}
+
+	/**
+	 * Returns the list of parameters of the route we should use
+	 *
+	 * @return	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	 * @return	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	 * @return	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	 * @return		array
+	 */
+	public function get_params($force_category = false, $force_archive = false, $force_page = false)
+	{
+		$params = array();
+		if ($force_category)
+		{
+			$params['forum_id'] = $force_category;
+		}
+		else if ($this->category)
+		{
+			$params['forum_id'] = $this->category;
+		}
+		if ($force_archive)
+		{
+			list($year, $month) = explode('/', $force_archive, 2);
+			$params['year'] = $year;
+			$params['month'] = $month;
+		}
+		else if ($this->is_archive())
+		{
+			$params['year'] = $this->archive['y'];
+			$params['month'] = sprintf('%02d', $this->archive['m']);
+		}
+		if ($force_page)
+		{
+			$params['page'] = $force_page;
+		}
+
+		return $params;
 	}
 }

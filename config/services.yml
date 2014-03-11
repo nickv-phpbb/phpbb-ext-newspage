@@ -21,6 +21,7 @@ services:
             - @user
             - @content.visibility
             - @controller.helper
+            - @pagination
             - %core.root_path%
             - %core.php_ext%
     nickvergessen.newspage.listener:

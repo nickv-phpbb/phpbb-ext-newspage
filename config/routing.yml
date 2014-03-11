@@ -1,8 +1,8 @@
-newspage_base_controller:
+newspage_controller:
     pattern: /news
     defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0, page: 1 }
 
-newspage_base_page_controller:
+newspage_page_controller:
     pattern: /news/page/{page}
     defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0 }
     requirements:
@@ -52,7 +52,6 @@ newspage_category_archive_page_controller:
         year:      \d+
         month:     \d+
         page:      \d+
-
 
 newspage_singlenews_controller:
     pattern: /news/{topic_id}
