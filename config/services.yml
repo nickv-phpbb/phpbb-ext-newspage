@@ -32,7 +32,7 @@ services:
     nickvergessen.newspage.listener:
         class: nickvergessen\newspage\event\main_listener
         arguments:
-            - @controller.helper
+            - @nickvergessen.newspage.helper
             - @template
             - @user
             - %core.php_ext%

@@ -31,7 +31,7 @@ class main_listener implements EventSubscriberInterface
 		);
 	}
 
-	/* @var \phpbb\controller\helper */
+	/* @var \nickvergessen\newspage\helper */
 	protected $helper;
 
 	/* @var \phpbb\template\template */
@@ -46,12 +46,12 @@ class main_listener implements EventSubscriberInterface
 	/**
 	* Constructor
 	*
-	* @param \phpbb\controller\helper	$helper		Controller helper object
+	* @param \nickvergessen\newspage\helper	$helper		Newspage helper object
 	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user				$user		User object
 	* @param string						$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\controller\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext)
+	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext)
 	{
 		$this->helper = $helper;
 		$this->template = $template;
@@ -72,7 +72,7 @@ class main_listener implements EventSubscriberInterface
 	public function add_page_header_link($event)
 	{
 		$this->template->assign_vars(array(
-			'U_NEWSPAGE'	=> $this->helper->route('newspage_controller'),
+			'U_NEWSPAGE'	=> $this->helper->generate_route()->get_url(),
 		));
 	}
 
@@ -80,11 +80,12 @@ class main_listener implements EventSubscriberInterface
 	{
 		global $forum_data;
 
+		$route = $this->helper->generate_route();
 		if ($event['on_page'][1] == 'app')
 		{
 			if ($event['row']['session_page'] === 'app.' . $this->php_ext . '/news')
 			{
-				$event['location_url'] = $this->helper->route('newspage_controller');
+				$event['location_url'] = $route->get_url();
 				$event['location'] = $this->user->lang('VIEWONLINE_NEWS');
 			}
 			else if (($forum_id = $this->get_category_from_route($event['row']['session_page'])) &&
@@ -92,19 +93,19 @@ class main_listener implements EventSubscriberInterface
 			{
 				$archive_start = $this->user->get_timestamp_from_format('Y/n-d H:i:s', $archive . '-01 0:00:00');
 
-				$event['location_url'] = $this->helper->url('news/category/' . $forum_id . '/archive/' . $archive);
+				$event['location_url'] = $route->get_url($forum_id, $archive);
 				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY_ARCHIVE', $forum_data[$forum_id]['forum_name'], $this->user->format_date($archive_start, 'F Y'));
 			}
 			else if ($forum_id = $this->get_category_from_route($event['row']['session_page']))
 			{
-				$event['location_url'] = $this->helper->url('news/category/' . $forum_id);
+				$event['location_url'] = $route->get_url($forum_id);
 				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY', $forum_data[$forum_id]['forum_name']);
 			}
 			else if ($archive = $this->get_archive_from_route($event['row']['session_page']))
 			{
 				$archive_start = $this->user->get_timestamp_from_format('Y/n-d H:i:s', $archive . '-01 0:00:00');
 
-				$event['location_url'] = $this->helper->url('news/archive/' . $archive);
+				$event['location_url'] = $route->get_url(false, $archive);
 				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_ARCHIVE', $this->user->format_date($archive_start, 'F Y'));
 			}
 		}
