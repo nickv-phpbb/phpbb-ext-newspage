@@ -13,19 +13,27 @@ namespace nickvergessen\newspage;
 class helper
 {
 	/**
-	* Controller helper object
-	* @var \phpbb\controller\helper
-	*/
+	 * Controller helper object
+	 * @var \phpbb\controller\helper
+	 */
 	protected $helper;
 
 	/**
-	* Constructor
-	*
-	* @param \phpbb\controller\helper		$helper				Controller helper object
-	*/
-	public function __construct(\phpbb\controller\helper $helper)
+	 * Config object
+	 * @var \phpbb\config\config
+	 */
+	protected $config;
+
+	/**
+	 * Constructor
+	 *
+	 * @param \phpbb\controller\helper		$helper		Controller helper object
+	 * @param \phpbb\config\config			$config		Config object
+	 */
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
 		$this->helper = $helper;
+		$this->config = $config;
 	}
 
 	/**
@@ -38,18 +46,18 @@ class helper
 	*/
 	public function generate_route($force_category = false, $force_archive = false, $force_page = false)
 	{
-		$route = new route($this->helper);
-		if ($force_category)
+		$route = new route($this->helper, $this->config);
+		if ($this->config['news_cat_show'] && $force_category)
 		{
 			$route->set_category($force_category);
 		}
 
-		if (is_array($force_archive))
+		if ($this->config['news_archive_show'] && is_array($force_archive))
 		{
 			$route->set_archive_year($force_archive['y'])
 				->set_archive_month($force_archive['m']);
 		}
-		else if (is_string($force_archive))
+		else if ($this->config['news_archive_show'] && is_string($force_archive))
 		{
 			list($archive_year, $archive_month) = explode('/', $force_archive, 2);
 			$route->set_archive_year($archive_year)
