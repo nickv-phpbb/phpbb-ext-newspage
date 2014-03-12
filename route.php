@@ -26,11 +26,13 @@ class route
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\controller\helper		$helper				Controller helper object
+	 * @param \phpbb\controller\helper		$helper		Controller helper object
+	 * @param \phpbb\config\config			$config		Config object
 	 */
-	public function __construct(\phpbb\controller\helper $helper)
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
 		$this->helper = $helper;
+		$this->config = $config;
 	}
 
 	/**
@@ -39,7 +41,10 @@ class route
 	 */
 	public function set_archive_month($archive_month)
 	{
-		$this->archive_month = sprintf('%02d', (int) $archive_month);
+		if ($this->config['news_archive_show'])
+		{
+			$this->archive_month = sprintf('%02d', (int) $archive_month);
+		}
 		return $this;
 	}
 
@@ -49,7 +54,10 @@ class route
 	 */
 	public function set_archive_year($archive_year)
 	{
-		$this->archive_year = $archive_year;
+		if ($this->config['news_archive_show'])
+		{
+			$this->archive_year = $archive_year;
+		}
 		return $this;
 	}
 
@@ -59,7 +67,10 @@ class route
 	 */
 	public function set_category($category)
 	{
-		$this->category = $category;
+		if ($this->config['news_cat_show'])
+		{
+			$this->category = $category;
+		}
 		return $this;
 	}
 
@@ -100,11 +111,11 @@ class route
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$route = 'newspage';
-		if ($force_category || $this->category)
+		if ($this->config['news_cat_show'] && ($force_category || $this->category))
 		{
 			$route .= '_category';
 		}
-		if ($force_archive || ($this->archive_year && $this->archive_month))
+		if ($this->config['news_archive_show'] && ($force_archive || ($this->archive_year && $this->archive_month)))
 		{
 			$route .= '_archive';
 		}
@@ -127,21 +138,21 @@ class route
 	public function get_params($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$params = array();
-		if ($force_category)
+		if ($this->config['news_cat_show'] && $force_category)
 		{
 			$params['forum_id'] = $force_category;
 		}
-		else if ($this->category)
+		else if ($this->config['news_cat_show'] && $this->category)
 		{
 			$params['forum_id'] = $this->category;
 		}
-		if ($force_archive)
+		if ($this->config['news_archive_show'] && $force_archive)
 		{
 			list($year, $month) = explode('/', $force_archive, 2);
 			$params['year'] = $year;
 			$params['month'] = $month;
 		}
-		else if ($this->archive_year && $this->archive_month)
+		else if ($this->config['news_archive_show'] && $this->archive_year && $this->archive_month)
 		{
 			$params['year'] = $this->archive_year;
 			$params['month'] = $this->archive_month;

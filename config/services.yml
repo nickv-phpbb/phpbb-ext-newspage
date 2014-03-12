@@ -13,6 +13,7 @@ services:
         class: nickvergessen\newspage\helper
         arguments:
             - @controller.helper
+            - @config
     nickvergessen.newspage:
         class: nickvergessen\newspage\newspage
         arguments:
