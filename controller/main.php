@@ -36,7 +36,7 @@ class main
 	/**
 	* Constructor
 	*
-	* @param \phpbb\config\config		$config		Config object
+	* @param \phpbb\config\config $config Config object
 	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user	$user		User object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
@@ -134,7 +134,7 @@ class main
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
 	}
 
-	public function assign_images($assign_user_buttons, $assign_post_buttons)
+	protected function assign_images($assign_user_buttons, $assign_post_buttons)
 	{
 		$this->template->assign_vars(array(
 			'REPORTED_IMG'			=> $this->user->img('icon_topic_reported', 'POST_REPORTED'),
@@ -147,11 +147,6 @@ class main
 				'SEARCH_IMG'		=> $this->user->img('icon_user_search', 'SEARCH_USER_POSTS'),
 				'PM_IMG'			=> $this->user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
 				'EMAIL_IMG'			=> $this->user->img('icon_contact_email', 'SEND_EMAIL'),
-				'WWW_IMG'			=> $this->user->img('icon_contact_www', 'VISIT_WEBSITE'),
-				'ICQ_IMG'			=> $this->user->img('icon_contact_icq', 'ICQ'),
-				'AIM_IMG'			=> $this->user->img('icon_contact_aim', 'AIM'),
-				'MSN_IMG'			=> $this->user->img('icon_contact_msnm', 'MSNM'),
-				'YIM_IMG'			=> $this->user->img('icon_contact_yahoo', 'YIM'),
 				'JABBER_IMG'		=> $this->user->img('icon_contact_jabber', 'JABBER'),
 			));
 		}
