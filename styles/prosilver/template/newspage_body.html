@@ -1,23 +1,13 @@
 <!-- INCLUDE overall_header.html -->
 
-<!-- IF .cat_block or .archive_block -->
-	<div class="newspage-block">
-		<!-- IF .cat_block -->
-			<!-- INCLUDE newspage_categories.html -->
-		<!-- ENDIF -->
-
-		<!-- IF .archive_block -->
-			<!-- INCLUDE newspage_archives.html -->
-		<!-- ENDIF -->
-	</div>
-
-	<div class="newspage-news">
-<!-- ENDIF -->
-
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 
-<!-- IF (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
+<!-- IF .archive_block or .cat_block or (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
 <div class="topic-actions">
+	<!-- INCLUDE newspage_categories_dropdown.html -->
+	<!-- INCLUDE newspage_archives_dropdown.html -->
+
+	<!-- IF (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
 	<div class="pagination">
 		{TOTAL_NEWS} &bull;
 		<!-- IF .pagination -->
@@ -26,6 +16,7 @@
 			{PAGE_NUMBER}
 		<!-- ENDIF -->
 	</div>
+	<!-- ENDIF -->
 </div>
 <!-- ENDIF -->
 
@@ -79,7 +70,7 @@
 	<!-- ENDIF -->
 <!-- ENDIF -->
 
-		<div class="postbody" <!-- IF not NEWS_USER_INFO -->style="width: 100%;"<!-- ENDIF -->>
+		<div class="postbody"<!-- IF not NEWS_USER_INFO --> style="width: 100%;"<!-- ENDIF -->>
 			<!-- IF postrow.S_IGNORE_POST -->
 				<div class="ignore">{postrow.L_IGNORE_POST}</div>
 			<!-- ELSE -->
@@ -165,10 +156,6 @@
 		{TOTAL_NEWS} &bull; <!-- INCLUDE pagination.html -->
 	</div>
 </div>
-<!-- ENDIF -->
-
-<!-- IF .cat_block or .archive_block -->
-	</div>
 <!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->

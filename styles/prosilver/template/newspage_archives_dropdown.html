@@ -1,0 +1,34 @@
+<!-- IF .archive_block -->
+<div class="dropdown-container dropdown-button-control topic-tools newspage-dropdown">
+	<span title="{L_NEWS_FILTER_BY_ARCHIVE}" class="dropdown-trigger dropdown-select">
+		<!-- IF NEWS_FILTER_ARCHIVE_YEAR -->
+			{NEWS_FILTER_ARCHIVE_YEAR} &raquo; {NEWS_FILTER_ARCHIVE_MONTH}
+		<!-- ELSE -->
+			{L_NEWS_FILTER_ARCHIVE}
+		<!-- ENDIF -->
+	</span>
+	<div class="dropdown hidden">
+		<div class="pointer"><div class="pointer-inner"></div></div>
+		<ul class="dropdown-contents">
+			<li>
+				<strong>{L_NEWS_ARCHIVE}</strong>
+				<!-- IF U_REMOVE_ARCHIVE_FILTER -->
+					[ <a href="{U_REMOVE_ARCHIVE_FILTER}">{L_NEWS_FILTER_REMOVE}</a> ]
+				<!-- ENDIF -->
+			</li>
+			<!-- BEGIN archive_block -->
+			<li><strong>{archive_block.NEWS_YEAR}</strong></li>
+			<!-- BEGIN archive_row -->
+				<li>
+					<a href="{archive_block.archive_row.U_NEWS_MONTH}" class="arrow-right arrow-right-on-left">
+						<!-- IF archive_block.archive_row.S_SELECTED --><strong><!-- ENDIF -->
+						{archive_block.archive_row.NEWS_MONTH}
+						<!-- IF archive_block.archive_row.S_SELECTED --></strong><!-- ENDIF -->
+					</a> ({archive_block.archive_row.NEWS_COUNT})
+				</li>
+			<!-- END archive_row -->
+			<!-- END archive_block -->
+		</ul>
+	</div>
+</div>
+<!-- ENDIF -->

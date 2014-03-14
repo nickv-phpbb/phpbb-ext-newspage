@@ -1,0 +1,31 @@
+<!-- IF .cat_block -->
+<div class="dropdown-container dropdown-button-control topic-tools newspage-dropdown">
+	<span title="{L_NEWS_FILTER_BY_CATEGORY}" class="dropdown-trigger dropdown-select">
+		<!-- IF NEWS_FILTER_CATEGORY -->
+			{NEWS_FILTER_CATEGORY}
+		<!-- ELSE -->
+			{L_NEWS_FILTER_CATEGORY}
+		<!-- ENDIF -->
+	</span>
+	<div class="dropdown hidden">
+		<div class="pointer"><div class="pointer-inner"></div></div>
+		<ul class="dropdown-contents">
+			<li>
+				<strong>{L_NEWS_CAT}</strong>
+				<!-- IF U_REMOVE_CATEGORY_FILTER -->
+					[ <a href="{U_REMOVE_CATEGORY_FILTER}">{L_NEWS_FILTER_REMOVE}</a> ]
+				<!-- ENDIF -->
+			</li>
+			<!-- BEGIN cat_block -->
+			<li>
+				<a href="{cat_block.U_NEWS_CAT}" class="arrow-right arrow-right-on-left">
+					<!-- IF cat_block.S_SELECTED --><strong><!-- ENDIF -->
+					{cat_block.NEWS_CAT}
+					<!-- IF cat_block.S_SELECTED --></strong><!-- ENDIF -->
+				</a> ({cat_block.NEWS_COUNT})
+			</li>
+			<!-- END cat_block -->
+		</ul>
+	</div>
+</div>
+<!-- ENDIF -->
