@@ -103,22 +103,26 @@ class route
 	/**
 	 * Returns the name of the route we should use
 	 *
-	 * @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
-	 * @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	 * @param	mixed	$force_category	Overwrites the category,
+	 *							false for disabled, true to skip, integer otherwise
+	 * @param	mixed	$force_archive	Overwrites the archive,
+	 *							false for disabled, true to skip, string otherwise
 	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
 	 * @return		string
 	 */
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$route = 'newspage';
-		if ($this->config['news_cat_show'] && ($force_category || $this->category))
+		if ($this->config['news_cat_show'] && $force_category !== true && ($force_category || $this->category))
 		{
 			$route .= '_category';
 		}
-		if ($this->config['news_archive_show'] && ($force_archive || ($this->archive_year && $this->archive_month)))
+
+		if ($this->config['news_archive_show'] && $force_archive !== true && ($force_archive || ($this->archive_year && $this->archive_month)))
 		{
 			$route .= '_archive';
 		}
+
 		if ($force_page)
 		{
 			$route .= '_page';
@@ -138,25 +142,27 @@ class route
 	public function get_params($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$params = array();
-		if ($this->config['news_cat_show'] && $force_category)
+		if ($this->config['news_cat_show'] && $force_category !== true && $force_category)
 		{
 			$params['forum_id'] = $force_category;
 		}
-		else if ($this->config['news_cat_show'] && $this->category)
+		else if ($this->config['news_cat_show'] && $force_category !== true && $this->category)
 		{
 			$params['forum_id'] = $this->category;
 		}
-		if ($this->config['news_archive_show'] && $force_archive)
+
+		if ($this->config['news_archive_show'] && $force_archive !== true && $force_archive)
 		{
 			list($year, $month) = explode('/', $force_archive, 2);
 			$params['year'] = $year;
 			$params['month'] = $month;
 		}
-		else if ($this->config['news_archive_show'] && $this->archive_year && $this->archive_month)
+		else if ($this->config['news_archive_show'] && $force_archive !== true && $this->archive_year && $this->archive_month)
 		{
 			$params['year'] = $this->archive_year;
 			$params['month'] = $this->archive_month;
 		}
+
 		if ($force_page)
 		{
 			$params['page'] = $force_page;
