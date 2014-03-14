@@ -22,7 +22,12 @@
 					<!-- IF cat_block.S_SELECTED --><strong><!-- ENDIF -->
 					{cat_block.NEWS_CAT}
 					<!-- IF cat_block.S_SELECTED --></strong><!-- ENDIF -->
-				</a> [<strong>{cat_block.NEWS_COUNT}</strong>]
+				</a>
+				<!-- IF cat_block.U_POST_NEWS -->
+					[<strong>{cat_block.NEWS_COUNT}</strong> | <a href="{cat_block.U_POST_NEWS}" title="{L_NEWS_ADD_NEW_TITLE}"><strong>{L_NEWS_ADD_NEW}</strong></a>]
+				<!-- ELSE -->
+					[<strong>{cat_block.NEWS_COUNT}</strong>]
+				<!-- ENDIF  -->
 			</li>
 			<!-- END cat_block -->
 		</ul>

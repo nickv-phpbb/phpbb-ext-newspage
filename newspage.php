@@ -492,11 +492,17 @@ class newspage
 		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
+			$u_post = '';
+			if ($this->auth->acl_get('f_post', $row['forum_id']) || $this->user->data['user_id'] == ANONYMOUS)
+			{
+				$u_post = append_sid("{$this->root_path}posting.{$this->php_ext}", 'mode=post&amp;f=' . $row['forum_id']);
+			}
 			$this->template->assign_block_vars('cat_block', array(
 				'U_NEWS_CAT'		=> $route->get_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
 				'NEWS_CAT'			=> $row['forum_name'],
 				'NEWS_COUNT'		=> $row['forum_topics_approved'],
 				'S_SELECTED'		=> $this->category == $row['forum_id'],
+				'U_POST_NEWS'		=> $u_post,
 			));
 
 			if ($this->category == $row['forum_id'])
@@ -576,8 +582,6 @@ class newspage
 
 				if ($active_archive)
 				{
-					$this->template->assign_var('NEWS_FILTER_ARCHIVE_YEAR', $year);
-					$this->template->assign_var('NEWS_FILTER_ARCHIVE_MONTH', $archive['name']);
 					$this->template->assign_vars(array(
 						'NEWS_FILTER_ARCHIVE_YEAR'		=> $year,
 						'NEWS_FILTER_ARCHIVE_MONTH'		=> $archive['name'],
