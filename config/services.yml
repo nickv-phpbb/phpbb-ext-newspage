@@ -2,7 +2,9 @@ services:
     nickvergessen.newspage.controller:
         class: nickvergessen\newspage\controller\main
         arguments:
+            - @auth
             - @config
+            - @request
             - @template
             - @user
             - @controller.helper

@@ -12,8 +12,14 @@ namespace nickvergessen\newspage\controller;
 
 class main
 {
+	/* @var \phpbb\auth\auth */
+	protected $auth;
+
 	/* @var \phpbb\config\config */
 	protected $config;
+
+	/* @var \phpbb\request\request */
+	protected $request;
 
 	/* @var \phpbb\template\template */
 	protected $template;
@@ -36,7 +42,9 @@ class main
 	/**
 	* Constructor
 	*
+	* @param \phpbb\auth\auth			$auth		Auth object
 	* @param \phpbb\config\config		$config		Config object
+	* @param \phpbb\request\request		$request	Request object
 	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user	$user		User object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
@@ -44,9 +52,11 @@ class main
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
 	{
+		$this->auth = $auth;
 		$this->config = $config;
+		$this->request = $request;
 		$this->template = $template;
 		$this->user = $user;
 		$this->helper = $helper;
@@ -89,6 +99,30 @@ class main
 		return $this->base();
 	}
 
+	public function settings()
+	{
+		if ($this->request->is_set_post('submit'))
+		{
+			if (!check_form_key('newspage'))
+			{
+				trigger_error('FORM_INVALID');
+			}
+
+			$this->config->set('news_char_limit',	max(100, $this->request->variable('news_char_limit', 0)));
+			$this->config->set('news_forums',		implode(',', $this->request->variable('news_forums', array(0))));
+			$this->config->set('news_number',		max(1, $this->request->variable('news_number', 0)));
+			$this->config->set('news_pages',		max(1, $this->request->variable('news_pages', 0)));
+			$this->config->set('news_post_buttons',	$this->request->variable('news_post_buttons', 0));
+			$this->config->set('news_user_info',	$this->request->variable('news_user_info', 0));
+			$this->config->set('news_shadow',		$this->request->variable('news_shadow_show', 0));
+			$this->config->set('news_attach_show',	$this->request->variable('news_attach_show', 0));
+			$this->config->set('news_cat_show',		$this->request->variable('news_cat_show', 0));
+			$this->config->set('news_archive_show',	$this->request->variable('news_archive_show', 0));
+
+			trigger_error($this->user->lang['NEWS_SAVED']);
+		}
+	}
+
 	/**
 	* News controller to be accessed with the URL /news/{topic_id} to display a single news
 	*
@@ -128,13 +162,41 @@ class main
 			$this->newspage->generate_category_list();
 		}
 
+		if ($this->auth->acl_get('a_board'))
+		{
+			$this->load_settings();
+		}
+
 		$this->newspage->base();
 		$this->assign_images($this->config['news_user_info'], $this->config['news_post_buttons']);
 
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
 	}
 
-	public function assign_images($assign_user_buttons, $assign_post_buttons)
+	protected function load_settings()
+	{
+		if (!function_exists('make_forum_select'))
+		{
+			include($this->root_path . 'includes/functions_admin.' . $this->php_ext);
+		}
+
+		add_form_key('newspage');
+		$this->template->assign_vars(array(
+			'U_SETTING_ACTION'			=> $this->helper->route('newspage_settings'),
+			'SETTING_NEWS_CHAR_LIMIT'		=> (int) $this->config['news_char_limit'],
+			'SETTING_NEWS_NUMBER'			=> (int) $this->config['news_number'],
+			'SETTING_NEWS_PAGES'			=> (int) $this->config['news_pages'],
+			'SETTING_NEWS_POST_BUTTONS'		=> (bool) $this->config['news_post_buttons'],
+			'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
+			'SETTING_NEWS_SHADOW_SHOW'		=> (bool) $this->config['news_shadow'],
+			'SETTING_NEWS_ATTACH_SHOW'		=> (bool) $this->config['news_attach_show'],
+			'SETTING_NEWS_CAT_SHOW'			=> (bool) $this->config['news_cat_show'],
+			'SETTING_NEWS_ARCHIVE_SHOW'		=> (bool) $this->config['news_archive_show'],
+			'SETTING_NEWS_FORUMS'			=> make_forum_select(explode(',', $this->config['news_forums'])),
+		));
+	}
+
+	protected function assign_images($assign_user_buttons, $assign_post_buttons)
 	{
 		$this->template->assign_vars(array(
 			'REPORTED_IMG'			=> $this->user->img('icon_topic_reported', 'POST_REPORTED'),
@@ -147,11 +209,6 @@ class main
 				'SEARCH_IMG'		=> $this->user->img('icon_user_search', 'SEARCH_USER_POSTS'),
 				'PM_IMG'			=> $this->user->img('icon_contact_pm', 'SEND_PRIVATE_MESSAGE'),
 				'EMAIL_IMG'			=> $this->user->img('icon_contact_email', 'SEND_EMAIL'),
-				'WWW_IMG'			=> $this->user->img('icon_contact_www', 'VISIT_WEBSITE'),
-				'ICQ_IMG'			=> $this->user->img('icon_contact_icq', 'ICQ'),
-				'AIM_IMG'			=> $this->user->img('icon_contact_aim', 'AIM'),
-				'MSN_IMG'			=> $this->user->img('icon_contact_msnm', 'MSNM'),
-				'YIM_IMG'			=> $this->user->img('icon_contact_yahoo', 'YIM'),
 				'JABBER_IMG'		=> $this->user->img('icon_contact_jabber', 'JABBER'),
 			));
 		}
