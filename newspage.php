@@ -496,7 +496,16 @@ class newspage
 				'U_NEWS_CAT'		=> $route->get_url($row['forum_id'], ($this->category == $row['forum_id']) ? '' : false),
 				'NEWS_CAT'			=> $row['forum_name'],
 				'NEWS_COUNT'		=> $row['forum_topics_approved'],
+				'S_SELECTED'		=> $this->category == $row['forum_id'],
 			));
+
+			if ($this->category == $row['forum_id'])
+			{
+				$this->template->assign_vars(array(
+					'NEWS_FILTER_CATEGORY'		=> $row['forum_name'],
+					'U_REMOVE_CATEGORY_FILTER'	=> $route->get_url(true, ($this->category == $row['forum_id']) ? '' : false),
+				));
+			}
 		}
 		$this->db->sql_freeresult($result);
 	}
@@ -562,7 +571,19 @@ class newspage
 					'U_NEWS_MONTH'		=> $route->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
 					'NEWS_MONTH'		=> $archive['name'],
 					'NEWS_COUNT'		=> $archive['count'],
+					'S_SELECTED'		=> $active_archive,
 				));
+
+				if ($active_archive)
+				{
+					$this->template->assign_var('NEWS_FILTER_ARCHIVE_YEAR', $year);
+					$this->template->assign_var('NEWS_FILTER_ARCHIVE_MONTH', $archive['name']);
+					$this->template->assign_vars(array(
+						'NEWS_FILTER_ARCHIVE_YEAR'		=> $year,
+						'NEWS_FILTER_ARCHIVE_MONTH'		=> $archive['name'],
+						'U_REMOVE_ARCHIVE_FILTER'		=> $route->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), true),
+					));
+				}
 			}
 		}
 
