@@ -2,15 +2,21 @@ services:
     nickvergessen.newspage.controller:
         class: nickvergessen\newspage\controller\main
         arguments:
-            - @auth
             - @config
-            - @request
             - @template
             - @user
             - @controller.helper
             - @nickvergessen.newspage
             - %core.root_path%
             - %core.php_ext%
+    nickvergessen.newspage.controller.settings:
+        class: nickvergessen\newspage\controller\settings
+        arguments:
+            - @auth
+            - @config
+            - @request
+            - @user
+            - @controller.helper
     nickvergessen.newspage.helper:
         class: nickvergessen\newspage\helper
         arguments:

@@ -145,6 +145,11 @@ class newspage
 
 	public function base()
 	{
+		if ($this->auth->acl_get('a_board'))
+		{
+			$this->display_newspage_settings();
+		}
+
 		$this->get_news_ids();
 
 		if (empty($this->topic_ids))
@@ -644,6 +649,29 @@ class newspage
 		$this->template->assign_vars(array(
 			'PAGE_NUMBER'		=> $this->pagination->on_page($pagination_news, $this->config['news_number'], $this->start),
 			'TOTAL_NEWS'		=> $this->user->lang('VIEW_NEWS_POSTS', $this->num_pagination_items),
+		));
+	}
+
+	protected function display_newspage_settings()
+	{
+		if (!function_exists('make_forum_select'))
+		{
+			include($this->root_path . 'includes/functions_admin.' . $this->php_ext);
+		}
+
+		add_form_key('newspage');
+		$this->template->assign_vars(array(
+			'U_SETTING_ACTION'			=> $this->helper->route('newspage_settings'),
+			'SETTING_NEWS_CHAR_LIMIT'		=> (int) $this->config['news_char_limit'],
+			'SETTING_NEWS_NUMBER'			=> (int) $this->config['news_number'],
+			'SETTING_NEWS_PAGES'			=> (int) $this->config['news_pages'],
+			'SETTING_NEWS_POST_BUTTONS'		=> (bool) $this->config['news_post_buttons'],
+			'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
+			'SETTING_NEWS_SHADOW_SHOW'		=> (bool) $this->config['news_shadow'],
+			'SETTING_NEWS_ATTACH_SHOW'		=> (bool) $this->config['news_attach_show'],
+			'SETTING_NEWS_CAT_SHOW'			=> (bool) $this->config['news_cat_show'],
+			'SETTING_NEWS_ARCHIVE_SHOW'		=> (bool) $this->config['news_archive_show'],
+			'SETTING_NEWS_FORUMS'			=> make_forum_select(explode(',', $this->config['news_forums'])),
 		));
 	}
 }

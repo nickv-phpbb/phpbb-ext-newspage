@@ -1,10 +1,10 @@
+newspage_settings:
+    pattern: /news/settings
+    defaults: { _controller: nickvergessen.newspage.controller.settings:manage }
+
 newspage_controller:
     pattern: /news
     defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0, page: 1 }
-
-newspage_settings:
-    pattern: /news/settings
-    defaults: { _controller: nickvergessen.newspage.controller:settings }
 
 newspage_page_controller:
     pattern: /news/page/{page}
