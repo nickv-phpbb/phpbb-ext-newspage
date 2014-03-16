@@ -30,20 +30,6 @@ class release_1_0_0 extends \phpbb\db\migration\migration
 			array('config.add', array('news_user_info', 1)),
 			array('config.add', array('news_post_buttons', 1)),
 
-			array('module.add', array(
-				'acp',
-				'ACP_CAT_DOT_MODS',
-				'ACP_NEWSPAGE_TITLE'
-			)),
-			array('module.add', array(
-				'acp',
-				'ACP_NEWSPAGE_TITLE',
-				array(
-					'module_basename'	=> '\nickvergessen\newspage\acp\main_module',
-					'modes'				=> array('config_newspage'),
-				),
-			)),
-
 			array('config.add', array('newspage_mod_version', '1.0.0')),
 		);
 	}
