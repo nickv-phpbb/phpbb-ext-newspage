@@ -11,15 +11,15 @@
          syntaxCheck="false"
          bootstrap="../../../../tests/bootstrap.php"
 >
-    <testsuites>
-        <testsuite name="phpBB Test Suite">
-            <directory suffix="_test.php">./tests/</directory>
-        </testsuite>
-    </testsuites>
+	<testsuites>
+		<testsuite name="phpBB Test Suite">
+			<directory suffix="_test.php">./tests/</directory>
+		</testsuite>
+	</testsuites>
 
-    <filter>
-        <blacklist>
-            <directory>./tests/</directory>
-        </blacklist>
-    </filter>
+	<filter>
+		<blacklist>
+			<directory>./tests/</directory>
+		</blacklist>
+	</filter>
 </phpunit>

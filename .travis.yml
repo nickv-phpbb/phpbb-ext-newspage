@@ -10,9 +10,6 @@ php:
 env:
   - DB=mysql
 
-services:
-  - redis-server
-
 install:
   - sh -c "if [ '$DB' = 'mariadb' ]; then travis/setup-mariadb.sh; fi"
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then travis/setup-php-extensions.sh; fi"
@@ -22,6 +19,13 @@ install:
   - cd ..
 
 before_script:
+  # checkout phpBB and move your extension in place
+  - cd ../../
+  - git clone "git://github.com/phpbb/phpbb.git" "phpBB3"
+  - mkdir phpBB3/phpBB/ext
+  - mkdir phpBB3/phpBB/ext/phpbbgallery
+  - mv nickvergessen/phpbb-ext-newspage phpBB3/phpBB/ext/nickvergessen/newspage
+
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'DROP DATABASE IF EXISTS phpbb_tests;' -U postgres; fi"
   - sh -c "if [ '$DB' = 'postgres' ]; then psql -c 'create database phpbb_tests;' -U postgres; fi"
   - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.3' -a '$DB' = 'mysql' ]; then mysql -e 'SET GLOBAL storage_engine=MyISAM;'; fi"
@@ -29,9 +33,9 @@ before_script:
 
 script:
   - cd build
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' ]; then ../phpBB/vendor/bin/phing sniff; fi"
+  # - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' ]; then ../phpBB/vendor/bin/phing sniff; fi"
   - cd ..
-  - phpBB/vendor/bin/phpunit --configuration travis/phpunit-$DB-travis.xml
+  - phpBB/vendor/bin/phpunit --configuration phpBB/ext/nickvergessen/newspage/travis/phpunit-$DB-travis.xml
   - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' -a '$TRAVIS_PULL_REQUEST' != 'false' ]; then git-tools/commit-msg-hook-range.sh origin/$TRAVIS_BRANCH..FETCH_HEAD; fi"
 
 matrix:
