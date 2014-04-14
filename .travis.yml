@@ -12,7 +12,6 @@ env:
     # MUST UPDATE THIS FOR YOUR EXTENSION
     - VENDOR="nickvergessen"
     - NAME="newspage"
-    - REPONAME="nickvergessen/phpbb-ext-newspage"
   matrix:
     - DB=mysql
 
@@ -23,11 +22,13 @@ branches:
 
 install:
   # checkout phpBB and move your extension in place
+  - mkdir ../../tmp
+  - cp . ../../tmp
   - cd ../../
   - git clone "git://github.com/phpbb/phpbb.git" "phpBB3"
   - mkdir phpBB3/phpBB/ext
   - mkdir phpBB3/phpBB/ext/$VENDOR
-  - mv $REPONAME phpBB3/phpBB/ext/$VENDOR/$NAME
+  - mv tmp phpBB3/phpBB/ext/$VENDOR/$NAME
 
   - sh -c "if [ '$DB' = 'mariadb' ]; then travis/setup-mariadb.sh; fi"
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then travis/setup-php-extensions.sh; fi"
