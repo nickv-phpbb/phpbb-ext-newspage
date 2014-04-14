@@ -13,7 +13,7 @@ env:
 install:
   - sh -c "if [ '$DB' = 'mariadb' ]; then travis/setup-mariadb.sh; fi"
   - sh -c "if [ '$TRAVIS_PHP_VERSION' != 'hhvm' ]; then travis/setup-php-extensions.sh; fi"
-  - sh -c "if [ `php -r "echo (int) version_compare(PHP_VERSION, '5.3.19', '>=');"` = "1" ]; then travis/setup-webserver.sh; fi"
+  # @todo No Functional Tests - sh -c "if [ `php -r "echo (int) version_compare(PHP_VERSION, '5.3.19', '>=');"` = "1" ]; then travis/setup-webserver.sh; fi"
   - cd phpBB
   - php ../composer.phar install --dev --no-interaction --prefer-source
   - cd ..
@@ -33,10 +33,10 @@ before_script:
 
 script:
   - cd build
-  # - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' ]; then ../phpBB/vendor/bin/phing sniff; fi"
+  # @todo No Code Sniffing - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' ]; then ../phpBB/vendor/bin/phing sniff; fi"
   - cd ..
   - phpBB/vendor/bin/phpunit --configuration phpBB/ext/nickvergessen/newspage/travis/phpunit-$DB-travis.xml
-  - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' -a '$TRAVIS_PULL_REQUEST' != 'false' ]; then git-tools/commit-msg-hook-range.sh origin/$TRAVIS_BRANCH..FETCH_HEAD; fi"
+  # @todo No Commit Message Check - sh -c "if [ '$TRAVIS_PHP_VERSION' = '5.5' -a '$DB' = 'mysql' -a '$TRAVIS_PULL_REQUEST' != 'false' ]; then git-tools/commit-msg-hook-range.sh origin/$TRAVIS_BRANCH..FETCH_HEAD; fi"
 
 matrix:
   include:
