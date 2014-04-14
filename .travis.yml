@@ -8,14 +8,20 @@ php:
   - hhvm
 
 env:
-  - DB=mysql
+  global:
+    # MUST UPDATE THIS FOR YOUR EXTENSION
+    - VENDOR="nickvergessen"
+    - NAME="newspage"
+    - REPONAME="nickvergessen/phpbb-ext-newspage"
+  matrix:
+    - DB=mysql
+
+branches:
+  only:
+    - master
+    - /^develop-.*$/
 
 install:
-  # MUST UPDATE THIS FOR YOUR EXTENSION
-  - VENDOR="nickvergessen"
-  - NAME="newspage"
-  - REPONAME="nickvergessen/phpbb-ext-newspage"
-
   # checkout phpBB and move your extension in place
   - cd ../../
   - git clone "git://github.com/phpbb/phpbb.git" "phpBB3"
