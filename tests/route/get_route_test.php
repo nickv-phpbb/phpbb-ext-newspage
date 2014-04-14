@@ -1,14 +1,13 @@
 <?php
 /**
-*
-* @package testing
-* @copyright (c) 2008 phpBB Group
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package NV Newspage Extension
+ * @copyright (c) 2014 nickvergessen
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace nickvergessen\newspage\tests\route;
-
 
 class get_route_test extends \phpbb_test_case
 {
@@ -27,8 +26,8 @@ class get_route_test extends \phpbb_test_case
 	}
 
 	/**
-	* @dataProvider get_route_page_data
-	*/
+	 * @dataProvider get_route_page_data
+	 */
 	public function test_get_route_page($set_page, $force_page, $expected)
 	{
 		$this->get_route(array(
@@ -56,8 +55,8 @@ class get_route_test extends \phpbb_test_case
 	}
 
 	/**
-	* @dataProvider get_route_category_data
-	*/
+	 * @dataProvider get_route_category_data
+	 */
 	public function test_get_route_category($config, $set_category, $force_category, $expected)
 	{
 		$this->get_route(array(
@@ -85,8 +84,8 @@ class get_route_test extends \phpbb_test_case
 	}
 
 	/**
-	* @dataProvider get_route_archive_data
-	*/
+	 * @dataProvider get_route_archive_data
+	 */
 	public function test_get_route_archive($config, $set_archive, $force_archive, $expected)
 	{
 		$this->get_route(array(
