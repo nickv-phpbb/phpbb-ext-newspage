@@ -10,7 +10,7 @@
 namespace nickvergessen\newspage\tests\mock;
 
 /**
- * Controller helper class, contains methods that do things for controllers
+ * Template Mock
  * @package phpBB3
  */
 class template implements \phpbb\template\template

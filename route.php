@@ -47,7 +47,7 @@ class route
 	{
 		if ($this->config['news_archive_show'])
 		{
-			$this->archive_month = sprintf('%02d', (int) $archive_month);
+			$this->archive_month = (int) $archive_month;
 		}
 		return $this;
 	}
@@ -60,7 +60,7 @@ class route
 	{
 		if ($this->config['news_archive_show'])
 		{
-			$this->archive_year = $archive_year;
+			$this->archive_year = (int) $archive_year;
 		}
 		return $this;
 	}
@@ -73,7 +73,7 @@ class route
 	{
 		if ($this->config['news_cat_show'])
 		{
-			$this->category = $category;
+			$this->category = (int) $category;
 		}
 		return $this;
 	}
@@ -84,7 +84,7 @@ class route
 	 */
 	public function set_page($page)
 	{
-		$this->page = $page;
+		$this->page = (int) $page;
 		return $this;
 	}
 
@@ -162,13 +162,13 @@ class route
 		if ($this->config['news_archive_show'] && $force_archive !== true && $force_archive)
 		{
 			list($year, $month) = explode('/', $force_archive, 2);
-			$params['year'] = $year;
-			$params['month'] = $month;
+			$params['year'] = (int) $year;
+			$params['month'] = sprintf('%02d', (int) $month);
 		}
 		else if ($this->config['news_archive_show'] && $force_archive !== true && $this->archive_year && $this->archive_month)
 		{
-			$params['year'] = $this->archive_year;
-			$params['month'] = $this->archive_month;
+			$params['year'] = (int) $this->archive_year;
+			$params['month'] = sprintf('%02d', (int) $this->archive_month);
 		}
 
 		if ($force_page && $force_page > 1)

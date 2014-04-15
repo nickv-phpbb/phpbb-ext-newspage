@@ -10,7 +10,7 @@
 namespace nickvergessen\newspage\tests\mock;
 
 /**
- * Controller helper class, contains methods that do things for controllers
+ * Controller helper Mock
  * @package phpBB3
  */
 class controller_helper extends \phpbb\controller\helper
@@ -19,15 +19,6 @@ class controller_helper extends \phpbb\controller\helper
 	{
 	}
 
-	/**
-	 * Generate a URL to a route
-	 *
-	 * @param string	$route		Name of the route to travel
-	 * @param array	$params		String or array of additional url parameters
-	 * @param bool	$is_amp		Is url using &amp; (true) or & (false)
-	 * @param string	$session_id	Possibility to use a custom session id instead of the global one
-	 * @return string The URL already passed through append_sid()
-	 */
 	public function route($route, array $params = array(), $is_amp = true, $session_id = false)
 	{
 		return $route . '#' . serialize($params);
