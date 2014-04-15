@@ -12,15 +12,19 @@ namespace nickvergessen\newspage;
 
 class route
 {
-	/**
-	 * Controller helper object
-	 * @var \phpbb\controller\helper
-	 */
+	/** @var \phpbb\controller\helper */
 	protected $helper;
 
+	/** @var \phpbb\config\config */
+	protected $config;
+
+	/** @var int */
 	protected $page;
+	/** @var int */
 	protected $category;
+	/** @var int */
 	protected $archive_year;
+	/** @var int */
 	protected $archive_month;
 
 	/**
