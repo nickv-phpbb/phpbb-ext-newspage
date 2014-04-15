@@ -23,4 +23,14 @@ class controller_helper extends \phpbb\controller\helper
 	{
 		return $route . '#' . serialize($params);
 	}
+
+	public function error($message, $code = 500)
+	{
+		return new \Symfony\Component\HttpFoundation\Response($message, $code);
+	}
+
+	public function render($template_file, $page_title = '', $status_code = 200, $display_online_list = false)
+	{
+		return new \Symfony\Component\HttpFoundation\Response($template_file, $status_code);
+	}
 }

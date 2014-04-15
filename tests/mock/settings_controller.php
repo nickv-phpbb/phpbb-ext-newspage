@@ -10,17 +10,12 @@
 namespace nickvergessen\newspage\tests\mock;
 
 /**
- * User Mock
+ * Settings Controller Mock
  * @package phpBB3
  */
-class user extends \phpbb\user
+class settings_controller extends \nickvergessen\newspage\controller\settings
 {
-	public function __construct()
+	public function meta_refresh($redirect_time)
 	{
-	}
-
-	public function lang()
-	{
-		return implode(' ', func_get_args());
 	}
 }
