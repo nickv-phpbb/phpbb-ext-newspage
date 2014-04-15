@@ -1,21 +1,15 @@
 <?php
-
 /**
-*
-* @package NV Newspage Extension
-* @copyright (c) 2013 nickvergessen
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package NV Newspage Extension
+ * @copyright (c) 2013 nickvergessen
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace nickvergessen\newspage\event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
 
 /**
  * Class viewonline_listener
@@ -57,8 +51,6 @@ class viewonline_listener implements EventSubscriberInterface
 
 	public function add_newspage_viewonline($event)
 	{
-		global $forum_data;
-
 		$route = $this->helper->generate_route();
 		if ($event['on_page'][1] == 'app')
 		{
@@ -73,12 +65,12 @@ class viewonline_listener implements EventSubscriberInterface
 				$archive_start = $this->user->get_timestamp_from_format('Y/n-d H:i:s', $archive . '-01 0:00:00');
 
 				$event['location_url'] = $route->get_url($forum_id, $archive);
-				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY_ARCHIVE', $forum_data[$forum_id]['forum_name'], $this->user->format_date($archive_start, 'F Y'));
+				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY_ARCHIVE', $event['forum_data'][$forum_id]['forum_name'], $this->user->format_date($archive_start, 'F Y'));
 			}
 			else if ($forum_id = $this->get_category_from_route($event['row']['session_page']))
 			{
 				$event['location_url'] = $route->get_url($forum_id);
-				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY', $forum_data[$forum_id]['forum_name']);
+				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY', $event['forum_data'][$forum_id]['forum_name']);
 			}
 			else if ($archive = $this->get_archive_from_route($event['row']['session_page']))
 			{
