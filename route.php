@@ -123,7 +123,11 @@ class route
 			$route .= '_archive';
 		}
 
-		if ($force_page)
+		if ($force_page && $force_page > 1)
+		{
+			$route .= '_page';
+		}
+		else if (!$force_page && $this->page > 1)
 		{
 			$route .= '_page';
 		}
@@ -163,9 +167,13 @@ class route
 			$params['month'] = $this->archive_month;
 		}
 
-		if ($force_page)
+		if ($force_page && $force_page > 1)
 		{
 			$params['page'] = $force_page;
+		}
+		else if (!$force_page && $this->page > 1)
+		{
+			$params['page'] = $this->page;
 		}
 
 		return $params;

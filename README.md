@@ -16,12 +16,17 @@ Clone into phpBB/ext/nickvergessen/newspage:
 
 Go to "ACP" > "Customise" > "Extensions" and enable the "phpBB 3.1 NV Newspage Extension" extension.
 
-
 ## Collaborate
 
 * Create a issue in the [tracker](https://github.com/nickvergessen/phpbb-ext-newspage/issues)
 * Note the restrictions for [branch names](https://wiki.phpbb.com/Git#Branch_Names) and [commit messages](https://wiki.phpbb.com/Git#Commit_Messages) are similar to phpBB3
 * Submit a [pull-request](https://github.com/nickvergessen/phpbb-ext-newspage/pulls)
+
+## Testing
+
+We use Travis-CI as a continuous integration server and phpunit for our unit testing. See more information on the [phpBB development wiki](https://wiki.phpbb.com/Unit_Tests).
+
+develop-ascraeus [![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-ext-newspage)
 
 ## License
 
