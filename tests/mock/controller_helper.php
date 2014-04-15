@@ -7,7 +7,7 @@
  *
  */
 
-namespace nickvergessen\newspage\tests\route\mock;
+namespace nickvergessen\newspage\tests\mock;
 
 /**
  * Controller helper class, contains methods that do things for controllers
