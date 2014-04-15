@@ -10,7 +10,7 @@
          syntaxCheck="true"
          strict="true"
          verbose="true"
-         bootstrap="../../../../tests/bootstrap.php">
+         bootstrap="../../../../../tests/bootstrap.php">
 	<testsuites>
 		<testsuite name="phpBB Test Suite">
 			<directory suffix="_test.php">../tests/</directory>
