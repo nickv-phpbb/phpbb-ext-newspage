@@ -2,6 +2,9 @@
 
 NV Newspage is an Extension for [phpBB 3.1](https://www.phpbb.com/)
 
+[![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-ext-newspage)
+[![Coverage Status](https://coveralls.io/repos/nickvergessen/phpbb-ext-newspage/badge.png)](https://coveralls.io/r/nickvergessen/phpbb-ext-newspage)
+
 ## Description
 
 Adds an extra page to the board where a switchable number of news can be displayed.
@@ -25,8 +28,6 @@ Go to "ACP" > "Customise" > "Extensions" and enable the "phpBB 3.1 NV Newspage E
 ## Testing
 
 We use Travis-CI as a continuous integration server and phpunit for our unit testing. See more information on the [phpBB development wiki](https://wiki.phpbb.com/Unit_Tests).
-
-develop-ascraeus [![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-ext-newspage)
 
 ## License
 
