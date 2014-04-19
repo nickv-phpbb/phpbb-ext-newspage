@@ -78,7 +78,7 @@ class main
 	* @param int	$year			Limit the news to a certain year
 	* @param int	$month			Limit the news to a certain month
 	* @param int	$page			Page to display
-	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
+	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
 	public function newspage($forum_id, $year, $month, $page)
 	{
@@ -93,7 +93,7 @@ class main
 	* News controller to be accessed with the URL /news/{topic_id} to display a single news
 	*
 	* @param int	$topic_id		Topic ID of the news to display
-	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
+	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
 	public function single_news($topic_id)
 	{
@@ -106,7 +106,7 @@ class main
 	* Base controller to be accessed with the URL /news/{id}
 	*
 	* @param	bool	$display_pagination		Force to hide the pagination
-	* @return Symfony\Component\HttpFoundation\Response A Symfony Response object
+	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	*/
 	public function base($display_pagination = true)
 	{

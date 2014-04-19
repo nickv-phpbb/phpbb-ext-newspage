@@ -14,14 +14,14 @@ class get_url_test extends \phpbb_test_case
 	public function get_url_page_data()
 	{
 		return array(
-			array(false, 2, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04', 'page' => 2))),
-			array(false, 1, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04'))),
-			array(false, false, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04'))),
-			array(false, true, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04'))),
-			array(5, 2, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04', 'page' => 2))),
-			array(5, 1, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04'))),
-			array(5, false, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04', 'page' => 5))),
-			array(5, true, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => '2014', 'month' => '04'))),
+			array(false, 2, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04', 'page' => 2))),
+			array(false, 1, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04'))),
+			array(false, false, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04'))),
+			array(false, true, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04'))),
+			array(5, 2, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04', 'page' => 2))),
+			array(5, 1, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04'))),
+			array(5, false, 'newspage_category_archive_page_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04', 'page' => 5))),
+			array(5, true, 'newspage_category_archive_controller#' . serialize(array('forum_id' => 3, 'year' => 2014, 'month' => '04'))),
 		);
 	}
 
@@ -68,15 +68,15 @@ class get_url_test extends \phpbb_test_case
 	public function get_url_archive_data()
 	{
 		return array(
-			array(true, false, '2014/04', 'newspage_archive_page_controller#' . serialize(array('year' => '2014', 'month' => '04', 'page' => 2))),
+			array(true, false, '2014/04', 'newspage_archive_page_controller#' . serialize(array('year' => 2014, 'month' => '04', 'page' => 2))),
 			array(false, false, '2014/04', 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(true, false, false, 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(false, false, false, 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(true, false, true, 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(false, false, true, 'newspage_page_controller#' . serialize(array('page' => 2))),
-			array(true, '2012/03', '2014/04', 'newspage_archive_page_controller#' . serialize(array('year' => '2014', 'month' => '04', 'page' => 2))),
+			array(true, '2012/03', '2014/04', 'newspage_archive_page_controller#' . serialize(array('year' => 2014, 'month' => '04', 'page' => 2))),
 			array(false, '2012/03', '2014/04', 'newspage_page_controller#' . serialize(array('page' => 2))),
-			array(true, '2012/03', false, 'newspage_archive_page_controller#' . serialize(array('year' => '2012', 'month' => '03', 'page' => 2))),
+			array(true, '2012/03', false, 'newspage_archive_page_controller#' . serialize(array('year' => 2012, 'month' => '03', 'page' => 2))),
 			array(false, '2012/03', false, 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(true, '2012/03', true, 'newspage_page_controller#' . serialize(array('page' => 2))),
 			array(false, '2012/03', true, 'newspage_page_controller#' . serialize(array('page' => 2))),
@@ -98,7 +98,7 @@ class get_url_test extends \phpbb_test_case
 	{
 		$config = new \phpbb\config\config($config);
 		$route = new \nickvergessen\newspage\route(
-			new \nickvergessen\newspage\tests\route\mock\controller_helper(),
+			new \nickvergessen\newspage\tests\mock\controller_helper(),
 			$config
 		);
 

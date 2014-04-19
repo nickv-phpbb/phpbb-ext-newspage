@@ -98,7 +98,7 @@ class get_route_test extends \phpbb_test_case
 	{
 		$config = new \phpbb\config\config($config);
 		$route = new \nickvergessen\newspage\route(
-			new \nickvergessen\newspage\tests\route\mock\controller_helper(),
+			new \nickvergessen\newspage\tests\mock\controller_helper(),
 			$config
 		);
 

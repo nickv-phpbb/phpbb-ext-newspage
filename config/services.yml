@@ -38,11 +38,17 @@ services:
             - @pagination
             - %core.root_path%
             - %core.php_ext%
-    nickvergessen.newspage.listener:
-        class: nickvergessen\newspage\event\main_listener
+    nickvergessen.newspage.menu_link_listener:
+        class: nickvergessen\newspage\event\menu_link_listener
         arguments:
             - @nickvergessen.newspage.helper
             - @template
+        tags:
+            - { name: event.listener }
+    nickvergessen.newspage.viewonline_listener:
+        class: nickvergessen\newspage\event\viewonline_listener
+        arguments:
+            - @nickvergessen.newspage.helper
             - @user
             - %core.php_ext%
         tags:

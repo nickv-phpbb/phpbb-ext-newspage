@@ -1,41 +1,33 @@
 <?php
-
 /**
-*
-* @package NV Newspage Extension
-* @copyright (c) 2013 nickvergessen
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ *
+ * @package NV Newspage Extension
+ * @copyright (c) 2013 nickvergessen
+ * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ *
+ */
 
 namespace nickvergessen\newspage\event;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
-if (!defined('IN_PHPBB'))
-{
-	exit;
-}
-
 /**
-* Event listener
-*/
-class main_listener implements EventSubscriberInterface
+ * Class viewonline_listener
+ * Handles displaying the route name and link on viewonline.php
+ *
+ * @package nickvergessen\newspage\event
+ */
+class viewonline_listener implements EventSubscriberInterface
 {
 	static public function getSubscribedEvents()
 	{
 		return array(
-			'core.user_setup'						=> 'load_language_on_setup',
-			'core.page_header'						=> 'add_page_header_link',
 			'core.viewonline_overwrite_location'	=> 'add_newspage_viewonline',
 		);
 	}
 
 	/* @var \nickvergessen\newspage\helper */
 	protected $helper;
-
-	/* @var \phpbb\template\template */
-	protected $template;
 
 	/* @var \phpbb\user */
 	protected $user;
@@ -47,39 +39,18 @@ class main_listener implements EventSubscriberInterface
 	* Constructor
 	*
 	* @param \nickvergessen\newspage\helper	$helper		Newspage helper object
-	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user				$user		User object
 	* @param string						$php_ext	phpEx
 	*/
-	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\template\template $template, \phpbb\user $user, $php_ext)
+	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\user $user, $php_ext)
 	{
 		$this->helper = $helper;
-		$this->template = $template;
 		$this->user = $user;
 		$this->php_ext = $php_ext;
 	}
 
-	public function load_language_on_setup($event)
-	{
-		$lang_set_ext = $event['lang_set_ext'];
-		$lang_set_ext[] = array(
-			'ext_name' => 'nickvergessen/newspage',
-			'lang_set' => 'newspage',
-		);
-		$event['lang_set_ext'] = $lang_set_ext;
-	}
-
-	public function add_page_header_link($event)
-	{
-		$this->template->assign_vars(array(
-			'U_NEWSPAGE'	=> $this->helper->generate_route()->get_url(),
-		));
-	}
-
 	public function add_newspage_viewonline($event)
 	{
-		global $forum_data;
-
 		$route = $this->helper->generate_route();
 		if ($event['on_page'][1] == 'app')
 		{
@@ -94,12 +65,12 @@ class main_listener implements EventSubscriberInterface
 				$archive_start = $this->user->get_timestamp_from_format('Y/n-d H:i:s', $archive . '-01 0:00:00');
 
 				$event['location_url'] = $route->get_url($forum_id, $archive);
-				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY_ARCHIVE', $forum_data[$forum_id]['forum_name'], $this->user->format_date($archive_start, 'F Y'));
+				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY_ARCHIVE', $event['forum_data'][$forum_id]['forum_name'], $this->user->format_date($archive_start, 'F Y'));
 			}
 			else if ($forum_id = $this->get_category_from_route($event['row']['session_page']))
 			{
 				$event['location_url'] = $route->get_url($forum_id);
-				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY', $forum_data[$forum_id]['forum_name']);
+				$event['location'] = $this->user->lang('VIEWONLINE_NEWS_CATEGORY', $event['forum_data'][$forum_id]['forum_name']);
 			}
 			else if ($archive = $this->get_archive_from_route($event['row']['session_page']))
 			{

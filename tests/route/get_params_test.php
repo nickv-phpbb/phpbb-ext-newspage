@@ -68,18 +68,25 @@ class get_params_test extends \phpbb_test_case
 	public function get_params_archive_data()
 	{
 		return array(
-			array(true, false, '2014/04', array('year' => '2014', 'month' => '04', 'page' => 2)),
+			array(true, false, '2014/04', array('year' => 2014, 'month' => '04', 'page' => 2)),
 			array(false, false, '2014/04', array('page' => 2)),
 			array(true, false, false, array('page' => 2)),
 			array(false, false, false, array('page' => 2)),
 			array(true, false, true, array('page' => 2)),
 			array(false, false, true, array('page' => 2)),
-			array(true, '2012/03', '2014/04', array('year' => '2014', 'month' => '04', 'page' => 2)),
+			array(true, '2012/03', '2014/04', array('year' => 2014, 'month' => '04', 'page' => 2)),
 			array(false, '2012/03', '2014/04', array('page' => 2)),
-			array(true, '2012/03', false, array('year' => '2012', 'month' => '03', 'page' => 2)),
+			array(true, '2012/03', false, array('year' => 2012, 'month' => '03', 'page' => 2)),
 			array(false, '2012/03', false, array('page' => 2)),
 			array(true, '2012/03', true, array('page' => 2)),
 			array(false, '2012/03', true, array('page' => 2)),
+
+			array(true, '2012/3', '2014/4', array('year' => 2014, 'month' => '04', 'page' => 2)),
+			array(false, '2012/3', '2014/4', array('page' => 2)),
+			array(true, '2012/3', false, array('year' => 2012, 'month' => '03', 'page' => 2)),
+			array(false, '2012/3', false, array('page' => 2)),
+			array(true, '2012/3', true, array('page' => 2)),
+			array(false, '2012/3', true, array('page' => 2)),
 		);
 	}
 
@@ -98,7 +105,7 @@ class get_params_test extends \phpbb_test_case
 	{
 		$config = new \phpbb\config\config($config);
 		$route = new \nickvergessen\newspage\route(
-			new \nickvergessen\newspage\tests\route\mock\controller_helper(),
+			new \nickvergessen\newspage\tests\mock\controller_helper(),
 			$config
 		);
 
