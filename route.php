@@ -41,7 +41,7 @@ class route
 
 	/**
 	 * @param mixed $archive_month
-	 * @return $this
+	 * @return \nickvergessen\newspage\route $this
 	 */
 	public function set_archive_month($archive_month)
 	{
@@ -54,7 +54,7 @@ class route
 
 	/**
 	 * @param mixed $archive_year
-	 * @return $this
+	 * @return \nickvergessen\newspage\route $this
 	 */
 	public function set_archive_year($archive_year)
 	{
@@ -67,7 +67,7 @@ class route
 
 	/**
 	 * @param mixed $category
-	 * @return $this
+	 * @return \nickvergessen\newspage\route $this
 	 */
 	public function set_category($category)
 	{
@@ -80,7 +80,7 @@ class route
 
 	/**
 	 * @param mixed $page
-	 * @return $this
+	 * @return \nickvergessen\newspage\route $this
 	 */
 	public function set_page($page)
 	{
