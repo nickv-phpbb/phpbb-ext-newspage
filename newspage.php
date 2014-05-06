@@ -641,7 +641,7 @@ class newspage
 			array(
 				'routes' => array(
 					$route->get_route(),
-					$route->get_route(false, false, true),
+					$route->get_route(false, false, 2),
 				),
 				'params' => $route->get_params(),
 			), 'pagination', 'page', $pagination_news, $this->config['news_number'], $this->start);
