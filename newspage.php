@@ -283,6 +283,36 @@ class newspage
 			get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
 			$row['user_jabber'] = ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '';
 
+			// Can this user receive a Private Message?
+			$can_receive_pm = (
+				// They must be a "normal" user
+				$row['user_type'] != USER_IGNORE &&
+
+				// They must not be deactivated by the administrator
+				($row['user_type'] != USER_INACTIVE || $row['user_inactive_reason'] != INACTIVE_MANUAL) &&
+
+				// They must be able to read PMs
+				//@todo in_array($poster_id, $can_receive_pm_list) &&
+
+				// They must not be permanently banned
+				//@todo !in_array($poster_id, $permanently_banned_users) &&
+
+				// They must allow users to contact via PM
+				(($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $row['allow_pm'])
+			);
+
+			$u_pm = $u_email = '';
+
+			if ($this->config['allow_privmsg'] && $this->auth->acl_get('u_sendpm') && $can_receive_pm)
+			{
+				$u_pm = append_sid("{$this->root_path}ucp.{$this->php_ext}", 'i=pm&amp;mode=compose&amp;action=quotepost&amp;p=' . $row['post_id']);
+			}
+
+			if ((!empty($row['user_allow_viewemail']) && $this->auth->acl_get('u_sendemail')) || $this->auth->acl_get('a_email'))
+			{
+				$u_email = ($this->config['board_email_form'] && $this->config['email_enable']) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=email&amp;u=$poster_id") : (($this->config['board_hide_emails'] && !$this->auth->acl_get('a_email')) ? '' : 'mailto:' . $row['user_email']);
+			}
+
 			$this->template->assign_block_vars('postrow', array(
 				'POST_ID'				=> $post_id,
 				'S_IGNORE_POST'			=> false,
@@ -336,6 +366,49 @@ class newspage
 				'U_EMAIL'				=> $row['user_email'],
 				'U_JABBER'				=> $row['user_jabber'],
 			));
+
+			$contact_fields = array(
+				array(
+					'ID'		=> 'pm',
+					'NAME' 		=> $this->user->lang['PRIVATE_MESSAGES'],
+					'U_CONTACT'	=> $u_pm,
+				),
+				array(
+					'ID'		=> 'email',
+					'NAME'		=> $this->user->lang['SEND_EMAIL'],
+					'U_CONTACT'	=> $u_email,
+				),
+				array(
+					'ID'		=> 'jabber',
+					'NAME'		=> $this->user->lang['JABBER'],
+					'U_CONTACT'	=> ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '',
+				),
+			);
+
+			foreach ($contact_fields as $field)
+			{
+				if ($field['U_CONTACT'])
+				{
+					$this->template->assign_block_vars('postrow.contact', $field);
+				}
+			}
+
+			if (!empty($cp_row['blockrow']))
+			{
+				foreach ($cp_row['blockrow'] as $field_data)
+				{
+					$this->template->assign_block_vars('postrow.custom_fields', $field_data);
+
+					if ($field_data['S_PROFILE_CONTACT'])
+					{
+						$this->template->assign_block_vars('postrow.contact', array(
+							'ID'		=> $field_data['PROFILE_FIELD_IDENT'],
+							'NAME'		=> $field_data['PROFILE_FIELD_NAME'],
+							'U_CONTACT'	=> $field_data['PROFILE_FIELD_CONTACT'],
+						));
+					}
+				}
+			}
 
 			// Display not already displayed Attachments for this post, we already parsed them. ;)
 			if (!empty($attachments[$post_id]))

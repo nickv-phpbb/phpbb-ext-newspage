@@ -46,27 +46,42 @@
 			<dd><strong>{postrow.PROFILE_FIELD1_NAME}:</strong> {postrow.PROFILE_FIELD1_VALUE}</dd>
 		<!-- ENDIF -->
 
+		<!-- EVENT viewtopic_body_postrow_custom_fields_before -->
 		<!-- BEGIN custom_fields -->
-			<dd><strong>{postrow.custom_fields.PROFILE_FIELD_NAME}:</strong> {postrow.custom_fields.PROFILE_FIELD_VALUE}</dd>
+			<!-- IF not postrow.custom_fields.S_PROFILE_CONTACT -->
+				<dd class="profile-custom-field profile-{postrow.custom_fields.PROFILE_FIELD_IDENT}"><strong>{postrow.custom_fields.PROFILE_FIELD_NAME}{L_COLON}</strong> {postrow.custom_fields.PROFILE_FIELD_VALUE}</dd>
+			<!-- ENDIF -->
 		<!-- END custom_fields -->
+		<!-- EVENT viewtopic_body_postrow_custom_fields_after -->
 
-		<!-- IF not S_IS_BOT -->
-		<!-- IF postrow.U_PM or postrow.U_EMAIL or postrow.U_WWW or postrow.U_MSN or postrow.U_ICQ or postrow.U_YIM or postrow.U_AIM -->
-			<dd>
-				<ul class="profile-icons">
-					<!-- IF postrow.U_PM --><li class="pm-icon"><a href="{postrow.U_PM}" title="{L_PRIVATE_MESSAGE}"><span>{L_PRIVATE_MESSAGE}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_EMAIL --><li class="email-icon"><a href="{postrow.U_EMAIL}" title="{L_EMAIL}"><span>{L_EMAIL}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_WWW --><li class="web-icon"><a href="{postrow.U_WWW}" title="{L_VISIT_WEBSITE}: {postrow.U_WWW}"><span>{L_WEBSITE}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_MSN --><li class="msnm-icon"><a href="{postrow.U_MSN}" title="{L_MSNM}"><span>{L_MSNM}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_ICQ --><li class="icq-icon"><a href="{postrow.U_ICQ}" title="{L_ICQ}"><span>{L_ICQ}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_YIM --><li class="yahoo-icon"><a href="{postrow.U_YIM}" title="{L_YIM}"><span>{L_YIM}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_AIM --><li class="aim-icon"><a href="{postrow.U_AIM}" title="{L_AIM}"><span>{L_AIM}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_JABBER --><li class="jabber-icon"><a href="{postrow.U_JABBER}" title="{L_JABBER}"><span>{L_JABBER}</span></a></li><!-- ENDIF -->
-				</ul>
-			</dd>
+		<!-- EVENT viewtopic_body_contact_fields_before -->
+		<!-- IF not S_IS_BOT and .postrow.contact -->
+		<dd class="profile-contact">
+			<strong>{L_CONTACT}{L_COLON}</strong>
+			<div class="dropdown-container dropdown-left">
+				<a href="#" class="dropdown-trigger"><span class="imageset icon_contact"></span></a>
+				<div class="dropdown hidden">
+					<div class="pointer"><div class="pointer-inner"></div></div>
+					<div class="dropdown-contents contact-icons">
+						<!-- BEGIN contact -->
+							{% set REMAINDER = postrow.contact.S_ROW_COUNT % 4 %}
+							<!-- DEFINE $S_LAST_CELL = ((REMAINDER eq 3) or (postrow.contact.S_LAST_ROW and postrow.contact.S_NUM_ROWS < 4)) -->
+							<!-- IF REMAINDER eq 0 -->
+								<div>
+							<!-- ENDIF -->
+								<a href="<!-- IF postrow.contact.U_CONTACT -->{postrow.contact.U_CONTACT}<!-- ELSE -->{postrow.contact.U_PROFILE_AUTHOR}<!-- ENDIF -->" title="{postrow.contact.NAME}"<!-- IF $S_LAST_CELL --> class="last-cell"<!-- ENDIF --><!-- IF postrow.contact.ID eq 'jabber' --> onclick="popup(this.href, 550, 320); return false;"<!-- ENDIF -->>
+									<span class="contact-icon {postrow.contact.ID}-icon"></span>
+								</a>
+							<!-- IF REMAINDER eq 3 or postrow.contact.S_LAST_ROW -->
+								</div>
+							<!-- ENDIF -->
+						<!-- END contact -->
+					</div>
+				</div>
+			</div>
+		</dd>
 		<!-- ENDIF -->
-		<!-- ENDIF -->
-
+		<!-- EVENT viewtopic_body_contact_fields_after -->
 		</dl>
 	<!-- ENDIF -->
 <!-- ENDIF -->
@@ -77,15 +92,41 @@
 			<!-- ELSE -->
 
 		<!-- IF not S_IS_BOT and NEWS_POST_BUTTONS -->
-			<!-- IF postrow.U_QUOTE or postrow.U_INFO or postrow.U_DELETE or postrow.U_EDIT -->
-				<ul class="profile-icons">
-					<!-- IF postrow.U_QUOTE --><li class="quote-icon"><a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}"><span>{L_REPLY_WITH_QUOTE}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_EDIT --><li class="edit-icon"><a href="{postrow.U_EDIT}" title="{L_EDIT_POST}"><span>{L_EDIT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_DELETE --><li class="delete-icon"><a href="{postrow.U_DELETE}" title="{L_DELETE_POST}"><span>{L_DELETE_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_REPORT --><li class="report-icon"><a href="{postrow.U_REPORT}" title="{L_REPORT_POST}"><span>{L_REPORT_POST}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_WARN --><li class="warn-icon"><a href="{postrow.U_WARN}" title="{L_WARN_USER}"><span>{WARN_USER}</span></a></li><!-- ENDIF -->
-					<!-- IF postrow.U_INFO --><li class="info-icon"><a href="{postrow.U_INFO}" title="{L_INFORMATION}"><span>{L_INFORMATION}</span></a></li><!-- ENDIF -->
-				</ul>
+			<!-- IF postrow.U_EDIT or postrow.U_DELETE or postrow.U_REPORT or postrow.U_WARN or postrow.U_INFO or postrow.U_QUOTE -->
+			<ul class="post-buttons">
+				<!-- EVENT viewtopic_body_post_buttons_before -->
+				<!-- IF postrow.U_EDIT -->
+				<li>
+					<a href="{postrow.U_EDIT}" title="{L_EDIT_POST}" class="button icon-button edit-icon"><span>{L_BUTTON_EDIT}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- IF postrow.U_DELETE -->
+				<li>
+					<a href="{postrow.U_DELETE}" title="{L_DELETE_POST}" class="button icon-button delete-icon"><span>{L_DELETE_POST}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- IF postrow.U_REPORT -->
+				<li>
+					<a href="{postrow.U_REPORT}" title="{L_REPORT_POST}" class="button icon-button report-icon"><span>{L_REPORT_POST}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- IF postrow.U_WARN -->
+				<li>
+					<a href="{postrow.U_WARN}" title="{L_WARN_USER}" class="button icon-button warn-icon"><span>{L_WARN_USER}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- IF postrow.U_INFO -->
+				<li>
+					<a href="{postrow.U_INFO}" title="{L_INFORMATION}" class="button icon-button info-icon"><span>{L_INFORMATION}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- IF postrow.U_QUOTE -->
+				<li>
+					<a href="{postrow.U_QUOTE}" title="{L_REPLY_WITH_QUOTE}" class="button icon-button quote-icon"><span>{L_QUOTE}</span></a>
+				</li>
+				<!-- ENDIF -->
+				<!-- EVENT viewtopic_body_post_buttons_after -->
+			</ul>
 			<!-- ENDIF -->
 		<!-- ENDIF -->
 
