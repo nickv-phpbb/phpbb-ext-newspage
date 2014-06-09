@@ -26,7 +26,6 @@ install:
   - cp -R . ../../tmp
   - cd ../../
   - git clone "git://github.com/phpbb/phpbb.git" "phpBB3"
-  - mkdir phpBB3/phpBB/ext
   - mkdir phpBB3/phpBB/ext/$VENDOR
   - mv tmp phpBB3/phpBB/ext/$VENDOR/$NAME
 
