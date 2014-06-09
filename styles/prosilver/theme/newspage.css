@@ -28,3 +28,7 @@ a.arrow-right-on-left:hover {
 .newspage-dropdown ul li:first-child {
 	padding-left: 5px;
 }
+
+#newspage_settings .dropdown-contents ul li {
+	padding: 5px;
+}
