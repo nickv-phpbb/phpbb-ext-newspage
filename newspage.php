@@ -200,7 +200,6 @@ class newspage
 			$post_edit_list = array();
 			$display_notice = false;
 
-
 			$post_unread = (isset($topic_tracking_info[$forum_id][$topic_id]) && $row['post_time'] > $topic_tracking_info[$forum_id][$topic_id]) ? true : false;
 
 			//parse message for display

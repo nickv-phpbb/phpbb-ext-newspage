@@ -70,4 +70,4 @@ class helper
 		}
 		return $route;
 	}
-} 
+}
