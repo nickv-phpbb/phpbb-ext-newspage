@@ -3,7 +3,8 @@
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
 
 <!-- IF .archive_block or .cat_block or (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
-<div class="topic-actions">
+<br />
+<div class="action-bar">
 	<!-- INCLUDE newspage_categories_dropdown.html -->
 	<!-- INCLUDE newspage_archives_dropdown.html -->
 	<!-- INCLUDE newspage_settings.html -->
@@ -184,20 +185,14 @@
 </div>
 <!-- END postrow -->
 
-<!-- IF U_PREVIOUS_PAGE or U_NEXT_PAGE -->
-<fieldset class="display-options">
-	<!-- IF U_PREVIOUS_PAGE --><a href="{U_PREVIOUS_PAGE}" class="left-box arrow-{S_CONTENT_FLOW_BEGIN}">{L_PREVIOUS}</a><!-- ENDIF -->
-	<!-- IF U_NEXT_PAGE --><a href="{U_NEXT_PAGE}" class="right-box arrow-{S_CONTENT_FLOW_END}">{L_NEXT}</a><!-- ENDIF -->
-</fieldset>
-<!-- ENDIF -->
-
 <!-- IF .pagination -->
 <hr class="divider" />
-<div class="topic-actions">
+<div class="action-bar">
 	<div class="pagination">
 		{TOTAL_NEWS} &bull; <!-- INCLUDE pagination.html -->
 	</div>
 </div>
+<br />
 <!-- ENDIF -->
 
 <!-- INCLUDE overall_footer.html -->
