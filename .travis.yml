@@ -29,7 +29,7 @@ matrix:
 env:
   global:
     - EXTNAME="nickvergessen/newspage"
-    - SNIFF="1"
+    - SNIFF="0"
     - IMAGE_ICC="1"
     - PHPBB_BRANCH="develop-ascraeus"
 
