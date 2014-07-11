@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a extra-page to the board where a switchable number of news are displayed. The text can be shorten to a certain number of chars. Also the Icons can be switched of (post icons, user icons)",
 	"homepage": "https://github.com/nickvergessen/phpbb3-mod-newspage",
-	"version": "1.1.0",
-	"time": "2013-03-16",
+	"version": "1.1.1",
+	"time": "2014-07-11",
 	"license": "GPL-2.0",
 	"authors": [
 		{
@@ -12,12 +12,6 @@
 			"email": "nickvergessen@gmx.de",
 			"homepage": "http://www.flying-bits.org",
 			"role": "Lead Developer"
-		},
-		{
-			"name": "Falk Seidel",
-			"email": "admin@un1matr1x.de",
-			"homepage": "http://un1matr1x.de",
-			"role": "Developer"
 		}
 	],
 	"require": {
