@@ -293,7 +293,7 @@ class newspage
 				//@todo !in_array($poster_id, $permanently_banned_users) &&
 
 				// They must allow users to contact via PM
-				(($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $row['allow_pm'])
+				(($this->auth->acl_gets('a_', 'm_') || $this->auth->acl_getf_global('m_')) || $row['user_allow_pm'])
 			);
 
 			$u_pm = $u_email = '';
