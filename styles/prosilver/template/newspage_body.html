@@ -23,7 +23,7 @@
 <!-- ENDIF -->
 
 <!-- BEGIN postrow -->
-	<div id="p{postrow.POST_ID}" class="post <!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD == 1 --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF NEWS_USER_INFO --><!-- IF postrow.S_ONLINE --> online<!-- ENDIF --><!-- ENDIF -->">
+	<div id="p{postrow.POST_ID}" class="post <!-- IF NEWS_USER_INFO -->has-profile <!-- ENDIF --><!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD == 1 --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF NEWS_USER_INFO --><!-- IF postrow.S_ONLINE --> online<!-- ENDIF --><!-- ENDIF -->">
 		<div class="inner">
 <!-- IF NEWS_USER_INFO -->
 	<!-- IF not postrow.S_IGNORE_POST -->
