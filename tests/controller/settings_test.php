@@ -23,6 +23,7 @@ class settings_test extends \phpbb_test_case
 				new \phpbb\symfony_request(
 					new \phpbb_mock_request()
 				),
+				new \phpbb_mock_request(),
 				new \phpbb\filesystem(),
 				$this->phpbb_root_path,
 				'php'
@@ -48,30 +49,50 @@ class settings_test extends \phpbb_test_case
 			array(
 				array(
 					array('a_board', 0, false),
-				), array(), array(), 403, 'NO_AUTH_OPERATION',
+				),
+				array(),
+				array(),
+				403,
+				'NO_AUTH_OPERATION',
 			),
 			array(
 				array(
 					array('a_board', 0, true),
-				), array(), array(), 400, 'FORM_INVALID',
+				),
+				array(),
+				array(),
+				400,
+				'FORM_INVALID',
 			),
 			array(
 				array(
 					array('a_board', 0, true),
-				), array(
-					array('submit', true)
-				), array(), 400, 'FORM_INVALID',
+				),
+				array(
+					array('submit', true),
+					array('creation_time', true),
+					array('form_token', true),
+				),
+				array(),
+				400,
+				'FORM_INVALID',
 			),
 			array(
 				array(
 					array('a_board', 0, true),
-				), array(
-					array('submit', true)
-				), array(
+				),
+				array(
+					array('submit', true),
+					array('creation_time', true),
+					array('form_token', true),
+				),
+				array(
 					array('creation_time', 0, false, \phpbb\request\request_interface::REQUEST, 0),
 					array('form_token', '', false, \phpbb\request\request_interface::REQUEST, sha1('0newspage')),
 					array('news_forums', array(0), false, \phpbb\request\request_interface::REQUEST, array()),
-				), 200, 'NEWS_SAVED',
+				),
+				200,
+				'NEWS_SAVED',
 			),
 		);
 	}
@@ -81,6 +102,8 @@ class settings_test extends \phpbb_test_case
 	 */
 	public function test_manage($auth_map, $request_map, $variable_map, $status_code, $page_content)
 	{
+		global $request;
+
 		$auth = $this->getMock('\phpbb\auth\auth');
 		$auth->expects($this->any())
 			->method('acl_get')
@@ -112,7 +135,7 @@ class settings_test extends \phpbb_test_case
 
 		$response = $controller->manage();
 		$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
-		$this->assertEquals($status_code, $response->getStatusCode());
 		$this->assertEquals($page_content, $response->getContent());
+		$this->assertEquals($status_code, $response->getStatusCode());
 	}
 }
