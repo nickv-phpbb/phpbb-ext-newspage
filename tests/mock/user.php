@@ -17,6 +17,7 @@ class user extends \phpbb\user
 {
 	public function __construct()
 	{
+		parent::__construct('\phpbb\datetime');
 	}
 
 	public function lang()
