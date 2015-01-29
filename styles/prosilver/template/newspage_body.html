@@ -1,9 +1,13 @@
 <!-- INCLUDE overall_header.html -->
 
+<!-- EVENT nickvergessen_newspage_before -->
+
 <h2><!-- IF NEWS_ONLY --><a href="{postrow.U_NEWS}">{NEWS_TITLE}</a><!-- ELSE -->{L_NEWS}<!-- ENDIF --></h2>
+<!-- EVENT nickvergessen_newspage_title_after -->
 
 <!-- IF .archive_block or .cat_block or (PAGE_NUMBER and PAGINATION) or TOTAL_NEWS -->
 <br />
+<!-- EVENT nickvergessen_newspage_filters_before -->
 <div class="action-bar">
 	<!-- INCLUDE newspage_categories_dropdown.html -->
 	<!-- INCLUDE newspage_archives_dropdown.html -->
@@ -20,9 +24,11 @@
 	</div>
 	<!-- ENDIF -->
 </div>
+<!-- EVENT nickvergessen_newspage_filters_after -->
 <!-- ENDIF -->
 
 <!-- BEGIN postrow -->
+<!-- EVENT nickvergessen_newspage_postrow_before -->
 	<div id="p{postrow.POST_ID}" class="post <!-- IF NEWS_USER_INFO -->has-profile <!-- ENDIF --><!-- IF postrow.S_ROW_COUNT is odd -->bg1<!-- ELSE -->bg2<!-- ENDIF --><!-- IF postrow.S_UNREAD == 1 --> unreadpost<!-- ENDIF --><!-- IF postrow.S_POST_REPORTED --> reported<!-- ENDIF --><!-- IF NEWS_USER_INFO --><!-- IF postrow.S_ONLINE --> online<!-- ENDIF --><!-- ENDIF -->">
 		<div class="inner">
 <!-- IF NEWS_USER_INFO -->
@@ -175,6 +181,7 @@
 
 		</div>
 	</div>
+	<!-- EVENT nickvergessen_newspage_postrow_after -->
 
 	<hr class="divider" />
 <!-- BEGINELSE -->
@@ -194,5 +201,7 @@
 </div>
 <br />
 <!-- ENDIF -->
+
+<!-- EVENT nickvergessen_newspage_after -->
 
 <!-- INCLUDE overall_footer.html -->
