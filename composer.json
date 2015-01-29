@@ -18,6 +18,9 @@
 		"nickvergessen/phpbb-tool-trimmessage": "1.3.*",
 		"php": ">=5.3.3"
 	},
+	"require-dev": {
+		"phing/phing": "2.4.*"
+	},
 	"extra": {
 		"display-name": "phpBB 3.1 NV Newspage Extension",
 		"soft-require": {
