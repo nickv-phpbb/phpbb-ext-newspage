@@ -15,6 +15,9 @@ class main
 	/* @var \phpbb\config\config */
 	protected $config;
 
+	/* @var \phpbb\event\dispatcher */
+	protected $dispatcher;
+
 	/* @var \phpbb\template\template */
 	protected $template;
 
@@ -37,6 +40,7 @@ class main
 	* Constructor
 	*
 	* @param \phpbb\config\config $config Config object
+	* @param \phpbb\event\dispatcher $dispatcher Config object
 	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user	$user		User object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
@@ -44,9 +48,10 @@ class main
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\event\dispatcher $dispatcher, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
+		$this->dispatcher = $dispatcher;
 		$this->template = $template;
 		$this->user = $user;
 		$this->helper = $helper;
@@ -82,6 +87,23 @@ class main
 	*/
 	public function newspage($forum_id, $year, $month, $page)
 	{
+		/**
+		 * You can use this event to load settings on the newspage
+		 *
+		 * @event nickvergessen.newspage.newspage
+		 * @var int	$forum_id		Forum ID of the category to display
+		 * @var int	$year			Limit the news to a certain year
+		 * @var int	$month			Limit the news to a certain month
+		 * @var int	$page			Page to display
+		 * @since 1.1.2
+		 */
+		extract($this->dispatcher->trigger_event('nickvergessen.newspage.newspage', array(
+			'forum_id',
+			'year',
+			'month',
+			'page',
+		)));
+
 		$this->newspage->set_category($forum_id)
 			->set_archive($year, $month)
 			->set_start(($page - 1) * $this->config['news_number']);
@@ -97,6 +119,17 @@ class main
 	*/
 	public function single_news($topic_id)
 	{
+		/**
+		 * You can use this event to load settings on a single page view of the newspage
+		 *
+		 * @event nickvergessen.newspage.single_news
+		 * @var int	$topic_id		Topic ID of the news to display
+		 * @since 1.1.2
+		 */
+		extract($this->dispatcher->trigger_event('nickvergessen.newspage.single_news', array(
+			'topic_id',
+		)));
+
 		$this->newspage->set_news($topic_id);
 
 		return $this->base(false);
