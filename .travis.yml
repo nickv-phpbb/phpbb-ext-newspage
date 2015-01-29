@@ -30,7 +30,7 @@ env:
   global:
     - EXTNAME="nickvergessen/newspage"
     - SNIFF="1"
-    - IMAGE_ICC="1"
+    - IMAGE_ICC="0" # Disabled until vendor/ is ignored for extensions
     - PHPBB_BRANCH="develop-ascraeus"
 
 branches:
