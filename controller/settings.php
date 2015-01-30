@@ -15,10 +15,10 @@ namespace nickvergessen\newspage\controller;
 use phpbb\auth\auth;
 use phpbb\config\config;
 use phpbb\controller\helper;
+use phpbb\exception\http_exception;
 use phpbb\request\request_interface;
 use phpbb\user;
 use Symfony\Component\HttpFoundation\Response;
-use phpbb\exception\http_exception;
 
 /**
  * Class settings

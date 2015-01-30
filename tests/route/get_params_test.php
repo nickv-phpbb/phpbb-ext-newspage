@@ -11,8 +11,9 @@
  */
 
 namespace nickvergessen\newspage\tests\route;
-use phpbb\config\config;
+
 use nickvergessen\newspage\route;
+use phpbb\config\config;
 
 /**
  * Class get_params_test

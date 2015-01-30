@@ -12,7 +12,6 @@
 
 namespace nickvergessen\newspage\tests\event;
 
-use nickvergessen\newspage\event\menu_link_listener;
 use nickvergessen\newspage\event\viewonline_listener;
 use nickvergessen\newspage\helper;
 use phpbb\config\config;
@@ -31,7 +30,7 @@ class viewonline_test extends \phpbb_test_case
 	/** @var user */
 	protected $user;
 
-	/** @var menu_link_listener */
+	/** @var viewonline_listener */
 	protected $listener;
 
 	/**

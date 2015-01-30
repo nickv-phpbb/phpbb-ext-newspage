@@ -12,9 +12,9 @@
 
 namespace nickvergessen\newspage\tests\event;
 
-use phpbb\config\config;
-use nickvergessen\newspage\helper;
 use nickvergessen\newspage\event\menu_link_listener;
+use nickvergessen\newspage\helper;
+use phpbb\config\config;
 use phpbb\event\data;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 
