@@ -39,7 +39,7 @@ class newspage
 	protected $content_visibility;
 	/** @var \phpbb\controller\helper */
 	protected $helper;
-	/** @var helper */
+	/** @var \nickvergessen\newspage\helper */
 	protected $news_helper;
 	/** @var \phpbb\pagination */
 	protected $pagination;
@@ -86,12 +86,12 @@ class newspage
 	* @param \phpbb\user		$user		User object
 	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
-	* @param helper $news_helper				Controller helper object
+	* @param \nickvergessen\newspage\helper $news_helper				Controller helper object
 	* @param \phpbb\pagination	$pagination	Pagination object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request_interface $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, helper $news_helper, \phpbb\pagination $pagination, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request_interface $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, \nickvergessen\newspage\helper $news_helper, \phpbb\pagination $pagination, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -645,7 +645,7 @@ class newspage
 			ORDER BY left_id ASC';
 		$result = $this->db->sql_query($sql);
 
-		/** @var route $route */
+		/** @var \nickvergessen\newspage\route $route */
 		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -729,7 +729,7 @@ class newspage
 					$this->num_pagination_items += $archive['count'];
 				}
 
-				/** @var route $route */
+				/** @var \nickvergessen\newspage\route $route */
 				$route = $this->news_helper->generate_route($this->category, $this->archive);
 				$this->template->assign_block_vars('archive_block.archive_row', array(
 					'U_NEWS_MONTH'		=> $route->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
@@ -789,7 +789,7 @@ class newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
-		/** @var route $route */
+		/** @var \nickvergessen\newspage\route $route */
 		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		$this->pagination->generate_template_pagination(
 			array(

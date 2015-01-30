@@ -12,8 +12,6 @@
 
 namespace nickvergessen\newspage\event;
 
-use nickvergessen\newspage\helper;
-use phpbb\user;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -36,10 +34,10 @@ class viewonline_listener implements EventSubscriberInterface
 		);
 	}
 
-	/* @var helper */
+	/* @var \nickvergessen\newspage\helper */
 	protected $helper;
 
-	/* @var user */
+	/* @var \phpbb\user */
 	protected $user;
 
 	/* @var string phpEx */
@@ -48,11 +46,11 @@ class viewonline_listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param helper $helper
-	 * @param user $user
+	 * @param \nickvergessen\newspage\helper $helper
+	 * @param \phpbb\user $user
 	 * @param string $php_ext
 	 */
-	public function __construct(helper $helper, user $user, $php_ext)
+	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\user $user, $php_ext)
 	{
 		$this->helper = $helper;
 		$this->user = $user;

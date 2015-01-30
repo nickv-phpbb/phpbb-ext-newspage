@@ -12,14 +12,6 @@
 
 namespace nickvergessen\newspage\controller;
 
-use nickvergessen\newspage\newspage;
-use phpbb\config\config;
-use phpbb\controller\helper;
-use phpbb\event\dispatcher;
-use phpbb\template\template;
-use phpbb\user;
-use Symfony\Component\HttpFoundation\Response;
-
 /**
  * Class main
  * Serving
@@ -33,22 +25,22 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class main
 {
-	/* @var config */
+	/* @var \phpbb\config\config */
 	protected $config;
 
-	/* @var dispatcher */
+	/* @var \phpbb\event\dispatcher */
 	protected $dispatcher;
 
-	/* @var template */
+	/* @var \phpbb\template\template */
 	protected $template;
 
-	/* @var user */
+	/* @var \phpbb\user */
 	protected $user;
 
-	/* @var helper */
+	/* @var \phpbb\controller\helper */
 	protected $helper;
 
-	/* @var newspage */
+	/* @var \nickvergessen\newspage\newspage */
 	protected $newspage;
 
 	/* @var string phpBB root path */
@@ -60,16 +52,16 @@ class main
 	/**
 	 * Constructor
 	 *
-	 * @param config $config
-	 * @param dispatcher $dispatcher
-	 * @param template $template
-	 * @param user $user
-	 * @param helper $helper
-	 * @param newspage $newspage
+	 * @param \phpbb\config\config $config
+	 * @param \phpbb\event\dispatcher $dispatcher
+	 * @param \phpbb\template\template $template
+	 * @param \phpbb\user $user
+	 * @param \phpbb\controller\helper $helper
+	 * @param \nickvergessen\newspage\newspage $newspage
 	 * @param string $root_path
 	 * @param string $php_ext
 	 */
-	public function __construct(config $config, dispatcher $dispatcher, template $template, user $user, helper $helper, newspage $newspage, $root_path, $php_ext)
+	public function __construct(\phpbb\config\config $config, \phpbb\event\dispatcher $dispatcher, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->dispatcher = $dispatcher;
@@ -104,7 +96,7 @@ class main
 	 * @param int	$year			Limit the news to a certain year
 	 * @param int	$month			Limit the news to a certain month
 	 * @param int	$page			Page to display
-	 * @return Response A Symfony Response object
+	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	 */
 	public function newspage($forum_id, $year, $month, $page)
 	{
@@ -136,7 +128,7 @@ class main
 	 * News controller to be accessed with the URL /news/{topic_id} to display a single news
 	 *
 	 * @param int	$topic_id		Topic ID of the news to display
-	 * @return Response A Symfony Response object
+	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	 */
 	public function single_news($topic_id)
 	{
@@ -160,7 +152,7 @@ class main
 	 * Base controller to be accessed with the URL /news/{id}
 	 *
 	 * @param	bool	$display_pagination		Force to hide the pagination
-	 * @return Response A Symfony Response object
+	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
 	 */
 	public function base($display_pagination = true)
 	{

@@ -12,12 +12,7 @@
 
 namespace nickvergessen\newspage\controller;
 
-use phpbb\auth\auth;
-use phpbb\config\config;
-use phpbb\controller\helper;
 use phpbb\exception\http_exception;
-use phpbb\request\request_interface;
-use phpbb\user;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -27,31 +22,31 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class settings
 {
-	/* @var auth */
+	/* @var \phpbb\auth\auth */
 	protected $auth;
 
-	/* @var config */
+	/* @var \phpbb\config\config */
 	protected $config;
 
-	/* @var request_interface */
+	/* @var \phpbb\request\request_interface */
 	protected $request;
 
-	/* @var user */
+	/* @var \phpbb\user */
 	protected $user;
 
-	/* @var helper */
+	/* @var \phpbb\controller\helper */
 	protected $helper;
 
 	/**
 	 * Constructor
 	 *
-	 * @param auth $auth
-	 * @param config $config
-	 * @param request_interface $request
-	 * @param user $user
-	 * @param helper $helper
+	 * @param \phpbb\auth\auth $auth
+	 * @param \phpbb\config\config $config
+	 * @param \phpbb\request\request_interface $request
+	 * @param \phpbb\user $user
+	 * @param \phpbb\controller\helper $helper
 	 */
-	public function __construct(auth $auth, config $config, request_interface $request, user $user, helper $helper)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\controller\helper $helper)
 	{
 		$this->auth = $auth;
 		$this->config = $config;

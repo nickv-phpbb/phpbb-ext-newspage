@@ -12,8 +12,6 @@
 
 namespace nickvergessen\newspage\event;
 
-use nickvergessen\newspage\helper;
-use phpbb\template\template;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,10 +22,10 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class menu_link_listener implements EventSubscriberInterface
 {
-	/* @var helper */
+	/* @var \nickvergessen\newspage\helper */
 	protected $helper;
 
-	/* @var template */
+	/* @var \phpbb\template\template */
 	protected $template;
 
 	/**
@@ -46,10 +44,10 @@ class menu_link_listener implements EventSubscriberInterface
 	/**
 	 * Constructor
 	 *
-	 * @param helper $helper
-	 * @param template $template
+	 * @param \nickvergessen\newspage\helper $helper
+	 * @param \phpbb\template\template $template
 	 */
-	public function __construct(helper $helper, template $template)
+	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\template\template $template)
 	{
 		$this->helper = $helper;
 		$this->template = $template;

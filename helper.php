@@ -12,8 +12,6 @@
 
 namespace nickvergessen\newspage;
 
-use phpbb\config\config;
-
 /**
  * Class helper
  *
@@ -21,25 +19,19 @@ use phpbb\config\config;
  */
 class helper
 {
-	/**
-	 * Controller helper object
-	 * @var \phpbb\controller\helper
-	 */
+	/** @var \phpbb\controller\helper */
 	protected $helper;
 
-	/**
-	 * Config object
-	 * @var config
-	 */
+	/** @var \phpbb\config\config */
 	protected $config;
 
 	/**
 	 * Constructor
 	 *
 	 * @param \phpbb\controller\helper $helper
-	 * @param config $config
+	 * @param \phpbb\config\config $config
 	 */
-	public function __construct(\phpbb\controller\helper $helper, config $config)
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
 		$this->helper = $helper;
 		$this->config = $config;
@@ -51,11 +43,10 @@ class helper
 	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
 	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
 	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
-	* @return		route		Full URL with append_sid performed on it
+	* @return	\nickvergessen\newspage\route		Full URL with append_sid performed on it
 	*/
 	public function generate_route($force_category = false, $force_archive = false, $force_page = false)
 	{
-		/** @var route $route */
 		$route = new route($this->helper, $this->config);
 		if ($this->config['news_cat_show'] && $force_category)
 		{

@@ -12,8 +12,6 @@
 
 namespace nickvergessen\newspage;
 
-use phpbb\config\config;
-
 /**
  * Class route
  *
@@ -21,10 +19,10 @@ use phpbb\config\config;
  */
 class route
 {
-	/** @var (\phpbb\controller\helper */
+	/** @var \phpbb\controller\helper */
 	protected $helper;
 
-	/** @var config */
+	/** @var \phpbb\config\config */
 	protected $config;
 
 	/** @var int */
@@ -39,10 +37,10 @@ class route
 	/**
 	 * Constructor
 	 *
-	 * @param (\phpbb\controller\helper $helper
-	 * @param config $config
+	 * @param \phpbb\controller\helper $helper
+	 * @param \phpbb\config\config $config
 	 */
-	public function __construct(\phpbb\controller\helper $helper, config $config)
+	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
 		$this->helper = $helper;
 		$this->config = $config;
