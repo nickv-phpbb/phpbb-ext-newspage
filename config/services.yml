@@ -3,6 +3,7 @@ services:
         class: nickvergessen\newspage\controller\main
         arguments:
             - @config
+            - @dispatcher
             - @template
             - @user
             - @controller.helper
