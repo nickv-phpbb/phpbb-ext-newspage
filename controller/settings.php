@@ -10,6 +10,14 @@
 
 namespace nickvergessen\newspage\controller;
 
+use phpbb\auth\auth;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\request\request_interface;
+use phpbb\user;
+use Symfony\Component\HttpFoundation\Response;
+use phpbb\exception\http_exception;
+
 /**
  * Class settings
  *
@@ -17,31 +25,31 @@ namespace nickvergessen\newspage\controller;
  */
 class settings
 {
-	/* @var \phpbb\auth\auth */
+	/* @var auth */
 	protected $auth;
 
-	/* @var \phpbb\config\config */
+	/* @var config */
 	protected $config;
 
-	/* @var \phpbb\request\request */
+	/* @var request_interface */
 	protected $request;
 
-	/* @var \phpbb\user */
+	/* @var user */
 	protected $user;
 
-	/* @var \phpbb\controller\helper */
+	/* @var helper */
 	protected $helper;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\auth\auth			$auth		Auth object
-	 * @param \phpbb\config\config		$config		Config object
-	 * @param \phpbb\request\request		$request	Request object
-	 * @param \phpbb\user				$user		User object
-	 * @param \phpbb\controller\helper	$helper		Controller helper object
+	 * @param auth $auth
+	 * @param config $config
+	 * @param request_interface $request
+	 * @param user $user
+	 * @param helper $helper
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\user $user, \phpbb\controller\helper $helper)
+	public function __construct(auth $auth, config $config, request_interface $request, user $user, helper $helper)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
@@ -52,20 +60,23 @@ class settings
 
 	/**
 	 * Newspage controller to display multiple news
-	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
+	 * @return Response A Symfony Response object
+	 * @throws http_exception
 	 */
 	public function manage()
 	{
+		$this->meta_refresh();
+
 		// Redirect non admins back to the newspage
 		if (!$this->auth->acl_get('a_board'))
 		{
-			return $this->finish('NO_AUTH_OPERATION', 403);
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
 		// Is someone trying to fool us?
 		if (!check_form_key('newspage') || !$this->request->is_set_post('submit'))
 		{
-			return $this->finish('FORM_INVALID', 400);
+			throw new http_exception(400, 'FORM_INVALID');
 		}
 
 		$this->config->set('news_char_limit',	max(100, $this->request->variable('news_char_limit', 0)));
@@ -79,27 +90,16 @@ class settings
 		$this->config->set('news_cat_show',		$this->request->variable('news_cat_show', false));
 		$this->config->set('news_archive_show',	$this->request->variable('news_archive_show', false));
 
-		return $this->finish('NEWS_SAVED', 200, 3);
+		return $this->helper->message($this->user->lang('NEWS_SAVED'));
 	}
 
 	/**
-	 * @param string $message
-	 * @param int $status_code
-	 * @param int $redirect_time
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function finish($message, $status_code, $redirect_time = 10)
-	{
-		$this->meta_refresh($redirect_time);
-		return $this->helper->error($this->user->lang($message), $status_code);
-	}
-
-	/**
-	 * @param int $redirect_time
+	 * Only put into a method for better mockability
+	 *
 	 * @return null
 	 */
-	public function meta_refresh($redirect_time)
+	public function meta_refresh()
 	{
-		meta_refresh($redirect_time, $this->helper->route('newspage_controller'));
+		meta_refresh(10, $this->helper->route('newspage_controller'));
 	}
 }

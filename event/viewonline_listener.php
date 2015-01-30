@@ -9,6 +9,8 @@
 
 namespace nickvergessen\newspage\event;
 
+use nickvergessen\newspage\helper;
+use phpbb\user;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -19,6 +21,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class viewonline_listener implements EventSubscriberInterface
 {
+	/**
+	 * Register to the events
+	 *
+	 * @return array
+	 */
 	static public function getSubscribedEvents()
 	{
 		return array(
@@ -26,29 +33,33 @@ class viewonline_listener implements EventSubscriberInterface
 		);
 	}
 
-	/* @var \nickvergessen\newspage\helper */
+	/* @var helper */
 	protected $helper;
 
-	/* @var \phpbb\user */
+	/* @var user */
 	protected $user;
 
 	/* @var string phpEx */
 	protected $php_ext;
 
 	/**
-	* Constructor
-	*
-	* @param \nickvergessen\newspage\helper	$helper		Newspage helper object
-	* @param \phpbb\user				$user		User object
-	* @param string						$php_ext	phpEx
-	*/
-	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\user $user, $php_ext)
+	 * Constructor
+	 *
+	 * @param helper $helper
+	 * @param user $user
+	 * @param string $php_ext
+	 */
+	public function __construct(helper $helper, user $user, $php_ext)
 	{
 		$this->helper = $helper;
 		$this->user = $user;
 		$this->php_ext = $php_ext;
 	}
 
+	/**
+	 * @param array $event
+	 * @return null
+	 */
 	public function add_newspage_viewonline($event)
 	{
 		$route = $this->helper->generate_route();
@@ -82,6 +93,10 @@ class viewonline_listener implements EventSubscriberInterface
 		}
 	}
 
+	/**
+	 * @param string $route
+	 * @return int|bool
+	 */
 	protected function get_category_from_route($route)
 	{
 		$route_ary = explode('/', $route);
@@ -94,6 +109,10 @@ class viewonline_listener implements EventSubscriberInterface
 		return false;
 	}
 
+	/**
+	 * @param string $route
+	 * @return string|bool
+	 */
 	protected function get_archive_from_route($route)
 	{
 		$route_ary = explode('/', $route);

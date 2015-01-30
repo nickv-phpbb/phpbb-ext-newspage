@@ -9,13 +9,18 @@
 
 namespace nickvergessen\newspage\tests\mock;
 
+use nickvergessen\newspage\controller\settings;
+
 /**
  * Settings Controller Mock
  * @package phpBB3
  */
-class settings_controller extends \nickvergessen\newspage\controller\settings
+class settings_controller extends settings
 {
-	public function meta_refresh($redirect_time)
+	/**
+	 * Need to overwrite this in order not to output something
+	 */
+	public function meta_refresh()
 	{
 	}
 }

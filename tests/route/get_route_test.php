@@ -9,8 +9,20 @@
 
 namespace nickvergessen\newspage\tests\route;
 
+use nickvergessen\newspage\route;
+use phpbb\config\config;
+
+/**
+ * Class get_route_test
+ * Testing \nickvergessen\newspage\route::get_route()
+ *
+ * @package nickvergessen\newspage\tests\route
+ */
 class get_route_test extends \phpbb_test_case
 {
+	/**
+	 * @return array
+	 */
 	public function get_route_page_data()
 	{
 		return array(
@@ -27,6 +39,10 @@ class get_route_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_route_page_data
+	 *
+	 * @param int|bool $set_page
+	 * @param int|bool $force_page
+	 * @param string $expected
 	 */
 	public function test_get_route_page($set_page, $force_page, $expected)
 	{
@@ -36,6 +52,9 @@ class get_route_test extends \phpbb_test_case
 		), false, false, $set_page, 3, '2014/14', $force_page, $expected);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_route_category_data()
 	{
 		return array(
@@ -56,6 +75,11 @@ class get_route_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_route_category_data
+	 *
+	 * @param bool $config
+	 * @param int|bool $set_category
+	 * @param int|bool $force_category
+	 * @param string $expected
 	 */
 	public function test_get_route_category($config, $set_category, $force_category, $expected)
 	{
@@ -65,6 +89,9 @@ class get_route_test extends \phpbb_test_case
 		), $set_category, false, false, $force_category, false, 2, $expected);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_route_archive_data()
 	{
 		return array(
@@ -85,6 +112,11 @@ class get_route_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_route_archive_data
+	 *
+	 * @param bool $config
+	 * @param mixed $set_archive
+	 * @param mixed $force_archive
+	 * @param string $expected
 	 */
 	public function test_get_route_archive($config, $set_archive, $force_archive, $expected)
 	{
@@ -94,27 +126,48 @@ class get_route_test extends \phpbb_test_case
 		), false, $set_archive, false, false, $force_archive, 2, $expected);
 	}
 
+	/**
+	 * @param array $config
+	 * @param int|bool $set_category
+	 * @param mixed $set_archive
+	 * @param int|bool $set_page
+	 * @param int|bool $force_category
+	 * @param mixed $force_archive
+	 * @param int|bool $force_page
+	 * @param string $expected
+	 */
 	public function get_route($config, $set_category, $set_archive, $set_page, $force_category, $force_archive, $force_page, $expected)
 	{
-		$config = new \phpbb\config\config($config);
-		$route = new \nickvergessen\newspage\route(
-			new \nickvergessen\newspage\tests\mock\controller_helper(),
+		$config = new config($config);
+
+		$controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+			->disableOriginalConstructor()
+			->getMock();
+		$controller_helper->expects($this->any())
+			->method('route')
+			->willReturnCallback(function ($route, array $params = array()) {
+				return $route . '#' . serialize($params);
+			});
+
+		/** @var \phpbb\controller\helper $controller_helper */
+		$route = new route(
+			$controller_helper,
 			$config
 		);
 
 		if ($set_category)
 		{
-			$route = $route->set_category($set_category);
+			$route->set_category($set_category);
 		}
 		if ($set_archive)
 		{
 			list($year, $month) = explode('/', $set_archive);
-			$route = $route->set_archive_month($month);
-			$route = $route->set_archive_year($year);
+			$route->set_archive_month($month)
+				->set_archive_year($year);
 		}
 		if ($set_page)
 		{
-			$route = $route->set_page($set_page);
+			$route->set_page($set_page);
 		}
 
 		$this->assertEquals($expected, $route->get_route($force_category, $force_archive, $force_page));

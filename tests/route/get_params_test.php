@@ -8,9 +8,20 @@
  */
 
 namespace nickvergessen\newspage\tests\route;
+use phpbb\config\config;
+use nickvergessen\newspage\route;
 
+/**
+ * Class get_params_test
+ * Testing \nickvergessen\newspage\route::get_params()
+ *
+ * @package nickvergessen\newspage\tests\route
+ */
 class get_params_test extends \phpbb_test_case
 {
+	/**
+	 * @return array
+	 */
 	public function get_params_page_data()
 	{
 		return array(
@@ -27,8 +38,12 @@ class get_params_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_params_page_data
+	 *
+	 * @param int|bool $set_page
+	 * @param int|bool $force_page
+	 * @param array $expected
 	 */
-	public function test_get_params_page($set_page, $force_page, $expected)
+	public function test_get_params_page($set_page, $force_page, array $expected)
 	{
 		$this->get_params(array(
 			'news_cat_show' => 1,
@@ -36,6 +51,9 @@ class get_params_test extends \phpbb_test_case
 		), false, false, $set_page, 3, '2014/04', $force_page, $expected);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_params_category_data()
 	{
 		return array(
@@ -56,8 +74,13 @@ class get_params_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_params_category_data
+	 *
+	 * @param bool $config
+	 * @param int|bool $set_category
+	 * @param int|bool $force_category
+	 * @param array $expected
 	 */
-	public function test_get_params_category($config, $set_category, $force_category, $expected)
+	public function test_get_params_category($config, $set_category, $force_category, array $expected)
 	{
 		$this->get_params(array(
 			'news_cat_show' => $config,
@@ -65,6 +88,9 @@ class get_params_test extends \phpbb_test_case
 		), $set_category, false, false, $force_category, false, 2, $expected);
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_params_archive_data()
 	{
 		return array(
@@ -92,8 +118,13 @@ class get_params_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider get_params_archive_data
+	 *
+	 * @param bool $config
+	 * @param mixed $set_archive
+	 * @param mixed $force_archive
+	 * @param array $expected
 	 */
-	public function test_get_params_archive($config, $set_archive, $force_archive, $expected)
+	public function test_get_params_archive($config, $set_archive, $force_archive, array $expected)
 	{
 		$this->get_params(array(
 			'news_cat_show' => 1,
@@ -101,27 +132,48 @@ class get_params_test extends \phpbb_test_case
 		), false, $set_archive, false, false, $force_archive, 2, $expected);
 	}
 
-	public function get_params($config, $set_category, $set_archive, $set_page, $force_category, $force_archive, $force_page, $expected)
+	/**
+	 * @param array $config
+	 * @param int|bool $set_category
+	 * @param mixed $set_archive
+	 * @param int|bool $set_page
+	 * @param int|bool $force_category
+	 * @param mixed $force_archive
+	 * @param int|bool $force_page
+	 * @param array $expected
+	 */
+	protected function get_params(array $config, $set_category, $set_archive, $set_page, $force_category, $force_archive, $force_page, $expected)
 	{
-		$config = new \phpbb\config\config($config);
-		$route = new \nickvergessen\newspage\route(
-			new \nickvergessen\newspage\tests\mock\controller_helper(),
+		$config = new config($config);
+
+		$controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+			->disableOriginalConstructor()
+			->getMock();
+		$controller_helper->expects($this->any())
+			->method('route')
+			->willReturnCallback(function ($route, array $params = array()) {
+				return $route . '#' . serialize($params);
+			});
+
+		/** @var \phpbb\controller\helper $controller_helper */
+		$route = new route(
+			$controller_helper,
 			$config
 		);
 
 		if ($set_category)
 		{
-			$route = $route->set_category($set_category);
+			$route->set_category($set_category);
 		}
 		if ($set_archive)
 		{
 			list($year, $month) = explode('/', $set_archive);
-			$route = $route->set_archive_month($month);
-			$route = $route->set_archive_year($year);
+			$route->set_archive_month($month)
+				->set_archive_year($year);
 		}
 		if ($set_page)
 		{
-			$route = $route->set_page($set_page);
+			$route->set_page($set_page);
 		}
 
 		$this->assertEquals($expected, $route->get_params($force_category, $force_archive, $force_page));

@@ -10,24 +10,43 @@
 
 namespace nickvergessen\newspage\controller;
 
+use nickvergessen\newspage\newspage;
+use phpbb\config\config;
+use phpbb\controller\helper;
+use phpbb\event\dispatcher;
+use phpbb\template\template;
+use phpbb\user;
+use Symfony\Component\HttpFoundation\Response;
+
+/**
+ * Class main
+ * Serving
+ *	/news							[mandatory]
+ *		/category/{forum_id}		[optional]
+ *		/archive/{year}/{month}		[optional]
+ *		/page/{page}				[optional]
+ *	/news/{topic_id}				[optional]
+ *
+ * @package nickvergessen\newspage\controller
+ */
 class main
 {
-	/* @var \phpbb\config\config */
+	/* @var config */
 	protected $config;
 
-	/* @var \phpbb\event\dispatcher */
+	/* @var dispatcher */
 	protected $dispatcher;
 
-	/* @var \phpbb\template\template */
+	/* @var template */
 	protected $template;
 
-	/* @var \phpbb\user */
+	/* @var user */
 	protected $user;
 
-	/* @var \phpbb\controller\helper */
+	/* @var helper */
 	protected $helper;
 
-	/* @var \nickvergessen\newspage\newspage */
+	/* @var newspage */
 	protected $newspage;
 
 	/* @var string phpBB root path */
@@ -37,18 +56,18 @@ class main
 	protected $php_ext;
 
 	/**
-	* Constructor
-	*
-	* @param \phpbb\config\config $config Config object
-	* @param \phpbb\event\dispatcher $dispatcher Config object
-	* @param \phpbb\template\template	$template	Template object
-	* @param \phpbb\user	$user		User object
-	* @param \phpbb\controller\helper		$helper				Controller helper object
-	* @param \nickvergessen\newspage\newspage		$newspage	Newspage object
-	* @param string			$root_path	phpBB root path
-	* @param string			$php_ext	phpEx
-	*/
-	public function __construct(\phpbb\config\config $config, \phpbb\event\dispatcher $dispatcher, \phpbb\template\template $template, \phpbb\user $user, \phpbb\controller\helper $helper, \nickvergessen\newspage\newspage $newspage, $root_path, $php_ext)
+	 * Constructor
+	 *
+	 * @param config $config
+	 * @param dispatcher $dispatcher
+	 * @param template $template
+	 * @param user $user
+	 * @param helper $helper
+	 * @param newspage $newspage
+	 * @param string $root_path
+	 * @param string $php_ext
+	 */
+	public function __construct(config $config, dispatcher $dispatcher, template $template, user $user, helper $helper, newspage $newspage, $root_path, $php_ext)
 	{
 		$this->config = $config;
 		$this->dispatcher = $dispatcher;
@@ -70,21 +89,21 @@ class main
 	}
 
 	/**
-	* Newspage controller to display multiple news
-	*
-	* Route must be a sequence of the following substrings,
-	* the order is mandatory:
-	*	/news							[mandatory]
-	*		/category/{forum_id}		[optional]
-	*		/archive/{year}/{month}		[optional]
-	*		/page/{page}				[optional]
-	*
-	* @param int	$forum_id		Forum ID of the category to display
-	* @param int	$year			Limit the news to a certain year
-	* @param int	$month			Limit the news to a certain month
-	* @param int	$page			Page to display
-	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
-	*/
+	 * Newspage controller to display multiple news
+	 *
+	 * Route must be a sequence of the following substrings,
+	 * the order is mandatory:
+	 *	/news							[mandatory]
+	 *		/category/{forum_id}		[optional]
+	 *		/archive/{year}/{month}		[optional]
+	 *		/page/{page}				[optional]
+	 *
+	 * @param int	$forum_id		Forum ID of the category to display
+	 * @param int	$year			Limit the news to a certain year
+	 * @param int	$month			Limit the news to a certain month
+	 * @param int	$page			Page to display
+	 * @return Response A Symfony Response object
+	 */
 	public function newspage($forum_id, $year, $month, $page)
 	{
 		/**
@@ -112,11 +131,11 @@ class main
 	}
 
 	/**
-	* News controller to be accessed with the URL /news/{topic_id} to display a single news
-	*
-	* @param int	$topic_id		Topic ID of the news to display
-	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
-	*/
+	 * News controller to be accessed with the URL /news/{topic_id} to display a single news
+	 *
+	 * @param int	$topic_id		Topic ID of the news to display
+	 * @return Response A Symfony Response object
+	 */
 	public function single_news($topic_id)
 	{
 		/**
@@ -136,11 +155,11 @@ class main
 	}
 
 	/**
-	* Base controller to be accessed with the URL /news/{id}
-	*
-	* @param	bool	$display_pagination		Force to hide the pagination
-	* @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
-	*/
+	 * Base controller to be accessed with the URL /news/{id}
+	 *
+	 * @param	bool	$display_pagination		Force to hide the pagination
+	 * @return Response A Symfony Response object
+	 */
 	public function base($display_pagination = true)
 	{
 		if ($this->config['news_archive_show'])
@@ -167,6 +186,10 @@ class main
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
 	}
 
+	/**
+	 * @param bool $assign_user_buttons
+	 * @param bool $assign_post_buttons
+	 */
 	protected function assign_images($assign_user_buttons, $assign_post_buttons)
 	{
 		$this->template->assign_vars(array(

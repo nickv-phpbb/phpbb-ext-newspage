@@ -10,26 +10,66 @@
 
 namespace nickvergessen\newspage;
 
+use Nickvergessen\TrimMessage\TrimMessage;
+
+/**
+ * Class newspage
+ *
+ * @package nickvergessen\newspage
+ */
 class newspage
 {
+	/** @var \phpbb\auth\auth */
+	protected $auth;
+	/** @var \phpbb\cache\service */
+	protected $cache;
+	/** @var \phpbb\config\config */
+	protected $config;
+	/** @var \phpbb\db\driver\driver_interface */
+	protected $db;
+	/** @var \phpbb\request\request_interface */
+	protected $request;
+	/** @var \phpbb\template\template */
+	protected $template;
+	/** @var \phpbb\user */
+	protected $user;
+	/** @var \phpbb\content_visibility */
+	protected $content_visibility;
+	/** @var \phpbb\controller\helper */
+	protected $helper;
+	/** @var helper */
+	protected $news_helper;
+	/** @var \phpbb\pagination */
+	protected $pagination;
+
+	/** @var string */
+	protected $root_path;
+	/** @var string */
+	protected $php_ext;
+
+	/** @var int */
 	protected $num_pagination_items = 0;
-
+	/** @var string */
 	protected $page_title;
-
+	/** @var int */
 	protected $start;
-
+	/** @var int */
 	protected $news;
-
+	/** @var array */
 	protected $archive;
-
+	/** @var int */
 	protected $category;
 
 	const ARCHIVE_SHOW = 1;
 	const ARCHIVE_PER_YEAR = 2;
 
+	/** @var int[] */
 	protected $post_ids;
+	/** @var int[] */
 	protected $topic_ids;
+	/** @var int[] */
 	protected $forums;
+	/** @var int[] */
 	protected $poster_ids;
 
 	/**
@@ -39,17 +79,17 @@ class newspage
 	* @param \phpbb\cache\service	$cache		Cache object
 	* @param \phpbb\config\config	$config		Config object
 	* @param \phpbb\db\driver\driver_interface	$db		Database object
-	* @param \phpbb\request\request		$request	Request object
+	* @param \phpbb\request\request_interface		$request	Request object
 	* @param \phpbb\template\template	$template	Template object
 	* @param \phpbb\user		$user		User object
 	* @param \phpbb\content_visibility		$content_visibility	Content visibility object
 	* @param \phpbb\controller\helper		$helper				Controller helper object
-	* @param \nickvergessen\newspage\helper		$news_helper				Controller helper object
+	* @param helper $news_helper				Controller helper object
 	* @param \phpbb\pagination	$pagination	Pagination object
 	* @param string			$root_path	phpBB root path
 	* @param string			$php_ext	phpEx
 	*/
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, \nickvergessen\newspage\helper $news_helper, \phpbb\pagination $pagination, $root_path, $php_ext)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\cache\service $cache, \phpbb\config\config $config, \phpbb\db\driver\driver_interface $db, \phpbb\request\request_interface $request, \phpbb\template\template $template, \phpbb\user $user, \phpbb\content_visibility $content_visibility, \phpbb\controller\helper $helper, helper $news_helper, \phpbb\pagination $pagination, $root_path, $php_ext)
 	{
 		$this->auth = $auth;
 		$this->cache = $cache;
@@ -76,11 +116,18 @@ class newspage
 		$this->page_title = $this->user->lang['NEWS'];
 	}
 
+	/**
+	 * @return string
+	 */
 	public function get_page_title()
 	{
 		return $this->page_title;
 	}
 
+	/**
+	 * @param int $start
+	 * @return $this
+	 */
 	public function set_start($start)
 	{
 		$this->start = (int) $start;
@@ -88,6 +135,10 @@ class newspage
 		return $this;
 	}
 
+	/**
+	 * @param int $category
+	 * @return $this
+	 */
 	public function set_category($category)
 	{
 		$this->category = (int) $category;
@@ -95,6 +146,10 @@ class newspage
 		return $this;
 	}
 
+	/**
+	 * @param int $news
+	 * @return $this
+	 */
 	public function set_news($news)
 	{
 		$this->news = (int) $news;
@@ -102,6 +157,11 @@ class newspage
 		return $this;
 	}
 
+	/**
+	 * @param int $year
+	 * @param int $month
+	 * @return $this
+	 */
 	public function set_archive($year, $month)
 	{
 		$this->archive = array(
@@ -112,11 +172,17 @@ class newspage
 		return $this;
 	}
 
+	/**
+	 * @return bool
+	 */
 	public function is_archive()
 	{
 		return isset($this->archive['y']) && isset($this->archive['m']) && $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
 	}
 
+	/**
+	 * Get the news items we want to display
+	 */
 	public function get_news_ids()
 	{
 		/**
@@ -209,7 +275,7 @@ class newspage
 			}
 			else if (class_exists('\Nickvergessen\TrimMessage\TrimMessage'))
 			{
-				$trim = new \Nickvergessen\TrimMessage\TrimMessage($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
+				$trim = new TrimMessage($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
 				$row['post_text'] = $trim->message();
 				unset($trim);
 			}
@@ -275,7 +341,11 @@ class newspage
 			$flags = ($row['user_sig_bbcode_bitfield'] && $row['enable_bbcode'] ? OPTION_FLAG_BBCODE : 0) | OPTION_FLAG_SMILIES;
 			$row['user_sig'] = generate_text_for_display($row['user_sig'], $row['user_sig_bbcode_uid'], $row['user_sig_bbcode_bitfield'], $flags);
 
-			get_user_rank($row['user_rank'], $row['user_posts'], $row['rank_title'], $row['rank_image'], $row['rank_image_src']);
+			$rank_data = phpbb_get_user_rank($row, $row['user_posts']);
+			$row['rank_title'] = $rank_data['title'];
+			$row['rank_image'] = $rank_data['img'];
+			$row['rank_image_src'] = $rank_data['img_src'];
+
 			$row['user_jabber'] = ($row['user_jabber'] && $this->auth->acl_get('u_sendim')) ? append_sid("{$this->root_path}memberlist.{$this->php_ext}", "mode=contact&amp;action=jabber&amp;u=$poster_id") : '';
 
 			// Can this user receive a Private Message?
@@ -431,6 +501,10 @@ class newspage
 		return;
 	}
 
+	/**
+	 * @param array $posters
+	 * @return array
+	 */
 	public function get_online_posters(array $posters)
 	{
 		$users = array();
@@ -450,6 +524,10 @@ class newspage
 		return $users;
 	}
 
+	/**
+	 * @param array $post_ids
+	 * @return array
+	 */
 	public function get_attachments(array $post_ids)
 	{
 		$attachments = array();
@@ -473,6 +551,9 @@ class newspage
 		return $attachments;
 	}
 
+	/**
+	 * @return array
+	 */
 	public function get_newstopic_sql()
 	{
 		$sql_array = array(
@@ -562,6 +643,7 @@ class newspage
 			ORDER BY left_id ASC';
 		$result = $this->db->sql_query($sql);
 
+		/** @var route $route */
 		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		while ($row = $this->db->sql_fetchrow($result))
 		{
@@ -645,6 +727,7 @@ class newspage
 					$this->num_pagination_items += $archive['count'];
 				}
 
+				/** @var route $route */
 				$route = $this->news_helper->generate_route($this->category, $this->archive);
 				$this->template->assign_block_vars('archive_block.archive_row', array(
 					'U_NEWS_MONTH'		=> $route->get_url(($active_archive) ? '' : empty($this->config['news_cat_show']), $archive['url']),
@@ -704,6 +787,7 @@ class newspage
 			$pagination_news = $this->num_pagination_items;
 		}
 
+		/** @var route $route */
 		$route = $this->news_helper->generate_route($this->category, $this->archive);
 		$this->pagination->generate_template_pagination(
 			array(

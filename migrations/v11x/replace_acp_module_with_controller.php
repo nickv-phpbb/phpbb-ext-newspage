@@ -10,13 +10,24 @@
 
 namespace nickvergessen\newspage\migrations\v11x;
 
-class replace_acp_module_with_controller extends \phpbb\db\migration\migration
+use phpbb\db\migration\migration;
+
+/**
+ * @package nickvergessen\newspage\migrations\v11x
+ */
+class replace_acp_module_with_controller extends migration
 {
+	/**
+	 * {@inheritdoc}
+	 */
 	static public function depends_on()
 	{
 		return array('\nickvergessen\newspage\migrations\v11x\release_1_1_0');
 	}
 
+	/**
+	 * {@inheritdoc}
+	 */
 	public function update_data()
 	{
 		return array(

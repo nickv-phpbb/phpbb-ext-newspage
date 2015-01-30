@@ -10,12 +10,19 @@
 
 namespace nickvergessen\newspage;
 
+use phpbb\config\config;
+
+/**
+ * Class route
+ *
+ * @package nickvergessen\newspage
+ */
 class route
 {
-	/** @var \phpbb\controller\helper */
+	/** @var (\phpbb\controller\helper */
 	protected $helper;
 
-	/** @var \phpbb\config\config */
+	/** @var config */
 	protected $config;
 
 	/** @var int */
@@ -30,10 +37,10 @@ class route
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\controller\helper		$helper		Controller helper object
-	 * @param \phpbb\config\config			$config		Config object
+	 * @param (\phpbb\controller\helper $helper
+	 * @param config $config
 	 */
-	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
+	public function __construct(\phpbb\controller\helper $helper, config $config)
 	{
 		$this->helper = $helper;
 		$this->config = $config;
@@ -41,7 +48,7 @@ class route
 
 	/**
 	 * @param mixed $archive_month
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_archive_month($archive_month)
 	{
@@ -54,7 +61,7 @@ class route
 
 	/**
 	 * @param mixed $archive_year
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_archive_year($archive_year)
 	{
@@ -67,7 +74,7 @@ class route
 
 	/**
 	 * @param mixed $category
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_category($category)
 	{
@@ -80,7 +87,7 @@ class route
 
 	/**
 	 * @param mixed $page
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_page($page)
 	{
