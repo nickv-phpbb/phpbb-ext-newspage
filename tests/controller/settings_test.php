@@ -179,29 +179,30 @@ class settings_test extends \phpbb_test_case
 			->getMock();
 		$controller_helper->expects($this->any())
 			->method('message')
-			->willReturnCallback(function ($message, $title = false, $code = 200) {
-				// php 5.4: $this->assertFalse($title);
-				return new Response($message . (string) $title, $code);
-			});
+			->willReturnCallback(function ($message, $parameters = array(), $title = 'INFORMATION', $code = 200) {
+				// TODO php 5.4: $this->assertInternalType('array', $parameters);
+				// TODO php 5.4: $this->assertEmtpy($parameters);
+				if (!is_array($parameters) || !empty($parameters))
+				{
+					throw new \InvalidArgumentException('Expected $parameters to be an empty array');
+				}
 
-		$user = $this->getMockBuilder('\phpbb\user')
-			->disableOriginalConstructor()
-			->getMock();
-		$user->expects($this->any())
-			->method('lang')
-			->willReturnCallback(function () {
-				return implode(' ', func_get_args());
+				// TODO php 5.4: $this->assertEquals('INFORMATION', $title);
+				if ($title !== 'INFORMATION')
+				{
+					throw new \InvalidArgumentException('Expected $title to be \'INFORMATION\'');
+				}
+
+				return new Response($message, $code);
 			});
 
 		/** @var \phpbb\auth\auth $auth */
 		/** @var \phpbb\request\request $request */
 		/** @var \phpbb\controller\helper $controller_helper */
-		/** @var \phpbb\user $user */
 		return new settings_controller(
 			$auth,
 			new config(array()),
 			$request,
-			$user,
 			$controller_helper
 		);
 	}

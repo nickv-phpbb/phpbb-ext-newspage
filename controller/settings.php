@@ -31,9 +31,6 @@ class settings
 	/* @var \phpbb\request\request_interface */
 	protected $request;
 
-	/* @var \phpbb\user */
-	protected $user;
-
 	/* @var \phpbb\controller\helper */
 	protected $helper;
 
@@ -43,15 +40,13 @@ class settings
 	 * @param \phpbb\auth\auth $auth
 	 * @param \phpbb\config\config $config
 	 * @param \phpbb\request\request_interface $request
-	 * @param \phpbb\user $user
 	 * @param \phpbb\controller\helper $helper
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request_interface $request, \phpbb\user $user, \phpbb\controller\helper $helper)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request_interface $request, \phpbb\controller\helper $helper)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
 		$this->request = $request;
-		$this->user = $user;
 		$this->helper = $helper;
 	}
 
@@ -87,7 +82,7 @@ class settings
 		$this->config->set('news_cat_show',		$this->request->variable('news_cat_show', false));
 		$this->config->set('news_archive_show',	$this->request->variable('news_archive_show', false));
 
-		return $this->helper->message($this->user->lang('NEWS_SAVED'));
+		return $this->helper->message('NEWS_SAVED');
 	}
 
 	/**
