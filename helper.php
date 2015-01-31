@@ -1,34 +1,35 @@
 <?php
 
 /**
-*
-* @package NV Newspage Extension
-* @copyright (c) 2014 nickvergessen
-* @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
-*
-*/
+ * This file is part of the NV Newspage Extension package.
+ *
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * For full copyright and license information, please see
+ * the license.txt file.
+ */
 
 namespace nickvergessen\newspage;
 
+/**
+ * Class helper
+ *
+ * @package nickvergessen\newspage
+ */
 class helper
 {
-	/**
-	 * Controller helper object
-	 * @var \phpbb\controller\helper
-	 */
+	/** @var \phpbb\controller\helper */
 	protected $helper;
 
-	/**
-	 * Config object
-	 * @var \phpbb\config\config
-	 */
+	/** @var \phpbb\config\config */
 	protected $config;
 
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\controller\helper		$helper		Controller helper object
-	 * @param \phpbb\config\config			$config		Config object
+	 * @param \phpbb\controller\helper $helper
+	 * @param \phpbb\config\config $config
 	 */
 	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
@@ -42,7 +43,7 @@ class helper
 	* @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
 	* @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
 	* @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
-	* @return		\nickvergessen\newspage\route		Full URL with append_sid performed on it
+	* @return	\nickvergessen\newspage\route		Full URL with append_sid performed on it
 	*/
 	public function generate_route($force_category = false, $force_archive = false, $force_page = false)
 	{

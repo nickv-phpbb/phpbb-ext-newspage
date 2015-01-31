@@ -1,32 +1,70 @@
 <?php
+
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2014 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage\tests\event;
 
+use nickvergessen\newspage\event\viewonline_listener;
+use nickvergessen\newspage\helper;
+use phpbb\config\config;
+use phpbb\event\data;
+use phpbb\user;
+use Symfony\Component\EventDispatcher\EventDispatcher;
+
+/**
+ * Class viewonline_test
+ * Testing \nickvergessen\newspage\event\viewonline_listener
+ *
+ * @package nickvergessen\newspage\tests\event
+ */
 class viewonline_test extends \phpbb_test_case
 {
-	/** @var \phpbb\user */
+	/** @var user */
 	protected $user;
 
-	/** @var \nickvergessen\newspage\event\menu_link_listener */
+	/** @var viewonline_listener */
 	protected $listener;
 
+	/**
+	 * @return null
+	 */
 	public function setup_listener()
 	{
-		$this->user = new \nickvergessen\newspage\tests\mock\user();
-		$this->user->timezone = new \DateTimeZone('UTC');
-		$this->user->lang['datetime'] = array();
+		$this->user = $this->getMockBuilder('\phpbb\user')
+			->disableOriginalConstructor()
+			->getMock();
+		$this->user->expects($this->any())
+			->method('lang')
+			->willReturnCallback(function () {
+				return implode(' ', func_get_args());
+			});
+		$this->user->expects($this->any())
+			->method('format_date')
+			->with(null, 'F Y')
+			->willReturn('April 2014');
 
-		$this->listener = new \nickvergessen\newspage\event\viewonline_listener(
-			new \nickvergessen\newspage\helper(
-				new \nickvergessen\newspage\tests\mock\controller_helper(),
-				new \phpbb\config\config(array(
+		$controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+			->disableOriginalConstructor()
+			->getMock();
+		$controller_helper->expects($this->any())
+			->method('route')
+			->willReturnCallback(function ($route, array $params = array()) {
+				return $route . '#' . serialize($params);
+			});
+
+		/** @var \phpbb\controller\helper $controller_helper */
+		$this->listener = new viewonline_listener(
+			new helper(
+				$controller_helper,
+				new config(array(
 					'news_cat_show' => 1,
 					'news_archive_show' => 1,
 				))
@@ -36,19 +74,28 @@ class viewonline_test extends \phpbb_test_case
 		);
 	}
 
+	/**
+	 * @return null
+	 */
 	public function test_construct()
 	{
 		$this->setup_listener();
 		$this->assertInstanceOf('\Symfony\Component\EventDispatcher\EventSubscriberInterface', $this->listener);
 	}
 
+	/**
+	 * @return null
+	 */
 	public function test_getSubscribedEvents()
 	{
 		$this->assertEquals(array(
 			'core.viewonline_overwrite_location',
-		), array_keys(\nickvergessen\newspage\event\viewonline_listener::getSubscribedEvents()));
+		), array_keys(viewonline_listener::getSubscribedEvents()));
 	}
 
+	/**
+	 * @return array
+	 */
 	public function add_newspage_viewonline_data()
 	{
 		global $phpEx;
@@ -130,16 +177,24 @@ class viewonline_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider add_newspage_viewonline_data
+	 *
+	 * @param array $on_page
+	 * @param array $row
+	 * @param array $forum_data
+	 * @param string $location_url
+	 * @param string $location
+	 * @param string $expected_location_url
+	 * @param string $expected_location
 	 */
-	public function test_add_newspage_viewonline($on_page, $row, $forum_data, $location_url, $location, $expected_location_url, $expected_location)
+	public function test_add_newspage_viewonline(array $on_page, array $row, array $forum_data, $location_url, $location, $expected_location_url, $expected_location)
 	{
 		$this->setup_listener();
 
-		$dispatcher = new \Symfony\Component\EventDispatcher\EventDispatcher();
+		$dispatcher = new EventDispatcher();
 		$dispatcher->addListener('core.viewonline_overwrite_location', array($this->listener, 'add_newspage_viewonline'));
 
 		$event_data = array('on_page', 'row', 'location_url', 'location', 'forum_data');
-		$event = new \phpbb\event\data(compact($event_data));
+		$event = new data(compact($event_data));
 		$dispatcher->dispatch('core.viewonline_overwrite_location', $event);
 
 		$event_data_after = $event->get_data_filtered($event_data);

@@ -1,14 +1,19 @@
 <?php
 
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2014 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage\controller;
+
+use phpbb\exception\http_exception;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class settings
@@ -23,11 +28,8 @@ class settings
 	/* @var \phpbb\config\config */
 	protected $config;
 
-	/* @var \phpbb\request\request */
+	/* @var \phpbb\request\request_interface */
 	protected $request;
-
-	/* @var \phpbb\user */
-	protected $user;
 
 	/* @var \phpbb\controller\helper */
 	protected $helper;
@@ -35,37 +37,38 @@ class settings
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\auth\auth			$auth		Auth object
-	 * @param \phpbb\config\config		$config		Config object
-	 * @param \phpbb\request\request		$request	Request object
-	 * @param \phpbb\user				$user		User object
-	 * @param \phpbb\controller\helper	$helper		Controller helper object
+	 * @param \phpbb\auth\auth $auth
+	 * @param \phpbb\config\config $config
+	 * @param \phpbb\request\request_interface $request
+	 * @param \phpbb\controller\helper $helper
 	 */
-	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request $request, \phpbb\user $user, \phpbb\controller\helper $helper)
+	public function __construct(\phpbb\auth\auth $auth, \phpbb\config\config $config, \phpbb\request\request_interface $request, \phpbb\controller\helper $helper)
 	{
 		$this->auth = $auth;
 		$this->config = $config;
 		$this->request = $request;
-		$this->user = $user;
 		$this->helper = $helper;
 	}
 
 	/**
 	 * Newspage controller to display multiple news
-	 * @return \Symfony\Component\HttpFoundation\Response A Symfony Response object
+	 * @return Response A Symfony Response object
+	 * @throws http_exception
 	 */
 	public function manage()
 	{
+		$this->meta_refresh();
+
 		// Redirect non admins back to the newspage
 		if (!$this->auth->acl_get('a_board'))
 		{
-			return $this->finish('NO_AUTH_OPERATION', 403);
+			throw new http_exception(403, 'NO_AUTH_OPERATION');
 		}
 
 		// Is someone trying to fool us?
 		if (!check_form_key('newspage') || !$this->request->is_set_post('submit'))
 		{
-			return $this->finish('FORM_INVALID', 400);
+			throw new http_exception(400, 'FORM_INVALID');
 		}
 
 		$this->config->set('news_char_limit',	max(100, $this->request->variable('news_char_limit', 0)));
@@ -79,27 +82,16 @@ class settings
 		$this->config->set('news_cat_show',		$this->request->variable('news_cat_show', false));
 		$this->config->set('news_archive_show',	$this->request->variable('news_archive_show', false));
 
-		return $this->finish('NEWS_SAVED', 200, 3);
+		return $this->helper->message('NEWS_SAVED');
 	}
 
 	/**
-	 * @param string $message
-	 * @param int $status_code
-	 * @param int $redirect_time
-	 * @return \Symfony\Component\HttpFoundation\Response
-	 */
-	public function finish($message, $status_code, $redirect_time = 10)
-	{
-		$this->meta_refresh($redirect_time);
-		return $this->helper->error($this->user->lang($message), $status_code);
-	}
-
-	/**
-	 * @param int $redirect_time
+	 * Only put into a method for better mockability
+	 *
 	 * @return null
 	 */
-	public function meta_refresh($redirect_time)
+	public function meta_refresh()
 	{
-		meta_refresh($redirect_time, $this->helper->route('newspage_controller'));
+		meta_refresh(10, $this->helper->route('newspage_controller'));
 	}
 }

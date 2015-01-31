@@ -1,14 +1,14 @@
 <?php
 
 /**
-*
-* newspage [British English]
-*
-* @package language
-* @version $Id$
-* @license http://opensource.org/licenses/gpl-license.php GNU Public License
-*
-*/
+ * This file is part of the NV Newspage Extension package.
+ *
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
+ *
+ * For full copyright and license information, please see
+ * the license.txt file.
+ */
 
 if (!defined('IN_PHPBB'))
 {

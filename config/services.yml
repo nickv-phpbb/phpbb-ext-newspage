@@ -10,19 +10,21 @@ services:
             - @nickvergessen.newspage
             - %core.root_path%
             - %core.php_ext%
+
     nickvergessen.newspage.controller.settings:
         class: nickvergessen\newspage\controller\settings
         arguments:
             - @auth
             - @config
             - @request
-            - @user
             - @controller.helper
+
     nickvergessen.newspage.helper:
         class: nickvergessen\newspage\helper
         arguments:
             - @controller.helper
             - @config
+
     nickvergessen.newspage:
         class: nickvergessen\newspage\newspage
         arguments:
@@ -39,6 +41,7 @@ services:
             - @pagination
             - %core.root_path%
             - %core.php_ext%
+
     nickvergessen.newspage.menu_link_listener:
         class: nickvergessen\newspage\event\menu_link_listener
         arguments:
@@ -46,6 +49,7 @@ services:
             - @template
         tags:
             - { name: event.listener }
+
     nickvergessen.newspage.viewonline_listener:
         class: nickvergessen\newspage\event\viewonline_listener
         arguments:

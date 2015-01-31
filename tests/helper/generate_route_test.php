@@ -1,16 +1,31 @@
 <?php
+
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2014 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage\tests\helper;
 
+use phpbb\config\config;
+use nickvergessen\newspage\helper;
+
+/**
+ * Class generate_route_test
+ * Testing \nickvergessen\newspage\helper
+ *
+ * @package nickvergessen\newspage\tests\helper
+ */
 class generate_route_test extends \phpbb_test_case
 {
+	/**
+	 * @return array
+	 */
 	public function generate_route_data()
 	{
 		return array(
@@ -47,15 +62,33 @@ class generate_route_test extends \phpbb_test_case
 
 	/**
 	 * @dataProvider generate_route_data
+	 *
+	 * @param bool $config_category
+	 * @param bool $config_archive
+	 * @param int $set_category
+	 * @param mixed $set_archive
+	 * @param int $set_page
+	 * @param array $expected
 	 */
-	public function test_generate_route($config_category, $config_archive, $set_category, $set_archive, $set_page, $expected)
+	public function test_generate_route($config_category, $config_archive, $set_category, $set_archive, $set_page, array $expected)
 	{
-		$config = new \phpbb\config\config(array(
+		$config = new config(array(
 			'news_cat_show' => $config_category,
 			'news_archive_show' => $config_archive,
 		));
-		$helper = new \nickvergessen\newspage\helper(
-			new \nickvergessen\newspage\tests\mock\controller_helper(),
+
+		$controller_helper = $this->getMockBuilder('\phpbb\controller\helper')
+			->disableOriginalConstructor()
+			->getMock();
+		$controller_helper->expects($this->any())
+			->method('route')
+			->willReturnCallback(function ($route, array $params = array()) {
+				return $route . '#' . serialize($params);
+			});
+
+		/** @var \phpbb\controller\helper $controller_helper */
+		$helper = new helper(
+			$controller_helper,
 			$config
 		);
 

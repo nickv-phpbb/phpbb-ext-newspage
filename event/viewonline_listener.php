@@ -1,10 +1,13 @@
 <?php
+
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2013 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage\event;
@@ -19,6 +22,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class viewonline_listener implements EventSubscriberInterface
 {
+	/**
+	 * Register to the events
+	 *
+	 * @return array
+	 */
 	static public function getSubscribedEvents()
 	{
 		return array(
@@ -36,12 +44,12 @@ class viewonline_listener implements EventSubscriberInterface
 	protected $php_ext;
 
 	/**
-	* Constructor
-	*
-	* @param \nickvergessen\newspage\helper	$helper		Newspage helper object
-	* @param \phpbb\user				$user		User object
-	* @param string						$php_ext	phpEx
-	*/
+	 * Constructor
+	 *
+	 * @param \nickvergessen\newspage\helper $helper
+	 * @param \phpbb\user $user
+	 * @param string $php_ext
+	 */
 	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\user $user, $php_ext)
 	{
 		$this->helper = $helper;
@@ -49,6 +57,10 @@ class viewonline_listener implements EventSubscriberInterface
 		$this->php_ext = $php_ext;
 	}
 
+	/**
+	 * @param array $event
+	 * @return null
+	 */
 	public function add_newspage_viewonline($event)
 	{
 		$route = $this->helper->generate_route();
@@ -82,6 +94,10 @@ class viewonline_listener implements EventSubscriberInterface
 		}
 	}
 
+	/**
+	 * @param string $route
+	 * @return int|bool
+	 */
 	protected function get_category_from_route($route)
 	{
 		$route_ary = explode('/', $route);
@@ -94,6 +110,10 @@ class viewonline_listener implements EventSubscriberInterface
 		return false;
 	}
 
+	/**
+	 * @param string $route
+	 * @return string|bool
+	 */
 	protected function get_archive_from_route($route)
 	{
 		$route_ary = explode('/', $route);

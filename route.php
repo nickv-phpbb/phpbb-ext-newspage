@@ -1,15 +1,22 @@
 <?php
 
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2014 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage;
 
+/**
+ * Class route
+ *
+ * @package nickvergessen\newspage
+ */
 class route
 {
 	/** @var \phpbb\controller\helper */
@@ -30,8 +37,8 @@ class route
 	/**
 	 * Constructor
 	 *
-	 * @param \phpbb\controller\helper		$helper		Controller helper object
-	 * @param \phpbb\config\config			$config		Config object
+	 * @param \phpbb\controller\helper $helper
+	 * @param \phpbb\config\config $config
 	 */
 	public function __construct(\phpbb\controller\helper $helper, \phpbb\config\config $config)
 	{
@@ -41,7 +48,7 @@ class route
 
 	/**
 	 * @param mixed $archive_month
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_archive_month($archive_month)
 	{
@@ -54,7 +61,7 @@ class route
 
 	/**
 	 * @param mixed $archive_year
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_archive_year($archive_year)
 	{
@@ -67,7 +74,7 @@ class route
 
 	/**
 	 * @param mixed $category
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_category($category)
 	{
@@ -80,7 +87,7 @@ class route
 
 	/**
 	 * @param mixed $page
-	 * @return \nickvergessen\newspage\route $this
+	 * @return $this
 	 */
 	public function set_page($page)
 	{

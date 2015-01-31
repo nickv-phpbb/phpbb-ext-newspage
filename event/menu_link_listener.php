@@ -1,10 +1,13 @@
 <?php
+
 /**
+ * This file is part of the NV Newspage Extension package.
  *
- * @package NV Newspage Extension
- * @copyright (c) 2013 nickvergessen
- * @license http://opensource.org/licenses/gpl-2.0.php GNU General Public License v2
+ * @copyright (c) nickvergessen <https://github.com/nickvergessen>
+ * @license GNU General Public License, version 2 (GPL-2.0)
  *
+ * For full copyright and license information, please see
+ * the license.txt file.
  */
 
 namespace nickvergessen\newspage\event;
@@ -25,6 +28,11 @@ class menu_link_listener implements EventSubscriberInterface
 	/* @var \phpbb\template\template */
 	protected $template;
 
+	/**
+	 * Register to the events
+	 *
+	 * @return array
+	 */
 	static public function getSubscribedEvents()
 	{
 		return array(
@@ -34,17 +42,21 @@ class menu_link_listener implements EventSubscriberInterface
 	}
 
 	/**
-	* Constructor
-	*
-	* @param \nickvergessen\newspage\helper	$helper		Newspage helper object
-	* @param \phpbb\template\template	$template	Template object
-	*/
+	 * Constructor
+	 *
+	 * @param \nickvergessen\newspage\helper $helper
+	 * @param \phpbb\template\template $template
+	 */
 	public function __construct(\nickvergessen\newspage\helper $helper, \phpbb\template\template $template)
 	{
 		$this->helper = $helper;
 		$this->template = $template;
 	}
 
+	/**
+	 * @param array $event
+	 * @return null
+	 */
 	public function load_language_on_setup($event)
 	{
 		$lang_set_ext = $event['lang_set_ext'];
@@ -55,7 +67,10 @@ class menu_link_listener implements EventSubscriberInterface
 		$event['lang_set_ext'] = $lang_set_ext;
 	}
 
-	public function add_page_header_link($event)
+	/**
+	 * @return null
+	 */
+	public function add_page_header_link()
 	{
 		$this->template->assign_vars(array(
 			'U_NEWSPAGE'	=> $this->helper->generate_route()->get_url(),
