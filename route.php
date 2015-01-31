@@ -124,26 +124,70 @@ class route
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$route = 'newspage';
-		if ($this->config['news_cat_show'] && $force_category !== true && ($force_category || $this->category))
+		if ($this->config['news_cat_show'])
 		{
-			$route .= '_category';
+			$route .= $this->get_route_category($force_category);
 		}
 
-		if ($this->config['news_archive_show'] && $force_archive !== true && ($force_archive || ($this->archive_year && $this->archive_month)))
+		if ($this->config['news_archive_show'])
 		{
-			$route .= '_archive';
+			$route .= $this->get_route_archive($force_archive);
 		}
 
-		if ($force_page && $force_page > 1)
-		{
-			$route .= '_page';
-		}
-		else if (!$force_page && $this->page > 1)
-		{
-			$route .= '_page';
-		}
+		$route .= $this->get_route_page($force_page);
 
 		return $route . '_controller';
+	}
+
+	/**
+	 * Returns the category part of the route we should use
+	 *
+	 * @param	mixed	$force_archive	Overwrites the archive,
+	 *							false for disabled, true to skip, string otherwise
+	 * @return		string
+	 */
+	protected function get_route_category($force_category)
+	{
+		if ($force_category !== true && ($force_category || $this->category))
+		{
+			return '_category';
+		}
+		return '';
+	}
+
+	/**
+	 * Returns the archive part of the route we should use
+	 *
+	 * @param	mixed	$force_category	Overwrites the category,
+	 *							false for disabled, true to skip, integer otherwise
+	 * @return		string
+	 */
+	protected function get_route_archive($force_archive)
+	{
+		if ($force_archive !== true && ($force_archive || ($this->archive_year && $this->archive_month)))
+		{
+			return '_archive';
+		}
+		return '';
+	}
+
+	/**
+	 * Returns the page part of the route we should use
+	 *
+	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	 * @return		string
+	 */
+	protected function get_route_page($force_page)
+	{
+		if ($force_page && $force_page > 1)
+		{
+			return '_page';
+		}
+		if (!$force_page && $this->page > 1)
+		{
+			return '_page';
+		}
+		return '';
 	}
 
 	/**
