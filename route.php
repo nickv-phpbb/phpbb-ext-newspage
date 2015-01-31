@@ -124,26 +124,70 @@ class route
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$route = 'newspage';
-		if ($this->config['news_cat_show'] && $force_category !== true && ($force_category || $this->category))
+		if ($this->config['news_cat_show'])
 		{
-			$route .= '_category';
+			$route .= $this->get_route_category($force_category);
 		}
 
-		if ($this->config['news_archive_show'] && $force_archive !== true && ($force_archive || ($this->archive_year && $this->archive_month)))
+		if ($this->config['news_archive_show'])
 		{
-			$route .= '_archive';
+			$route .= $this->get_route_archive($force_archive);
 		}
 
-		if ($force_page && $force_page > 1)
-		{
-			$route .= '_page';
-		}
-		else if (!$force_page && $this->page > 1)
-		{
-			$route .= '_page';
-		}
+		$route .= $this->get_route_page($force_page);
 
 		return $route . '_controller';
+	}
+
+	/**
+	 * Returns the category part of the route we should use
+	 *
+	 * @param	mixed	$force_category	Overwrites the category,
+	 *							false for disabled, true to skip, integer otherwise
+	 * @return		string
+	 */
+	protected function get_route_category($force_category)
+	{
+		if ($force_category !== true && ($force_category || $this->category))
+		{
+			return '_category';
+		}
+		return '';
+	}
+
+	/**
+	 * Returns the archive part of the route we should use
+	 *
+	 * @param	mixed	$force_archive	Overwrites the archive,
+	 *							false for disabled, true to skip, string otherwise
+	 * @return		string
+	 */
+	protected function get_route_archive($force_archive)
+	{
+		if ($force_archive !== true && ($force_archive || ($this->archive_year && $this->archive_month)))
+		{
+			return '_archive';
+		}
+		return '';
+	}
+
+	/**
+	 * Returns the page part of the route we should use
+	 *
+	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	 * @return		string
+	 */
+	protected function get_route_page($force_page)
+	{
+		if ($force_page && $force_page > 1)
+		{
+			return '_page';
+		}
+		if (!$force_page && $this->page > 1)
+		{
+			return '_page';
+		}
+		return '';
 	}
 
 	/**
@@ -157,27 +201,75 @@ class route
 	public function get_params($force_category = false, $force_archive = false, $force_page = false)
 	{
 		$params = array();
-		if ($this->config['news_cat_show'] && $force_category !== true && $force_category)
+		if ($this->config['news_cat_show'])
+		{
+			$params = array_merge($params, $this->get_param_category($force_category));
+		}
+
+		if ($this->config['news_archive_show'])
+		{
+			$params = array_merge($params, $this->get_params_archive($force_archive));
+		}
+
+		$params = array_merge($params, $this->get_param_page($force_page));
+
+		return $params;
+	}
+
+	/**
+	 * Returns the category parameter of the route we should use
+	 *
+	 * @param	mixed	$force_category		Overwrites the category, false for disabled, integer otherwise
+	 * @return		array
+	 */
+	protected function get_param_category($force_category)
+	{
+		$params = array();
+		if ($force_category !== true && $force_category)
 		{
 			$params['forum_id'] = $force_category;
 		}
-		else if ($this->config['news_cat_show'] && $force_category !== true && $this->category)
+		else if ($force_category !== true && $this->category)
 		{
 			$params['forum_id'] = $this->category;
 		}
 
-		if ($this->config['news_archive_show'] && $force_archive !== true && $force_archive)
+		return $params;
+	}
+
+	/**
+	 * Returns the list of archive parameters of the route we should use
+	 *
+	 * @param	mixed	$force_archive		Overwrites the archive, false for disabled, string otherwise
+	 * @return		array
+	 */
+	protected function get_params_archive($force_archive = false)
+	{
+		$params = array();
+		if ($force_archive !== true && $force_archive)
 		{
 			list($year, $month) = explode('/', $force_archive, 2);
 			$params['year'] = (int) $year;
 			$params['month'] = sprintf('%02d', (int) $month);
 		}
-		else if ($this->config['news_archive_show'] && $force_archive !== true && $this->archive_year && $this->archive_month)
+		else if ($force_archive !== true && $this->archive_year && $this->archive_month)
 		{
 			$params['year'] = (int) $this->archive_year;
 			$params['month'] = sprintf('%02d', (int) $this->archive_month);
 		}
 
+		return $params;
+	}
+
+	/**
+	 * Returns the page parameter of the route we should use
+	 *
+	 * @param	mixed	$force_page			Overwrites the page, false for disabled, string otherwise
+	 * @return		array
+	 */
+	protected function get_param_page($force_page = false)
+	{
+		$params = array();
 		if ($force_page && $force_page > 1)
 		{
 			$params['page'] = $force_page;
