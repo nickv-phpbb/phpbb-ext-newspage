@@ -3,6 +3,7 @@
 NV Newspage is an Extension for [phpBB 3.1](https://www.phpbb.com/)
 
 [![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-ext-newspage)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nickvergessen/phpbb-ext-newspage/badges/quality-score.png?b=develop-ascraeus)](https://scrutinizer-ci.com/g/nickvergessen/phpbb-ext-newspage/?branch=develop-ascraeus)
 
 
 ## Description
