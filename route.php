@@ -142,8 +142,8 @@ class route
 	/**
 	 * Returns the category part of the route we should use
 	 *
-	 * @param	mixed	$force_archive	Overwrites the archive,
-	 *							false for disabled, true to skip, string otherwise
+	 * @param	mixed	$force_category	Overwrites the category,
+	 *							false for disabled, true to skip, integer otherwise
 	 * @return		string
 	 */
 	protected function get_route_category($force_category)
@@ -158,8 +158,8 @@ class route
 	/**
 	 * Returns the archive part of the route we should use
 	 *
-	 * @param	mixed	$force_category	Overwrites the category,
-	 *							false for disabled, true to skip, integer otherwise
+	 * @param	mixed	$force_archive	Overwrites the archive,
+	 *							false for disabled, true to skip, string otherwise
 	 * @return		string
 	 */
 	protected function get_route_archive($force_archive)
