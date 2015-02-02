@@ -177,9 +177,43 @@ class newspage
 	/**
 	 * @return bool
 	 */
+	public function isset_archive()
+	{
+		return isset($this->archive['y']) && isset($this->archive['m']);
+	}
+
+	/**
+	 * @return bool
+	 */
 	public function is_archive()
 	{
-		return isset($this->archive['y']) && isset($this->archive['m']) && $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
+		return $this->isset_archive() && $this->archive['y'] !== 0 && $this->archive['m'] !== 0;
+	}
+
+	/**
+	 * Is the archive the current archive?
+	 *
+	 * @param int $year
+	 * @param int $month
+	 * @return bool
+	 */
+	protected function is_current_archive($year, $month)
+	{
+		return $this->is_archive() && $this->archive['y'] == $year && $this->archive['m'] == $month;
+	}
+
+	/**
+	 * Is the archive important for the pagination?
+	 *
+	 * @param int $year
+	 * @param int $month
+	 * @return bool
+	 */
+	protected function is_paginated_archive($year, $month)
+	{
+		return !$this->isset_archive() ||
+		$this->is_current_archive($year, $month) ||
+		($this->archive['y'] == 0 && $this->archive['m'] == 0);
 	}
 
 	/**
@@ -715,17 +749,29 @@ class newspage
 		}
 		$this->db->sql_freeresult($result);
 
+		$this->assign_archive_list($archiv_years, $archiv_months);
+	}
+
+	/**
+	 * Assign the archive blocks to the template
+	 *
+	 * @param array $archiv_years
+	 * @param array $archiv_months
+	 */
+	protected function assign_archive_list(array $archiv_years, array $archiv_months)
+	{
 		foreach ($archiv_years as $year => $news)
 		{
 			$this->template->assign_block_vars('archive_block', array(
 				'NEWS_YEAR'		=> $year,
 			));
+
 			foreach ($archiv_months[$year] as $month => $archive)
 			{
 				$active_archive = false;
-				if (empty($this->archive) || ($this->archive['y'] == $year && $this->archive['m'] == $month) || ($this->archive['y'] == 0 && $this->archive['m'] == 0))
+				if ($this->is_paginated_archive($year, $month))
 				{
-					$active_archive = ($this->archive['y'] == $year && $this->archive['m'] == $month);
+					$active_archive = $this->is_current_archive($year, $month);
 					$this->num_pagination_items += $archive['count'];
 				}
 
