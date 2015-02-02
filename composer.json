@@ -24,7 +24,7 @@
 	"extra": {
 		"display-name": "phpBB 3.1 NV Newspage Extension",
 		"soft-require": {
-			"phpbb/phpbb": "3.1.*@dev"
+			"phpbb/phpbb": ">=3.1.3"
 		}
 	}
 }
