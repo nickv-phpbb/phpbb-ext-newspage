@@ -715,11 +715,23 @@ class newspage
 		}
 		$this->db->sql_freeresult($result);
 
+		$this->assign_archive_list($archiv_years, $archiv_months);
+	}
+
+	/**
+	 * Assign the archive blocks to the template
+	 *
+	 * @param array $archiv_years
+	 * @param array $archiv_months
+	 */
+	protected function assign_archive_list(array $archiv_years, array $archiv_months)
+	{
 		foreach ($archiv_years as $year => $news)
 		{
 			$this->template->assign_block_vars('archive_block', array(
 				'NEWS_YEAR'		=> $year,
 			));
+
 			foreach ($archiv_months[$year] as $month => $archive)
 			{
 				$active_archive = false;
