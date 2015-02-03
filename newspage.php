@@ -111,7 +111,7 @@ class newspage
 		{
 			include($this->root_path . 'includes/bbcode.' . $this->php_ext);
 		}
-		if (!function_exists('get_user_rank'))
+		if (!function_exists('phpbb_get_user_rank'))
 		{
 			include($this->root_path . 'includes/functions_display.' . $this->php_ext);
 		}
