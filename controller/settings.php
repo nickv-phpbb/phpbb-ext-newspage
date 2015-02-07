@@ -92,6 +92,6 @@ class settings
 	 */
 	public function meta_refresh()
 	{
-		meta_refresh(10, $this->helper->route('newspage_controller'));
+		meta_refresh(10, $this->helper->route('nickvergessen_newspage_controller'));
 	}
 }

@@ -123,7 +123,7 @@ class route
 	 */
 	public function get_route($force_category = false, $force_archive = false, $force_page = false)
 	{
-		$route = 'newspage';
+		$route = 'nickvergessen_newspage';
 		if ($this->config['news_cat_show'])
 		{
 			$route .= $this->get_route_category($force_category);
