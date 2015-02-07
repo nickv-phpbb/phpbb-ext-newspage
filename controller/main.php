@@ -101,21 +101,22 @@ class main
 	public function newspage($forum_id, $year, $month, $page)
 	{
 		/**
-		 * You can use this event to load settings on the newspage
-		 *
-		 * @event nickvergessen.newspage.newspage
-		 * @var int	$forum_id		Forum ID of the category to display
-		 * @var int	$year			Limit the news to a certain year
-		 * @var int	$month			Limit the news to a certain month
-		 * @var int	$page			Page to display
-		 * @since 1.2
-		 */
-		extract($this->dispatcher->trigger_event('nickvergessen.newspage.newspage', array(
+		* You can use this event to load settings on the newspage
+		*
+		* @event nickvergessen.newspage.newspage
+		* @var int	forum_id		Forum ID of the category to display
+		* @var int	year			Limit the news to a certain year
+		* @var int	month			Limit the news to a certain month
+		* @var int	page			Page to display
+		* @since 1.2.0
+		*/
+		$vars = array(
 			'forum_id',
 			'year',
 			'month',
 			'page',
-		)));
+		);
+		extract($this->dispatcher->trigger_event('nickvergessen.newspage.newspage', compact($vars)));
 
 		$this->newspage->set_category($forum_id)
 			->set_archive($year, $month)
@@ -133,15 +134,16 @@ class main
 	public function single_news($topic_id)
 	{
 		/**
-		 * You can use this event to load settings on a single page view of the newspage
-		 *
-		 * @event nickvergessen.newspage.single_news
-		 * @var int	$topic_id		Topic ID of the news to display
-		 * @since 1.2
-		 */
-		extract($this->dispatcher->trigger_event('nickvergessen.newspage.single_news', array(
+		* You can use this event to load settings on a single page view of the newspage
+		*
+		* @event nickvergessen.newspage.single_news
+		* @var int	topic_id		Topic ID of the news to display
+		* @since 1.2.0
+		*/
+		$vars = array(
 			'topic_id',
-		)));
+		);
+		extract($this->dispatcher->trigger_event('nickvergessen.newspage.single_news', compact($vars)));
 
 		$this->newspage->set_news($topic_id);
 

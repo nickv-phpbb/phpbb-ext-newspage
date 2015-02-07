@@ -122,7 +122,7 @@ class viewonline_test extends \phpbb_test_case
 				array(),
 				'$location_url',
 				'$location',
-				'newspage_controller#a:0:{}',
+				'nickvergessen_newspage_controller#a:0:{}',
 				'VIEWONLINE_NEWS',
 			),
 			array(
@@ -139,7 +139,7 @@ class viewonline_test extends \phpbb_test_case
 				),
 				'$location_url',
 				'$location',
-				'newspage_category_controller#' . serialize(array('forum_id' => 30)),
+				'nickvergessen_newspage_category_controller#' . serialize(array('forum_id' => 30)),
 				'VIEWONLINE_NEWS_CATEGORY Forum30',
 			),
 			array(
@@ -152,7 +152,7 @@ class viewonline_test extends \phpbb_test_case
 				array(),
 				'$location_url',
 				'$location',
-				'newspage_archive_controller#' . serialize(array('year' => 2014, 'month' => '04')),
+				'nickvergessen_newspage_archive_controller#' . serialize(array('year' => 2014, 'month' => '04')),
 				'VIEWONLINE_NEWS_ARCHIVE April 2014',
 			),
 			array(
@@ -169,7 +169,7 @@ class viewonline_test extends \phpbb_test_case
 				),
 				'$location_url',
 				'$location',
-				'newspage_category_archive_controller#' . serialize(array('forum_id' => 30, 'year' => 2014, 'month' => '04')),
+				'nickvergessen_newspage_category_archive_controller#' . serialize(array('forum_id' => 30, 'year' => 2014, 'month' => '04')),
 				'VIEWONLINE_NEWS_CATEGORY_ARCHIVE Forum30 April 2014',
 			),
 		);

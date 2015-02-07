@@ -19,7 +19,8 @@
 		"php": ">=5.3.3"
 	},
 	"require-dev": {
-		"phing/phing": "2.4.*"
+		"phing/phing": "2.4.*",
+		"phpbb/epv": "dev-master"
 	},
 	"extra": {
 		"display-name": "phpBB 3.1 - NV Newspage Extension",

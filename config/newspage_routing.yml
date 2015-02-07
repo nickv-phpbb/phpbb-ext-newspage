@@ -1,0 +1,60 @@
+nickvergessen_newspage_settings:
+    pattern: /settings
+    defaults: { _controller: nickvergessen.newspage.controller.settings:manage }
+
+nickvergessen_newspage_page_controller:
+    pattern: /page/{page}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0 }
+    requirements:
+        page:      \d+
+
+nickvergessen_newspage_archive_controller:
+    pattern: /archive/{year}/{month}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, page: 1 }
+    requirements:
+        year:      \d+
+        month:     \d+
+
+nickvergessen_newspage_archive_page_controller:
+    pattern: /archive/{year}/{month}/page/{page}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0 }
+    requirements:
+        year:      \d+
+        month:     \d+
+        page:      \d+
+
+nickvergessen_newspage_category_controller:
+    pattern: /category/{forum_id}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, year: 0, month: 0, page: 1 }
+    requirements:
+        forum_id:  \d+
+
+nickvergessen_newspage_category_page_controller:
+    pattern: /category/{forum_id}/page/{page}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, year: 0, month: 0 }
+    requirements:
+        forum_id:  \d+
+        page:      \d+
+
+nickvergessen_newspage_category_archive_controller:
+    pattern: /category/{forum_id}/archive/{year}/{month}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage, page: 1 }
+    requirements:
+        forum_id:  \d+
+        year:      \d+
+        month:     \d+
+
+nickvergessen_newspage_category_archive_page_controller:
+    pattern: /category/{forum_id}/archive/{year}/{month}/page/{page}
+    defaults: { _controller: nickvergessen.newspage.controller:newspage }
+    requirements:
+        forum_id:  \d+
+        year:      \d+
+        month:     \d+
+        page:      \d+
+
+nickvergessen_newspage_singlenews_controller:
+    pattern: /{topic_id}
+    defaults: { _controller: nickvergessen.newspage.controller:single_news }
+    requirements:
+        topic_id:  \d+

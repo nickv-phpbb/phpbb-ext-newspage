@@ -148,7 +148,7 @@ class menu_link_test extends \phpbb_test_case
 		$this->template->expects($this->once())
 			->method('assign_vars')
 			->with(array(
-				'U_NEWSPAGE' => 'newspage_controller#a:0:{}'
+				'U_NEWSPAGE' => 'nickvergessen_newspage_controller#a:0:{}'
 			));
 
 		$dispatcher = new EventDispatcher();

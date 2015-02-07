@@ -428,7 +428,7 @@ class newspage
 				'U_REPORT'				=> ($this->auth->acl_get('f_report', $forum_id)) ? append_sid("{$this->root_path}report.{$this->php_ext}", 'f=' . $forum_id . '&amp;p=' . $row['post_id']) : '',
 				'U_NOTES'				=> ($this->auth->acl_getf_global('m_')) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=notes&amp;mode=user_notes&amp;u=' . $poster_id, true, $this->user->session_id) : '',
 				'U_WARN'				=> ($this->auth->acl_get('m_warn') && $poster_id != $this->user->data['user_id'] && $poster_id != ANONYMOUS) ? append_sid("{$this->root_path}mcp.{$this->php_ext}", 'i=warn&amp;mode=warn_post&amp;f=' . $forum_id . '&amp;p=' . $post_id, true, $this->user->session_id) : '',
-				'U_NEWS'				=> $this->helper->route('newspage_singlenews_controller', array('topic_id' => $topic_id)),
+				'U_NEWS'				=> $this->helper->route('nickvergessen_newspage_singlenews_controller', array('topic_id' => $topic_id)),
 
 				'POST_ICON_IMG'			=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['img'] : '',
 				'POST_ICON_IMG_WIDTH'	=> (!empty($row['icon_id'])) ? $icons[$row['icon_id']]['width'] : '',
@@ -861,7 +861,7 @@ class newspage
 
 		add_form_key('newspage');
 		$this->template->assign_vars(array(
-			'U_SETTING_ACTION'			=> $this->helper->route('newspage_settings'),
+			'U_SETTING_ACTION'			=> $this->helper->route('nickvergessen_newspage_settings'),
 			'SETTING_NEWS_CHAR_LIMIT'		=> (int) $this->config['news_char_limit'],
 			'SETTING_NEWS_NUMBER'			=> (int) $this->config['news_number'],
 			'SETTING_NEWS_PAGES'			=> (int) $this->config['news_pages'],
