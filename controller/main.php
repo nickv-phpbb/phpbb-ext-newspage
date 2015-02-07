@@ -108,7 +108,7 @@ class main
 		 * @var int	$year			Limit the news to a certain year
 		 * @var int	$month			Limit the news to a certain month
 		 * @var int	$page			Page to display
-		 * @since 1.1.2
+		 * @since 1.2
 		 */
 		extract($this->dispatcher->trigger_event('nickvergessen.newspage.newspage', array(
 			'forum_id',
@@ -137,7 +137,7 @@ class main
 		 *
 		 * @event nickvergessen.newspage.single_news
 		 * @var int	$topic_id		Topic ID of the news to display
-		 * @since 1.1.2
+		 * @since 1.2
 		 */
 		extract($this->dispatcher->trigger_event('nickvergessen.newspage.single_news', array(
 			'topic_id',

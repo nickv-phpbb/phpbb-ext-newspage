@@ -26,6 +26,11 @@ Set up the dependencies:
 Go to "ACP" > "Customise" > "Extensions" and enable the "phpBB 3.1 NV Newspage Extension" extension.
 
 
+## List of events
+
+See the [documentation](docs/events.md) for a list of available php and template events.
+
+
 ## Live Installation
 
 If you want to install the extension in a live board, please only use official releases.
@@ -35,7 +40,6 @@ Note that github releases are **NOT** the releases you are looking for.
 ## Collaborate
 
 * Create a issue in the [tracker](https://github.com/nickvergessen/phpbb-ext-newspage/issues)
-* Note the restrictions for [branch names](https://wiki.phpbb.com/Git#Branch_Names) and [commit messages](https://wiki.phpbb.com/Git#Commit_Messages) are similar to phpBB3
 * Submit a [pull-request](https://github.com/nickvergessen/phpbb-ext-newspage/pulls)
 
 
