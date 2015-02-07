@@ -1,0 +1,12 @@
+<!-- IF NEWS_TITLE -->
+	<div class="notice">
+		<!-- IF postrow.S_HAS_POLL -->
+			{L_NEWS_POLL}{L_COLON} <strong>{postrow.POLL_QUESTION}</strong> &raquo; <a href="{postrow.U_MINI_POST}">{L_NEWS_POLL_GOTO}</a><br /><br />
+		<!-- ENDIF -->
+		<!-- IF not NEWS_ONLY -->
+			<a href="{postrow.U_NEWS}"><strong>{L_NEWS_READ_FULL}</strong></a><br />
+		<!-- ENDIF -->
+		<a href="{postrow.U_MINI_POST}"><strong>{L_NEWS_GO_TO_TOPIC}{L_COLON}</strong> <em>{postrow.POST_SUBJECT}</em></a><br />
+		<a href="{postrow.U_MINI_POST}"><strong>{L_NEWS_COMMENTS}{L_COLON}</strong> <em>{postrow.NEWS_COMMENTS}</em></a>
+	</div>
+<!-- ENDIF -->
