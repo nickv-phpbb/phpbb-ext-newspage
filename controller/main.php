@@ -175,7 +175,8 @@ class main
 		}
 
 		$this->newspage->base();
-		$this->assign_images($this->config['news_user_info'], $this->config['news_post_buttons']);
+		// $this->assign_images($this->config['news_user_info'], $this->config['news_post_buttons']);
+		$this->assign_images(true, true);
 
 		return $this->helper->render('newspage_body.html', $this->newspage->get_page_title());
 	}

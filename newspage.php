@@ -526,8 +526,8 @@ class newspage
 
 		// Specify some images
 		$this->template->assign_vars(array(
-			'NEWS_USER_INFO'			=> $this->config['news_user_info'],
-			'NEWS_POST_BUTTONS'			=> $this->config['news_post_buttons'],
+			'NEWS_USER_INFO'			=> true, // $this->config['news_user_info'],
+			'NEWS_POST_BUTTONS'			=> true, // $this->config['news_post_buttons'],
 			'S_NEWS_ARCHIVE_PER_YEAR'	=> $this->config['news_archive_show'] == self::ARCHIVE_PER_YEAR,
 
 			'NEWS_ONLY'					=> $this->news,
@@ -865,13 +865,15 @@ class newspage
 			'SETTING_NEWS_CHAR_LIMIT'		=> (int) $this->config['news_char_limit'],
 			'SETTING_NEWS_NUMBER'			=> (int) $this->config['news_number'],
 			'SETTING_NEWS_PAGES'			=> (int) $this->config['news_pages'],
-			'SETTING_NEWS_POST_BUTTONS'		=> (bool) $this->config['news_post_buttons'],
-			'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
 			'SETTING_NEWS_SHADOW_SHOW'		=> (bool) $this->config['news_shadow'],
 			'SETTING_NEWS_ATTACH_SHOW'		=> (bool) $this->config['news_attach_show'],
 			'SETTING_NEWS_CAT_SHOW'			=> (bool) $this->config['news_cat_show'],
 			'SETTING_NEWS_ARCHIVE_SHOW'		=> (bool) $this->config['news_archive_show'],
 			'SETTING_NEWS_FORUMS'			=> make_forum_select(explode(',', $this->config['news_forums'])),
+
+			'SETTING_BUTTON_RESPONSIVE_FIXED'	=> false,
+			// 'SETTING_NEWS_POST_BUTTONS'		=> (bool) $this->config['news_post_buttons'],
+			// 'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
 		));
 	}
 }
