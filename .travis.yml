@@ -32,7 +32,7 @@ env:
     - SNIFF="1"
     - IMAGE_ICC="0" # Disabled until vendor/ is ignored for extensions
     - EPV="1"
-    - PHPBB_BRANCH="develop-ascraeus"
+    - PHPBB_BRANCH="3.1.x"
 
 branches:
   only:
