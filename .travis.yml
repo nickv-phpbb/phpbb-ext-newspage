@@ -37,7 +37,7 @@ env:
 branches:
   only:
     - master
-    - /^(3.[1-9]|[4-9].\d).x$/
+    - /^(3\.[1-9]|[4-9]\.\d)\.x$/
 
 install:
   - php composer.phar install --dev --no-interaction --prefer-source
