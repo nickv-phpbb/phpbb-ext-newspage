@@ -616,7 +616,7 @@ class newspage
 			$sql_array['ORDER_BY'] = 'topic_time ASC';
 		}
 
-		if (!$this->news && $this->config['news_shadow'])
+		if (!$this->news && !$this->config['news_shadow'])
 		{
 			$sql_array['WHERE'] .= ' AND topic_moved_id = 0';
 		}
