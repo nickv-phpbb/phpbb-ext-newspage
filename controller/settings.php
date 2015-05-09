@@ -13,7 +13,6 @@
 namespace nickvergessen\newspage\controller;
 
 use phpbb\exception\http_exception;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
