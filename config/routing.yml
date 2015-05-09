@@ -1,5 +1,5 @@
 nickvergessen_newspage_controller:
-    pattern: /news
+    path: /news
     defaults: { _controller: nickvergessen.newspage.controller:newspage, forum_id: 0, year: 0, month: 0, page: 1 }
 
 nickvergessen_newspage_subpages:
