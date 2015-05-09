@@ -65,7 +65,7 @@ class settings_test extends \phpbb_test_case
 	 */
 	public function test_manage(array $auth_map, array $request_map, array $variable_map, $status_code, $page_content)
 	{
-		$controller = $this->get_controller($auth_map, $request_map, $variable_map);
+		$controller = $this->get_controller($auth_map, $request_map, $variable_map, true);
 		$response = $controller->manage();
 
 		$this->assertInstanceOf('\Symfony\Component\HttpFoundation\Response', $response);
@@ -125,7 +125,7 @@ class settings_test extends \phpbb_test_case
 	public function test_manage_throws(array $auth_map, array $request_map, array $variable_map, $status_code, $page_content)
 	{
 
-		$controller = $this->get_controller($auth_map, $request_map, $variable_map);
+		$controller = $this->get_controller($auth_map, $request_map, $variable_map, false);
 		try
 		{
 			$controller->manage();
@@ -148,9 +148,10 @@ class settings_test extends \phpbb_test_case
 	 * @param array $auth_map
 	 * @param array $request_map
 	 * @param array $variable_map
+	 * @param bool $language_loaded
 	 * @return \nickvergessen\newspage\controller\settings
 	 */
-	protected function get_controller(array $auth_map, array $request_map, array $variable_map)
+	protected function get_controller(array $auth_map, array $request_map, array $variable_map, $language_loaded)
 	{
 		global $request;
 
@@ -196,14 +197,23 @@ class settings_test extends \phpbb_test_case
 				return new Response($message, $code);
 			});
 
+		$user = $this->getMockBuilder('\phpbb\user')
+			->disableOriginalConstructor()
+			->getMock();
+		$user->expects($language_loaded ? $this->once() : $this->never())
+			->method('add_lang_ext')
+			->with('nickvergessen/newspage', 'newspage');
+
 		/** @var \phpbb\auth\auth $auth */
 		/** @var \phpbb\request\request $request */
 		/** @var \phpbb\controller\helper $controller_helper */
+		/** @var \phpbb\user $user */
 		return new settings_controller(
 			$auth,
 			new config(array()),
 			$request,
-			$controller_helper
+			$controller_helper,
+			$user
 		);
 	}
 }

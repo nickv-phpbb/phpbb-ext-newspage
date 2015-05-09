@@ -18,6 +18,7 @@ services:
             - @config
             - @request
             - @controller.helper
+            - @user
 
     nickvergessen.newspage.helper:
         class: nickvergessen\newspage\helper
