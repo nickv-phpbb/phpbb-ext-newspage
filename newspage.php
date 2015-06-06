@@ -872,7 +872,7 @@ class newspage
 			'SETTING_NEWS_FORUMS'			=> make_forum_select(explode(',', $this->config['news_forums'])),
 
 			'SETTING_BUTTON_RESPONSIVE_FIXED'	=> false,
-			// 'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
+			'SETTING_NEWS_USER_INFO'		=> (bool) $this->config['news_user_info'],
 			'SETTING_NEWS_POST_BUTTONS'		=> (bool) $this->config['news_post_buttons'],
 		));
 	}
