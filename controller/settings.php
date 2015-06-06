@@ -80,8 +80,8 @@ class settings
 		$this->config->set('news_forums',		implode(',', $this->request->variable('news_forums', array(0))));
 		$this->config->set('news_number',		max(1, $this->request->variable('news_number', 0)));
 		$this->config->set('news_pages',		max(1, $this->request->variable('news_pages', 0)));
-		// $this->config->set('news_post_buttons',	$this->request->variable('news_post_buttons', false));
 		// $this->config->set('news_user_info',	$this->request->variable('news_user_info', false));
+		$this->config->set('news_post_buttons',	$this->request->variable('news_post_buttons', false));
 		$this->config->set('news_shadow',		$this->request->variable('news_shadow_show', false));
 		$this->config->set('news_attach_show',	$this->request->variable('news_attach_show', false));
 		$this->config->set('news_cat_show',		$this->request->variable('news_cat_show', false));
