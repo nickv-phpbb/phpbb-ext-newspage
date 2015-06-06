@@ -2,8 +2,8 @@
 
 NV Newspage is an Extension for [phpBB 3.1](https://www.phpbb.com/)
 
-[![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=develop-ascraeus)](https://travis-ci.org/nickvergessen/phpbb-ext-newspage)
-[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nickvergessen/phpbb-ext-newspage/badges/quality-score.png?b=develop-ascraeus)](https://scrutinizer-ci.com/g/nickvergessen/phpbb-ext-newspage/?branch=develop-ascraeus)
+[![Build Status](https://secure.travis-ci.org/nickvergessen/phpbb-ext-newspage.png?branch=3.1.x)](https://travis-ci.org/nickv-phpbb/phpbb-ext-newspage)
+[![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/nickv-phpbb/phpbb-ext-newspage/badges/quality-score.png?b=3.1.x)](https://scrutinizer-ci.com/g/nickv-phpbb/phpbb-ext-newspage/?branch=3.1.x)
 
 
 ## Description
@@ -17,7 +17,7 @@ Also the icons can be switched on/off (post icons, user icons)
 
 Clone into phpBB/ext/nickvergessen/newspage:
 
-    git clone https://github.com/nickvergessen/phpbb-ext-newspage.git phpBB/ext/nickvergessen/newspage
+    git clone https://github.com/nickv-phpbb/phpbb-ext-newspage.git phpBB/ext/nickvergessen/newspage
 
 Set up the dependencies:
 
@@ -39,8 +39,8 @@ Note that github releases are **NOT** the releases you are looking for.
 
 ## Collaborate
 
-* Create a issue in the [tracker](https://github.com/nickvergessen/phpbb-ext-newspage/issues)
-* Submit a [pull-request](https://github.com/nickvergessen/phpbb-ext-newspage/pulls)
+* Create a issue in the [tracker](https://github.com/nickv-phpbb/phpbb-ext-newspage/issues)
+* Submit a [pull-request](https://github.com/nickv-phpbb/phpbb-ext-newspage/pulls)
 
 
 ## Testing
