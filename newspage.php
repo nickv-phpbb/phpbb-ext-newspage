@@ -309,7 +309,7 @@ class newspage
 			{
 				$this->page_title = censor_text($row['post_subject']);
 			}
-			else if (class_exists('\Nickvergessen\TrimMessage\TrimMessage'))
+			else if (((int) $this->config['news_char_limit']) !== 0 && class_exists('\Nickvergessen\TrimMessage\TrimMessage'))
 			{
 				$trim = new TrimMessage($row['post_text'], $row['bbcode_uid'], $this->config['news_char_limit']);
 				$row['post_text'] = $trim->message();

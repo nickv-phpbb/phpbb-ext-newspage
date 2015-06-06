@@ -31,6 +31,7 @@ $lang = array_merge($lang, array(
 	'NEWS_CAT'					=> 'Kategorien',
 	'NEWS_CAT_SHOW'				=> 'Erlaube die Foren einzuschränken',
 	'NEWS_CHAR_LIMIT'			=> 'News-Einträge kürzen',
+	'NEWS_CHAR_LIMIT_EXPLAIN'	=> 'Textlänge, „0“ um Kürzen zu unterbinden',
 	'NEWS_COMMENTS'				=> 'Kommentare',
 	'NEWS_FILTER_ARCHIVE'		=> 'Datum filtern',
 	'NEWS_FILTER_BY_ARCHIVE'	=> 'Filter News-Einträge nach Jahr und Monat',

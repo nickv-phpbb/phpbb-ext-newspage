@@ -76,7 +76,16 @@ class settings
 			throw new http_exception(400, 'FORM_INVALID');
 		}
 
-		$this->config->set('news_char_limit',	max(100, $this->request->variable('news_char_limit', 0)));
+		if ($this->request->variable('news_char_limit', 0) !== 0)
+		{
+			$this->config->set('news_char_limit',	max(100, $this->request->variable('news_char_limit', 0)));
+		}
+		else
+		{
+			// "0" means no trimming
+			$this->config->set('news_char_limit', 0);
+		}
+
 		$this->config->set('news_forums',		implode(',', $this->request->variable('news_forums', array(0))));
 		$this->config->set('news_number',		max(1, $this->request->variable('news_number', 0)));
 		$this->config->set('news_pages',		max(1, $this->request->variable('news_pages', 0)));

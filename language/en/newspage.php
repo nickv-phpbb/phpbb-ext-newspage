@@ -31,6 +31,7 @@ $lang = array_merge($lang, array(
 	'NEWS_CAT'					=> 'Categories',
 	'NEWS_CAT_SHOW'				=> 'Allow to filter by forums',
 	'NEWS_CHAR_LIMIT'			=> 'Shorten news text',
+	'NEWS_CHAR_LIMIT_EXPLAIN'	=> 'Text length, “0” to disable shortening',
 	'NEWS_COMMENTS'				=> 'Comments',
 	'NEWS_FILTER_ARCHIVE'		=> 'Filter date',
 	'NEWS_FILTER_BY_ARCHIVE'	=> 'Filter news by date',
