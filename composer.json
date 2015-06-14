@@ -3,8 +3,8 @@
 	"type": "phpbb-extension",
 	"description": "Adds a extra-page to the board where a switchable number of news are displayed. The text can be shorten to a certain number of chars. Also the Icons can be switched of (post icons, user icons)",
 	"homepage": "https://github.com/nickv-phpbb/phpbb-ext-newspage",
-	"version": "1.2",
-	"time": "2015-02-07",
+	"version": "1.3",
+	"time": "2015-06-14",
 	"license": "GPL-2.0",
 	"authors": [
 		{
